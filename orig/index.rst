@@ -1,19 +1,9 @@
-.. Koji documentation master file, created by
-   sphinx-quickstart on Tue Nov  3 12:11:18 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 ================================
 Welcome to Koji's documentation!
 ================================
 
 Koji
 ====
-
-Koji is the software that builds `RPM packages for the Fedora project`_. It
-uses `Mock`_ to create chroot environments to perform builds. To download the
-source code, report bugs, join the mailing list etc., see the `Koji project
-website`_.
 
 Contents
 ========

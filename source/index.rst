@@ -17,6 +17,7 @@ Contents
     :maxdepth: 2
 
     introduction
+    Operations Guide/index.rst
     User Guide/index.rst
     Administration Guide/index.rst
     Developer Guide/index.rst

@@ -5,10 +5,10 @@ Welcome to Koji's documentation!
 Koji
 ====
 
-Koji is the software that builds `RPM packages for the Fedora project`_. It
-uses `Mock`_ to create chroot environments to perform builds. To download the
-source code, report bugs, join the mailing list etc., see the `Koji project
-website`_.
+Koji is the software that builds (not only) `RPM packages for the Fedora
+project`_. It uses `Mock`_ to create chroot environments to perform builds. To
+download the source code, report bugs, join the mailing list etc., see the `Koji
+project website`_.
 
 Contents
 ========
@@ -18,9 +18,13 @@ Contents
 
     introduction
     Operations Guide/index.rst
-    User Guide/index.rst
     Administration Guide/index.rst
+    User Guide/index.rst
     Developer Guide/index.rst
+
+    HOWTO
+    misc
+    runs_here
 
 Indices and tables
 ==================

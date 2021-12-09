@@ -10,3 +10,5 @@ Potential sources:
 
 Review:
  * ProxyDNs
+ * AuthPrincipal (dropped)
+ * AuthKeytab (dropped)

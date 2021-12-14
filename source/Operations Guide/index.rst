@@ -3,8 +3,8 @@ Operations Guide
 
 .. toctree::
 
-   installation
-   bootstrapping
+   server_howto
+   server_bootstrap
    builder_configuration
    hub_configuration
    permissions
@@ -18,8 +18,6 @@ Operations Guide
    kerberos_gssapi_debug
    kojid_conf
    plugins
-   server_bootstrap
-   server_howto
    supported_platforms
    tasks
    utils

@@ -72,6 +72,12 @@ kojira is a daemon that keeps the build root repodata updated. It is
 responsible for removing redundant build roots and cleaning up after a build
 request is completed.
 
+Garbage Collector
+-----------------
+koji-gc is a single script (runnable via cron or similar means) which is
+responsible for pruning the koji produced content (e.g. testing builds and
+everything what is no more needed)
+
 
 Package Organization
 ====================

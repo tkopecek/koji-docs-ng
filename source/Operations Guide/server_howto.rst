@@ -1,6 +1,8 @@
-=============
-Server How To
-=============
+===================
+Server Installation
+===================
+
+.. highlight:: console
 
 Setting Up a Koji Build System
 ==============================
@@ -9,52 +11,105 @@ The Koji components may **live** on separate resources as long as all resources
 are able to communicate. This document will cover how to setup each service
 individually, however, all services may **live** on the same resource.
 
+.. note::
+    Everything except the builders themselves can run also in containers.
+    Builders have to be run in more privileged and separated environment. For
+    details look into :doc:`Running Koji in Containers`
+
+Quick Start
+===========
+
+As a production deployment administrator you'll probably want to get into deep
+how koji components interact. But if you want something to play with, to
+understand how koji works or to do some koji development, you can start with
+quick setup via vagrant/ansible provided by `koji-playbooks`_ project. Simple
+``vagrant up`` should get you working environment where all needed services are
+run on the same VM with default user and kerberos authentication.
+
+Of course, even production deployment can be done using those playbooks, but it
+is recommended to at least read the following sections to understand which
+decisions need to be made and which options are really important.
+
 Knowledge Prerequisites
 =======================
 
 * Basic understanding of SSL and authentication via certificates and/or
   Kerberos credentials
 * Basic knowledge about creating a database in PostgreSQL and importing a schema
-* Working with psql
+* Working with ``psql``
 * Basic knowledge about Apache configuration
 * Basic knowledge about `dnf`_/`yum`_/`createrepo`_/`mock`_ - else you'll not
   be able to debug problems!
 * Basic knowledge about using command line
 * Basic knowledge about RPM building
 * Simple usage of the Koji client
-* For an overview of yum, mock, Koji (and all its subcomponents), mash, and how
+* For an overview of dnf, yum, mock, Koji (and all its subcomponents), mash, and how
   they all work together, see the excellent slides put together by `Steve
   Traylen at CERN <http://indico.cern.ch/event/55091>`_.
 
 Package Prerequisites
 =====================
 
-On the server (koji-hub/koji-web)
----------------------------------
-* httpd
+We will assume Fedora 35 / CentOS 8 versions as a starting environment. If
+you're using other versions be aware of potential differences.
+
+On the server (koji-hub)
+------------------------
+* koji-hub
 * mod_ssl
+* mod_auth_gssapi
+
+On the database server (koji-hub or separate machine)
+-----------------------------------------------------
 * postgresql-server
-* mod_wsgi
+
+On the web server (koji-web)
+----------------------------
+* koji-web
 
 On the builder (koji-builder)
 -----------------------------
-* mock
-* setarch (for some archs you'll require a patched version)
-* rpm-build
-* createrepo
+For basic builder
+
+* koji-builder
+
+For builders running also :doc:`newRepo/distRepo <tasks>` tasks
+
+* createrepo_c
+
+For image builders
+
+* building via ImageFactory
+
+  * imagefactory-*
+  * oz
+
+* building via Appliance Creator
+
+  * python3-pykickstart
+  * appliance-tools
+
+On the utility server (kojira)
+------------------------------
+* koji-utils
+
+On the windows builder (koji-vm)
+--------------------------------
+* koji-vm
 
 A note on filesystem space
 ==========================
-Koji will consume copious amounts of disk space under the primary KojiDir
-directory (as set in the kojihub.conf file - defaults to ``/mnt/koji``).
-However, as koji makes use of mock on the backend to actually create build
-roots and perform the builds in those build roots, it might come to a surprise
-to users that a running koji server will consume large amounts of disk space
-under ``/var/lib/mock`` and ``/var/cache/mock`` as well. Users should either
-plan the disk and filesystem allocations for this, or plan to modify the
-default mock build directory in the kojid.conf file. If you change the
-location, ensure that the new directories are owned by the group "mock" and
-have 02755 permission.
+
+Koji will consume copious amounts of disk space under the primary ``KojiDir``
+directory (as set in the :doc:`kojihub.conf <hub_conf>` file - defaults to
+``/mnt/koji``).  However, as koji makes use of mock on the backend to actually
+create build roots and perform the builds in those build roots, it might come to
+a surprise to users that a running koji server will consume large amounts of
+disk space under ``/var/lib/mock`` and ``/var/cache/mock`` as well. Users should
+either plan the disk and filesystem allocations for this, or plan to modify the
+default mock build directory in the kojid.conf file. If you change the location,
+ensure that the new directories are owned by the group "mock" and have 02755
+permission.
 
 Koji Authentication Selection
 =============================
@@ -84,6 +139,37 @@ For SSL authentication
 Setting up SSL Certificates for authentication
 ----------------------------------------------
 
+For quick generation ``koji-ssl-admin`` from `koji-tools`_ is the recommended
+way. For manual setup follow the next sections. Note, that if you're using
+`koji-playbooks`_ this script is used internally to generate required
+certificates.
+
+.. code-block:: console
+
+   $ dnf -y install python3-cryptography
+   $ curl -O https://pagure.io/koji-tools/raw/master/f/src/bin/koji-ssl-admin
+   $ chmod +x koji-ssl-admin
+   $ ./koji-ssl-admin new-ca --common-name "My Koji CA"
+   wrote koji-ca.key - protect this private file
+   wrote koji-ca.crt - publish this for users
+   $ ./koji-ssl-admin server-csr kojihub.example.com
+   wrote kojihub.example.com.key - protect this private file
+   wrote kojihub.example.com.csr - sign this with a CA
+   $ ./koji-ssl-admin sign kojihub.example.com.csr
+   wrote kojihub.example.com.crt - publish this for users
+   wrote kojihub.example.com.chain.crt - use this in the HTTP server config
+   $ ./koji-ssl-admin sign kojiadmin.csr
+   wrote kojiadmin.crt - publish this for users
+   wrote kojiadmin.cert for koji CLI - protect this private file
+   wrote kojiadmin_browser_cert.p12 for kojiweb - protect this private file
+   to import kojiadmin_browser_cert.p12 into browser, the password is "koji"
+
+These steps are described in the following subsections if you want to understand
+what is going on under the hood or if you want to finetune the process. If
+you're ok with these defaults (testing instance, etc.) continue with the next
+section.
+
+
 Certificate generation
 ^^^^^^^^^^^^^^^^^^^^^^
 Create the ``/etc/pki/koji`` directory and copy-and-paste the ssl.cnf listed
@@ -93,7 +179,7 @@ koji components.
 
 ``ssl.cnf``
 
-::
+.. code-block:: ini
 
     HOME                    = .
     RANDFILE                = .rand
@@ -190,15 +276,15 @@ a database of the certificates generated and can be used to view the
 information for any of the certificates simply by viewing the contents of
 ``index.txt``.
 
-::
+.. code-block:: console
 
-    cd /etc/pki/koji/
-    mkdir {certs,private,confs}
-    touch index.txt
-    echo 01 > serial
-    openssl genrsa -out private/koji_ca_cert.key 2048
-    openssl req -config ssl.cnf -new -x509 -days 3650 -key private/koji_ca_cert.key \
-    -out koji_ca_cert.crt -extensions v3_ca
+    root@localhost$ cd /etc/pki/koji/
+    root@localhost$ mkdir {certs,private,confs}
+    root@localhost$ touch index.txt
+    root@localhost$ echo 01 > serial
+    root@localhost$ openssl genrsa -out private/koji_ca_cert.key 2048
+    root@localhost$ openssl req -config ssl.cnf -new -x509 -days 3650 \
+                    -key private/koji_ca_cert.key -out koji_ca_cert.crt -extensions v3_ca
 
 The last command above will ask you to confirm a number of items about the
 certificate you are generating. Presumably you already edited the defaults for
@@ -211,11 +297,12 @@ certificate is to use the FQDN of the server.
 If you are trying to automate this process via a configuration management
 tool, you can create the cert in one command with a line like this:
 
-::
+.. code-block:: console
 
-    openssl req -config ssl.cnf -new -x509 \
-    -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=koji.example.com" \
-    -days 3650 -key private/koji_ca_cert.key -out koji_ca_cert.crt -extensions v3_ca
+    root@localhost$ openssl req -config ssl.cnf -new -x509 \
+                    -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=koji.example.com" \
+                    -days 3650 -key private/koji_ca_cert.key -out koji_ca_cert.crt \
+                    -extensions v3_ca
 
 Generate the koji component certificates and the admin certificate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -243,7 +330,7 @@ doesn't appear in the user list.  The user account created must match the
 common name of the certificate which that component uses to authenticate with
 the server. When creating the kojiweb certificate, you'll want to remember
 exactly what values you enter for each field as you'll have to regurgitate
-those into the /etc/koji-hub/hub.conf file as the ProxyDNs entry.
+those into the ``/etc/koji-hub/hub.conf`` file as the ``ProxyDNs`` entry.
 
 When you need to create multiple certificates it may be convenient to create a
 loop or a script like the on listed below and run the script to create the
@@ -251,7 +338,7 @@ certificates. You can simply adjust the number of kojibuilders and the name of
 the admin account as you see fit. For much of this guide, the admin account is
 called ``kojiadmin``.
 
-::
+.. code-block:: bash
 
     #!/bin/bash
     # if you change your certificate authority name to something else you will
@@ -274,9 +361,9 @@ Generate a PKCS12 user certificate (for web browser)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This is only required for user certificates.
 
-::
+.. code-block:: console
 
-    openssl pkcs12 -export -inkey private/${user}.key -in certs/${user}.crt \
+    $ openssl pkcs12 -export -inkey private/${user}.key -in certs/${user}.crt \
         -CAfile ${caname}_ca_cert.crt -out certs/${user}_browser_cert.p12
 
 When generating certs for a user, the user will need the ``${user}.pem``, the
@@ -287,6 +374,7 @@ both ``~/.fedora-upload-ca.cert`` and ``~/.fedora-server-ca.cert``, and the
 user would import the ``${user}_brower_cert.p12`` into their web browser as a
 personal certificate.
 
+.. _copy certificates:
 Copy certificates into ~/.koji for kojiadmin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -295,7 +383,7 @@ to do so, you'll need to use the newly created certificates to authenticate
 with the hub. Create the kojiadmin user then copy the certificates for the koji
 CA and the kojiadmin user to ``~/.koji``:
 
-::
+.. code-block:: console
 
     kojiadmin@localhost$ mkdir ~/.koji
     kojiadmin@localhost$ cp /etc/pki/koji/kojiadmin.pem ~/.koji/client.crt   # NOTE: It is IMPORTANT you use the PEM and NOT the CRT
@@ -303,9 +391,9 @@ CA and the kojiadmin user to ``~/.koji``:
     kojiadmin@localhost$ cp /etc/pki/koji/koji_ca_cert.crt ~/.koji/serverca.crt
 
 .. note::
-    See /etc/koji.conf for the current system wide koji client configuration.
-    Copy /etc/koji.conf to ~/.koji/config if you wish to change the config on a
-    per user basis.
+    See ``/etc/koji.conf`` for the current system wide koji client configuration.
+    Copy ``/etc/koji.conf`` to ``~/.koji/config`` if you wish to change the config
+    on a per user basis.
 
 Setting up Kerberos for authentication
 --------------------------------------
@@ -378,17 +466,13 @@ Install PostgreSQL
 
 Install the ``postgresql-server`` package::
 
-    # yum install postgresql-server
+    root@localhost$ dnf install postgresql-server
 
 Initialize PostgreSQL DB:
 -------------------------
 
 Initialize PostgreSQL::
 
-    # On RHEL 7:
-    root@localhost$ postgresql-setup initdb
-
-    # Or RHEL 8 and Fedora:
     root@localhost$ postgresql-setup --initdb --unit postgresql
 
 And start the database service::
@@ -400,7 +484,7 @@ Setup User Accounts:
 
 The following commands will setup the ``koji`` account and assign it a password
 
-::
+.. code-block:: console
 
     root@localhost$ useradd koji
     root@localhost$ passwd koji
@@ -416,7 +500,7 @@ The following commands will:
 * create the koji schema using the provided
   ``/usr/share/doc/koji*/docs/schema.sql`` file from the ``koji`` package.
 
-::
+.. code-block:: console
 
     root@localhost$ su - postgres
     postgres@localhost$ createuser --no-superuser --no-createrole --no-createdb koji
@@ -431,7 +515,7 @@ The following commands will:
 .. note::
     When issuing the command to import the psql schema into the new database it
     is important to ensure that the directory path
-    /usr/share/doc/koji*/docs/schema.sql remains intact and is not resolved to
+    ``/usr/share/doc/koji*/docs/schema.sql`` remains intact and is not resolved to
     a specific version of koji. In test it was discovered that when the path is
     resolved to a specific version of koji then not all of the tables were
     created correctly.
@@ -548,13 +632,13 @@ have any mechanism for this, we need to do it via some other mechanism. Default
 handling is done by cron, but can be substituted by anything else (Ansible
 tower, etc.)
 
-Script is by default installed on hub as `/usr/sbin/koji-sweep-db`.  It has also
-corresponding `koji-sweep-db` service and timer. Note, that timer is not enabled
-by default, so you need to run usual `systemctl` commands:
+Script is by default installed on hub as ``/usr/sbin/koji-sweep-db``.  It has
+also corresponding ``koji-sweep-db`` service and timer. Note, that timer is not
+enabled by default, so you need to run usual ``systemctl`` commands:
 
-::
+.. code-block:: console
 
-   systemctl enable --now koji-sweep-db.timer
+   root@localhost$ systemctl enable --now koji-sweep-db.timer
 
 If you don't want to use this script, be sure to run following SQL with
 appropriate age setting. Default value of one day should be ok for most
@@ -567,7 +651,7 @@ handy.
    VACUUM ANALYZE sessions;
 
 Optionally (if you're using :ref:`reservation API <cg_api>` for
-content generators), you could want to run also reservation cleanup:
+content generators), you would want to run also reservation cleanup:
 
 .. code-block:: sql
 
@@ -577,11 +661,11 @@ content generators), you could want to run also reservation cleanup:
 Set User/Password Authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+.. code-block:: console
 
     root@localhost$ su - koji
     koji@localhost$ psql
-    koji=> insert into users (name, password, status, usertype) values ('admin-user-name', 'admin-password-in-plain-text', 0, 0);
+    koji=> INSERT INTO users (name, password, status, usertype) VALUES ('admin-user-name', 'admin-password-in-plain-text', 0, 0);
 
 Kerberos authentication
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -589,16 +673,17 @@ Kerberos authentication
 The process is very similar to user/pass except you would replace the first
 insert above with this:
 
-::
+.. code-block:: console
 
     root@localhost$ su - koji
     koji@localhost$ psql <<EOF
-    with user_id as (
-    insert into users (name, status, usertype) values ('admin-user-name', 0, 0) returning id
+    WITH user_id AS (
+        INSERT INTO users (name, status, usertype) VALUES ('admin-user-name', 0, 0) RETURNING id
     )
-    insert into user_krb_principals (user_id, krb_principal) values (
-    (select id from user_id),
-    'admin@EXAMPLE');
+    INSERT INTO user_krb_principals (user_id, krb_principal) VALUES (
+        (SELECT id FROM user_id),
+        'admin@EXAMPLE'
+    );
     EOF
 
 SSL Certificate authentication
@@ -607,11 +692,11 @@ SSL Certificate authentication
 There is no need for either a password or a Kerberos principal, so this will
 suffice:
 
-::
+.. code-block:: console
 
     root@localhost$ su - koji
     koji@localhost$ psql
-    koji=> insert into users (name, status, usertype) values ('admin-user-name', 0, 0);
+    koji=> INSERT INTO users (name, status, usertype) VALUES ('admin-user-name', 0, 0);
 
 Give yourself admin permissions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -621,12 +706,12 @@ this you will need to know the ID of the user.
 
 ::
 
-    koji=> insert into user_perms (user_id, perm_id, creator_id) values (<id of user inserted above>, 1, <id of user inserted above>);
+    koji=> INSERT INTO user_perms (user_id, perm_id, creator_id) VALUES (<id of user inserted above>, 1, <id of user inserted above>);
 
 .. note::
     If you do not know the ID of the admin user, you can get the ID by running the query::
 
-      koji=> select * from users;
+      koji=> SELECT * FROM users;
 
 You can't actually log in and perform any actions until kojihub is up and
 running in your web server.  In order to get to that point you still need to
@@ -658,13 +743,14 @@ Install koji-hub
 
 Install the ``koji-hub`` package along with mod_ssl::
 
-    # yum install koji-hub mod_ssl
+    root@localhost$ dnf install koji-hub mod_ssl
 
 Required Configuration
 ----------------------
 
 We provide example configs for all services, so look for ``httpd.conf``, ``hub.conf``,
-``kojiweb.conf`` and ``web.conf`` in source repo or related rpms.
+``kojiweb.conf`` and ``web.conf`` in source repo or related rpms. Furthermore,
+documentation for all options in :doc:`hub.conf <hub_conf>` is provided.
 
 /etc/httpd/conf/httpd.conf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -678,19 +764,19 @@ something reasonable in order to prevent the server from becoming overloaded
 and crashing (at 100 the httpd processes will grow to about 75MB resident set
 size before respawning).
 
-::
+.. code-block:: apacheconf
 
     <IfModule prefork.c>
-    ...
-    MaxConnectionsPerChild  100
+            ...
+            MaxConnectionsPerChild  100
     </IfModule>
     <IfModule worker.c>
-    ...
-    MaxConnectionsPerChild  100
+            ...
+            MaxConnectionsPerChild  100
     </IfModule>
     <IfModule event.c>
-    ...
-    MaxRequestsPerChild  100
+            ...
+            MaxRequestsPerChild  100
     </IfModule>
 
 /etc/httpd/conf.d/kojihub.conf
@@ -703,7 +789,7 @@ file and should be simple to follow.
 For example, if you are using SSL authentication, you will want to uncomment
 the section that looks like this:
 
-::
+.. code-block:: apacheconf
 
     # uncomment this to enable authentication via SSL client certificates
     # <Location /kojihub/ssllogin>
@@ -726,7 +812,7 @@ if you are using SSL authentication, then the CA certificate you configure
 in ``SSLCACertificateFile`` here should be the same one that you use to issue
 user certificates.
 
-::
+.. code-block:: apacheconf
 
     SSLCertificateFile /etc/pki/koji/certs/kojihub.crt
     SSLCertificateKeyFile /etc/pki/koji/private/kojihub.key
@@ -742,7 +828,7 @@ edit this configuration to point Koji Hub to the database you are using and to
 setup Koji Hub to utilize the authentication scheme you selected in the
 beginning.
 
-::
+.. code-block:: ini
 
     DBName = koji
     DBUser = koji
@@ -777,6 +863,8 @@ override all these values. So, you can use e.g.
 ``/etc/koji-hub/hub.conf.d/secret.conf`` for sensitive values. Typical usecase
 for separate config is :doc:`policy <defining_hub_policies>` configuration file.
 
+All options are covered in detail :doc:`here <hub_conf>` .
+
 Authentication Configuration
 ----------------------------
 
@@ -786,7 +874,7 @@ Authentication Configuration
 If using Kerberos, these settings need to be valid and inline with other
 services configurations.
 
-::
+.. code-block:: ini
 
     AuthPrincipal host/kojihub@EXAMPLE.COM
     AuthKeytab /etc/koji.keytab
@@ -796,7 +884,9 @@ services configurations.
 If using SSL auth, these settings need to be valid and inline with other
 services configurations for kojiweb to allow logins.
 
-ProxyDNs should be set to the DN of the kojiweb certificate. For example::
+ProxyDNs should be set to the DN of the kojiweb certificate. For example:
+
+.. code-block:: ini
 
     DNUsernameComponent = CN
     ProxyDNs = CN=example.com,OU=kojiweb,O=Example Org,ST=Massachusetts,C=US
@@ -814,11 +904,11 @@ needed.
 
 ::
 
-    cd /mnt
-    mkdir koji
-    cd koji
-    mkdir {packages,repos,work,scratch,repos-dist}
-    chown apache.apache *
+    root@localhost$ cd /mnt
+    root@localhost$ mkdir koji
+    root@localhost$ cd koji
+    root@localhost$ mkdir {packages,repos,work,scratch,repos-dist}
+    root@localhost$ chown apache.apache *
 
 SELinux Configuration
 ^^^^^^^^^^^^^^^^^^^^^
@@ -861,7 +951,7 @@ where their SSL certificates can be found.
 
 For a simple test, all we need is the ``server`` and authentication sections.
 
-::
+.. code-block:: ini
 
     [koji]
 
@@ -887,9 +977,13 @@ For a simple test, all we need is the ``server`` and authentication sections.
 
 The following command will test your login to the hub:
 
-::
+.. code-block:: console
 
     root@localhost$ koji moshimoshi
+    Hello, kojiadmin!
+
+    You are using the hub at https://koji-hub.example.com/kojihub
+    Authenticated via GSSAPI
 
 Koji Web - Interface for the Masses
 ===================================
@@ -912,7 +1006,7 @@ Install Koji-Web
 
 Install the ``koji-web`` package along with mod_ssl::
 
-    # yum install koji-web mod_ssl
+    root@localhost$ dnf install koji-web mod_ssl
 
 Required Configuration
 ----------------------
@@ -927,7 +1021,7 @@ file and should be simple to follow.
 For example, if you are using SSL authentication, you would want to uncomment
 the section that looks like this:
 
-::
+.. code-block:: apacheconf
 
     # uncomment this to enable authentication via SSL client certificates
     # <Location /koji/login>
@@ -943,13 +1037,13 @@ the section that looks like this:
 Similarly to the hub configuration, if you are using https (as you should),
 then you will need to configure your certificates.
 This is something you might do for any httpd instance and is mostly independent
-of Koji
+of Koji.
 
 If you are using SSL authentication, then the CA certificate you configure
 in ``SSLCACertificateFile`` here should be the same one that you use to issue
 user certificates.
 
-::
+.. code-block:: apacheconf
 
     SSLCertificateFile /etc/pki/koji/certs/kojihub.crt
     SSLCertificateKeyFile /etc/pki/koji/private/kojihub.key
@@ -974,7 +1068,7 @@ directory. These files are read *at first* and main config is allowed to
 override all these values. So, you can use e.g.
 ``/etc/kojiweb/web.conf.d/secret.conf`` for sensitive values.
 
-::
+.. code-block :: ini
 
     [web]
     SiteName = koji
@@ -1011,7 +1105,7 @@ This URL will go into various clients such as:
 * ``/etc/kojid/kojid.conf`` as topurl
 * ``/etc/koji.conf`` as topurl
 
-::
+.. code-block:: apacheconf
 
     Alias /kojifiles/ /mnt/koji/
     <Directory "/mnt/koji/">
@@ -1052,14 +1146,14 @@ Configuration Files
 * ``/etc/kojid/kojid.conf`` - Koji Daemon Configuration
 * ``/etc/sysconfig/kojid`` - Koji Daemon Switches
 
-All options for `kojid.conf` are described :doc:`here <kojid_conf>`.
+All options for `kojid.conf` are described :doc:`here <kojid_conf>`_.
 
 Install kojid
 -------------
 
 Install the ``koji-builder`` package::
 
-    # yum install koji-builder
+    root@localhost$ dnf install koji-builder
 
 Required Configuration
 ----------------------
@@ -1084,19 +1178,25 @@ builder uses.
 /etc/kojid/kojid.conf
 ^^^^^^^^^^^^^^^^^^^^^
 
-Edit each koji builder's ``kojid.conf`` file to point at the Koji hub::
+Edit each koji builder's ``kojid.conf`` file to point at the Koji hub:
+
+.. code-block:: ini
 
     ; The URL for the xmlrpc server
     server=http://hub.example.com/kojihub
 
 Set the "user" value to the FQDN of the builder host. For example, if you
 added the host with ``koji add-host kojibuilder1.example.com``, set "user" to
-kojibuilder1.example.com::
+kojibuilder1.example.com:
+
+.. code-block:: ini
 
     user = kojibuilder1.example.com
 
-The builder must reach the filesystem over HTTP. Set "topurl" to the same
-value that you've configured for Koji clients (above)::
+The builder must reach the filesystem over HTTP(S). Set "topurl" to the same
+value that you've configured for Koji clients (above):
+
+.. code-block:: ini
 
     # The URL for the file access
     topurl=http://koji-filesystem.example.com/kojifiles
@@ -1104,11 +1204,11 @@ value that you've configured for Koji clients (above)::
 If the "topurl" setting uses an HTTPS URL with a cert signed by a custom CA,
 the Koji builder must trust the CA system-wide.
 
-You may change "workdir", but it may not be the same as KojiDir on the
-``kojihub.conf`` file. It can be something under KojiDir, just not the same as
-KojiDir.
+You may change "workdir", but it may not be the same as ``KojiDir`` on the
+``kojihub.conf`` file. It can be something under ``KojiDir``, just not the same as
+``KojiDir``.
 
-::
+.. code-block:: ini
 
     ; The directory root for temporary storage
     workdir=/tmp/koji
@@ -1117,7 +1217,7 @@ The root of the koji build directory (i.e., ``/mnt/koji``) must be mounted on
 the builder and configured as "topdir". A Read-Only NFS mount is the easiest
 way to handle this.
 
-::
+.. code-block:: ini
 
     # The directory root where work data can be found from the koji hub
     topdir=/mnt/koji
@@ -1131,7 +1231,7 @@ Authentication Configuration (SSL certificates)
 If you are using SSL, edit these settings to point to the
 certificates you generated at the beginning of the setup process.
 
-::
+.. code-block:: ini
 
     ;client certificate
     ; This should reference the builder certificate we created on the kojihub CA, for kojibuilder1.example.com
@@ -1154,7 +1254,7 @@ Authentication Configuration (Kerberos)
 If using Kerberos, these settings need to be valid and inline with other
 services configurations.
 
-::
+.. code-block:: ini
 
     ; the username has to be the same as what you used with add-host
     ;user =
@@ -1175,11 +1275,11 @@ Source Control Configuration
 /etc/kojid/kojid.conf
 ^^^^^^^^^^^^^^^^^^^^^
 
-The *allowed_scms* setting controls which source control systems the builder
+The ``allowed_scms`` setting controls which source control systems the builder
 will accept. It is a space-separated list of entries in one of the following
 forms:
 
-::
+.. code-block:: ini
 
     hostname:path[:use_common[:source_cmd]]
     !hostname:path
@@ -1202,15 +1302,13 @@ pattern. In particular, it provides the option to block specific subtrees of
 a host, but allow from it otherwise
 
 
-::
+.. code-block:: ini
 
     allowed_scms=
         !scm-server.example.com:/blocked/path/*
         scm-server.example.com:/repo/base/repos*/:no
         alt-server.example.com:/repo/dist/repos*/:no:fedpkg,sources
 
-
-The explicit block syntax was added in version 1.13.0.
 
 SCM checkout can contain multiple spec files (checkouted or created by
 ``source_cmd``). In such case spec file named same as a checkout directory will
@@ -1239,7 +1337,7 @@ A note on capacity
 
 The default capacity of a host added to the host database is 2. This means that
 once the load average on that machine exceeds 2, kojid will not accept any
-additional tasks. This is separate from the maxjobs item in the configuration
+additional tasks. This is separate from the ``maxjobs`` item in the configuration
 file. Before kojid will accept a job, it must pass both the test to ensure the
 load average is below capacity and that the current number of jobs it is
 already processing is less than maxjobs. However, in today's modern age of quad
@@ -1248,7 +1346,7 @@ utilize hardware.
 
 ::
 
-    koji edit-host --capacity=16 kojibuilder1.example.com
+    $ koji edit-host --capacity=16 kojibuilder1.example.com
 
 The koji-web interface also offers the ability to edit this value to admin
 accounts.
@@ -1268,7 +1366,7 @@ You can check this by pointing your web browser to the web interface and
 clicking on the hosts tab. This will show you a list of builders in the
 database and the status of each builder.
 
-Kojira - Dnf|Yum repository creation and maintenance
+Kojira - Dnf repository creation and maintenance
 ====================================================
 
 Configuration Files
@@ -1281,7 +1379,7 @@ Install kojira
 
 Install the ``koji-utils`` package::
 
-    # yum install koji-utils
+    root@localhost$ dnf install koji-utils
 
 Required Configuration
 ----------------------
@@ -1299,7 +1397,7 @@ The kojira user requires the ``repo`` permission to function.
 ``/etc/kojira/kojira.conf``
     This needs to point at your koji-hub.
 
-    ::
+    .. code-block:: ini
 
         ; The URL for the xmlrpc server
         server=http://koji-hub.example.com/kojihub
@@ -1323,7 +1421,7 @@ Authentication Configuration
 
 **If using SSL,** these settings need to be valid.
 
-::
+.. code-block:: ini
 
     ;client certificate
     ; This should reference the kojira certificate we created above
@@ -1334,7 +1432,7 @@ Authentication Configuration
 
 **If using Kerberos,** these settings need to be valid.
 
-::
+.. code-block:: ini
 
     ;configuration for Kerberos authentication
 
@@ -1355,7 +1453,7 @@ Start Kojira
 
 ::
 
-    root@localhost$ service kojira start
+    root@localhost$ systemctl enable kojira --now
 
 Check ``/var/log/kojira/kojira.log`` to verify that kojira has started
 successfully.
@@ -1372,14 +1470,14 @@ For instructions on using External Repos and preparing Koji to run builds, see
 Useful scripts and config files for setting up a Koji instance are available
 `here <http://fedora.danny.cz/koji/>`_.
 
-Minutia and Miscellany
-======================
-Please see :doc:`KojiMisc <misc>` for additional details and notes about
-operating a koji server.
+More active repo with Ansible playbooks are available at `koji-playbooks`_.
 
 .. _dnf: https://fedoraproject.org/wiki/Dnf
 .. _yum: https://fedoraproject.org/wiki/Yum
 .. _createrepo: http://createrepo.baseurl.org/
+.. _koji-playbooks: https://github.com/ktdreyer/koji-playbooks
+.. _koji-tools: https://pagure.io/koji-tools
 .. _mock: https://fedoraproject.org/wiki/Mock
 .. _Apache mod_ssl documentation:
     https://httpd.apache.org/docs/trunk/mod/mod_ssl.html#ssloptions 
+

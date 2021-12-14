@@ -2,6 +2,8 @@
 Koji Kerberos/GSSAPI debugging
 ==============================
 
+.. highlight:: console
+
 Run basic command Koji with debug option isn't help to debug Kerberos/GSSAPI issue.
 In successful call you'll see what authentication method was used and was is the
 koji server connected to:

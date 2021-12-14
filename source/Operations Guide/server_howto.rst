@@ -374,7 +374,6 @@ both ``~/.fedora-upload-ca.cert`` and ``~/.fedora-server-ca.cert``, and the
 user would import the ``${user}_brower_cert.p12`` into their web browser as a
 personal certificate.
 
-.. _copy certificates:
 Copy certificates into ~/.koji for kojiadmin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1146,7 +1145,7 @@ Configuration Files
 * ``/etc/kojid/kojid.conf`` - Koji Daemon Configuration
 * ``/etc/sysconfig/kojid`` - Koji Daemon Switches
 
-All options for `kojid.conf` are described :doc:`here <kojid_conf>`_.
+All options for `kojid.conf` are described :doc:`here <kojid_conf>`.
 
 Install kojid
 -------------

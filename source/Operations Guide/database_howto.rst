@@ -1,5 +1,5 @@
-Database Howto
-==============
+Database Performance Howto
+==========================
 
 For small to middle-sized deployments you should be ok with standard
 distribution settings. Anyway, for larger one, it can start to be
@@ -7,8 +7,8 @@ problematic to deal with specific indices, disk space allocation, etc.
 This section contains some useful practices to deal with such
 problems.
 
-Partitions
-----------
+Partitioning
+------------
 
 Some tables - especially ``buildroot_listings`` and ``tasks`` can grow
 in time and start to be problematic during backups, etc. One of the
@@ -25,7 +25,8 @@ It has three steps - first is to backup your db and turn hub offline.
 .. note::
     SQL syntax used here (PARTITION BY) is in Postgres from version 10.  Same
     behaviour can be made to work even with older releases but needs a bit of
-    additional code to replace it.
+    additional code to replace it. Generally we're aiming to use at least
+    Postgres 12 but it not necesarry.
 
 Second is creating trigger, which will be used when new buildroot is
 created and will ensure that potential new partition is created:

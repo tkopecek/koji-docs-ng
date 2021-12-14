@@ -2,6 +2,8 @@
 External Repository Server Bootstrap
 ====================================
 
+.. highlight:: console
+
 Bootstrapping a new External Repo Koji build environment
 ========================================================
 
@@ -138,22 +140,22 @@ through a caching proxy.
 
 NOTE: this uses $arch **NOT** $basearch
 
-Fedora 10
+Fedora 35
 ---------
 
-::
+.. code-block:: plain
 
-    https://mirrors.kernel.org/fedora/releases/10/Everything/\$arch/os/
-    https://mirrors.kernel.org/fedora/updates/10/\$arch/
+    https://download.fedoraproject.org/pub/linux/fedora/linux/releases/35/Everything/\$arch/os/
+    https://download.fedoraproject.org/pub/linux/fedora/linux/updates/35/Everything/\$arch/
 
-CentOS 5 and EPEL
+CentOS 8 and EPEL
 -----------------
 
-::
+.. code-block:: plain
 
-    https://mirrors.kernel.org/centos/5/os/\$arch/
-    https://mirrors.kernel.org/centos/5/updates/\$arch/
-    https://mirrors.kernel.org/fedora-epel/5/\$arch/
+    http://mirror.centos.org/centos/7/os/\$arch/
+    http://mirror.centos.org/centos/7/updates/\$arch/
+    https://dl.fedoraproject.org/pub/epel/7/\$arch/
 
 Example tags and targets
 ========================

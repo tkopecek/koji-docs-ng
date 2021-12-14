@@ -11,7 +11,7 @@ buildNotification
 -----------------
 
 chainbuild (children: build, waitrepo)
-----------------------------
+--------------------------------------
 
 chainmaven (children: maven)
 ----------------------------

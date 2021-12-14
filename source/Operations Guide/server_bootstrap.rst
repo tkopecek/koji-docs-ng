@@ -2,6 +2,8 @@
 Koji Server Bootstrap
 =====================
 
+.. highlight:: console
+
 Bootstrapping a new Koji build environment
 ==========================================
 
@@ -12,12 +14,16 @@ Koji repo administration daemon (``kojira``) is properly configured and
 running, and at least one Koji builder (``kojid``) is properly
 configured and running. All koji cli commands assume that the user is a
 Koji *admin*. If you need help with these tasks, see the
-`ServerHowTo <Koji/ServerHowTo>`__ .
+:doc:`installation instructions <server_howto>`.
 
 -  Download all source rpms and binary rpms for the arches you're
    interested in
 
 -  Import all source rpms
+
+There is a second option if you're not planning to import all the rpms into your
+own instance. In such case you can rely on external content which is described
+in :doc:`external_repo_server_bootstrap` section. Otherwise, continue here.
 
 ::
 
@@ -76,7 +82,7 @@ amount of time, especially when tagging a large number of packages.
    the minimal buildroot
 
 You can find out what the current build group for Fedora is by running
-``koji -s https://koji.fedoraproject.org/kojihub list-groups f17-build``
+``koji -s https://koji.fedoraproject.org/kojihub list-groups f35-build``
 against the Fedora Koji instance. This is probably a good
 starting point for your minimal buildroot.
 
@@ -102,3 +108,13 @@ tag.
 
 -  Wait for the repo to regenerate, and you should now be able to run a
    build successfully.
+
+-  Note, that you don't need to run it manually but you can wait (if you've
+   Kojira correctly setup) when it will notice it and trigger the repo
+   regeneration. If you want to know when it will finish, you can use
+
+::
+
+    $ koji wait-repo dist-foo-build
+
+...and now you're set.

@@ -12,3 +12,4 @@ Review:
  * ProxyDNs
  * AuthPrincipal (dropped)
  * AuthKeytab (dropped)
+ * Running web/hub in same apache (WSGIProcessGroup, etc.)

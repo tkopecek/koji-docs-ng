@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RPM Signing with Koji &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How tag inheritance works" href="tag_inheritance.html" />
+    <link rel="prev" title="Setting RPM Macros for Builds" href="setting_rpm_macros.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RPM Signing with Koji</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-a-gpg-keypair">What is a GPG keypair?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inspecting-an-rpm-signature">Inspecting an RPM signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uploading-signed-rpms-to-koji">Uploading signed RPMs to Koji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-a-signed-rpm-from-koji">Downloading a signed RPM from Koji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signing-a-build-with-multiple-keys">Signing a build with multiple keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-repos-of-signed-rpms">Creating repos of signed RPMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-automate-signing">How to automate signing?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#koji-cryptography-best-practices">Koji cryptography best-practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-rpm-signatures-relate-to-https">How do RPM signatures relate to HTTPS?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>RPM Signing with Koji</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/signing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="rpm-signing-with-koji">
+<h1>RPM Signing with Koji<a class="headerlink" href="#rpm-signing-with-koji" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-gpg-keypair">
+<h2>What is a GPG keypair?<a class="headerlink" href="#what-is-a-gpg-keypair" title="Permalink to this headline">¶</a></h2>
+<p>A GPG keypair has a public key that you can share with the world and a private key that you keep secret.</p>
+<p>Here are some example commands for working with RPM and GPG.</p>
+<p>Example of generating a GPG keypair for testing:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gpg --quick-generate-key security@example.com
+<span class="gp">#</span> For testing, simply press <span class="s2">&quot;Enter&quot;</span> when prompted <span class="k">for</span> a password.
+</pre></div>
+</div>
+<p>Exporting your public key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gpg --armor --export --output /path/to/my-signing-key.asc
+</pre></div>
+</div>
+<p>Signing all RPMs in the current directory with this key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpmsign --define <span class="s2">&quot;_gpg_name security@example.com&quot;</span> --addsign *.rpm
+</pre></div>
+</div>
+</div>
+<div class="section" id="inspecting-an-rpm-signature">
+<h2>Inspecting an RPM signature<a class="headerlink" href="#inspecting-an-rpm-signature" title="Permalink to this headline">¶</a></h2>
+<p>In order to install a signed RPM on clients, each client must trust (import)
+the public GPG key into their RPMDB:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpm --import /path/to/my-signing-key.asc
+</pre></div>
+</div>
+<p><em>Example: No GPG signature at all (an unsigned RPM)</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpm -Kv python3-cherrypy-18.6.0-1.fc33.noarch.rpm
+<span class="gp">$</span> python3-cherrypy-18.6.0-1.fc33.noarch.rpm:
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  MD5 digest: OK</span>
+</pre></div>
+</div>
+<p>Note there is no “RSA/SHA256 Signature” header field on the RPM here.</p>
+<p><em>Example: A GPG signature that rpmdb DOES trust</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpm -Kv python3-cherrypy-18.4.0-4.fc32.noarch.rpm
+<span class="go">python3-cherrypy-18.4.0-4.fc32.noarch.rpm:</span>
+<span class="go">  Header V3 RSA/SHA256 Signature, key ID 12c944d0: OK</span>
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  V3 RSA/SHA256 Signature, key ID 12c944d0: OK</span>
+<span class="go">  MD5 digest: OK</span>
+</pre></div>
+</div>
+<p><em>Example: A GPG signature that rpmdb does NOT trust</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpm -Kv python-cherrypy-18.6.0-1.el8.src.rpm
+<span class="go">python-cherrypy-18.6.0-1.el8.src.rpm:</span>
+<span class="go">  Header V4 RSA/SHA256 Signature, key ID 782096ac: NOKEY</span>
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  V4 RSA/SHA256 Signature, key ID 782096ac: NOKEY</span>
+<span class="go">  MD5 digest: OK</span>
+</pre></div>
+</div>
+<p>Note the signature is syntatically valid here, but “NOKEY” here means RPMDB
+does not trust the GPG key that signed this RPM.</p>
+<p>A lower-level command that shows the signature on an RPM file (the
+<code class="docutils literal notranslate"><span class="pre">RSAHEADER</span></code> field piped through RPM’s <code class="docutils literal notranslate"><span class="pre">pgpsig</span></code> formatter):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rpm -q --qf <span class="s1">&#39;%{NAME} %{RSAHEADER:pgpsig}\n&#39;</span> -p python-routes-2.5.1-1.el8.src.rpm
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-signed-rpms-to-koji">
+<h2>Uploading signed RPMs to Koji<a class="headerlink" href="#uploading-signed-rpms-to-koji" title="Permalink to this headline">¶</a></h2>
+<p>Koji does not sign RPMs. Instead, Koji imports RPMs that are signed with a separate key.</p>
+<p>To sign an RPM from Koji, you should make a copy of the file, sign it
+with the appropriate rpm command, and import the signature. Note that you
+should not simply sign the file directly under /mnt/koji, as this causes an
+inconsistency between the filesystem and the database (hence the copy step).</p>
+<p>In this example, we download an unsigned build from Koji, then sign it, and
+then upload the signed copy with <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji download-build --debuginfo bash-5.0.17-2.fc32
+<span class="gp">$</span> rpmsign --define <span class="s2">&quot;_gpg_name security@example.com&quot;</span> --addsign *.rpm
+<span class="gp">$</span> koji import-sig *.rpm
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code> command uploads the signed RPM headers to the Koji
+Hub, which stores the headers on disk alongside the main unsigned RPM.
+It also writes out a full signed RPM.</p>
+</div>
+<div class="section" id="downloading-a-signed-rpm-from-koji">
+<h2>Downloading a signed RPM from Koji<a class="headerlink" href="#downloading-a-signed-rpm-from-koji" title="Permalink to this headline">¶</a></h2>
+<p>Specify the <code class="docutils literal notranslate"><span class="pre">--key</span></code> option to <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">download-build</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji download-build --key<span class="o">=</span>3AF362BAB bash-5.0.17-2.fc32
+</pre></div>
+</div>
+</div>
+<div class="section" id="signing-a-build-with-multiple-keys">
+<h2>Signing a build with multiple keys<a class="headerlink" href="#signing-a-build-with-multiple-keys" title="Permalink to this headline">¶</a></h2>
+<p>Currently RPM’s file format only allows one single GPG signature per file.</p>
+<p>Koji allows users to upload multiple GPG signatures for a single RPM. it
+stores each signature alongside the RPM build and splices the signature
+headers in to generate full signed RPMs. Here are some use-cases of this
+feature:</p>
+<ul class="simple">
+<li><p>Sign a set of RPMs with a “beta” key, and later sign those same RPMs with a
+“main” key.</p></li>
+<li><p>Sign the same Fedora RPMs with multiple keys, one per Fedora release.</p></li>
+<li><p>Sign the same CentOS RPMs with multiple keys, one per CentOS SIG.</p></li>
+<li><p>In Fedora, after the developers stop supporting a Fedora version like “30”,
+they can delete the full signed packages, which are many hundreds of GB, and
+just keep the signatures, which are only a few bytes.
+<a class="reference external" href="https://lists.fedoraproject.org/archives/list/devel&#64;lists.fedoraproject.org/message/RWILIHQJEKIQM5LAH7UJ7KMRPZEXCKQL/">https://lists.fedoraproject.org/archives/list/devel&#64;lists.fedoraproject.org/message/RWILIHQJEKIQM5LAH7UJ7KMRPZEXCKQL/</a></p></li>
+</ul>
+</div>
+<div class="section" id="creating-repos-of-signed-rpms">
+<h2>Creating repos of signed RPMs<a class="headerlink" href="#creating-repos-of-signed-rpms" title="Permalink to this headline">¶</a></h2>
+<p>You can put signed RPMs into Yum repos three different ways.</p>
+<ol class="arabic simple">
+<li><p>Create dist-repos manually with the <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">dist-repo</span></code> command, that takes
+a GPG key argument.</p></li>
+<li><p>Install and configure the <a class="reference external" href="https://pagure.io/releng/tag2distrepo">tag2distrepo</a> hub plugin to automatically
+export dist-repos for certain tags.</p></li>
+<li><p>Pungi can create signed repos (“composes”).</p></li>
+</ol>
+<p>See <a class="reference internal" href="exporting_repositories.html"><span class="doc">Exporting repositories</span></a> for more
+information.</p>
+</div>
+<div class="section" id="how-to-automate-signing">
+<h2>How to automate signing?<a class="headerlink" href="#how-to-automate-signing" title="Permalink to this headline">¶</a></h2>
+<p>For a small testing environment, you can simply sign RPMs with a GPG key on a
+workstation and run <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code>. This is not secure and it does not
+scale.</p>
+<p>See the <a class="reference external" href="https://pagure.io/sigul">Sigil</a> and <a class="reference external" href="https://pagure.io/robosignatory">Robosignatory</a> projects for more advanced workflows.</p>
+</div>
+<div class="section" id="koji-cryptography-best-practices">
+<h2>Koji cryptography best-practices<a class="headerlink" href="#koji-cryptography-best-practices" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Use HTTPS everywhere (kojihub + kojiweb)</p></li>
+<li><p>Understand checksums (md5)</p></li>
+<li><p>Understand signatures (GPG)</p></li>
+</ul>
+</div>
+<div class="section" id="how-do-rpm-signatures-relate-to-https">
+<h2>How do RPM signatures relate to HTTPS?<a class="headerlink" href="#how-do-rpm-signatures-relate-to-https" title="Permalink to this headline">¶</a></h2>
+<p>HTTPS is transport-layer security. When you install a package over HTTPS you
+verify that:</p>
+<ul class="simple">
+<li><p>The web server is who they say they are</p></li>
+<li><p>The information the web server sends is private</p></li>
+</ul>
+<p>As soon as you download that build or copy it to another location, those
+security guarantees are lost.</p>
+<p>In a release pipeline, you end up copying builds to many locations, and while
+it’s important to use HTTPS for copying, it’s even more important to have a
+strong cryptographic signature follow each build.</p>
+<p>This means that even if someone or some thing mirrors your build elsewhere,
+that signature will go along with the build. In the case of RPMs, the GPG
+signatures are actually embedded in the RPMs themselves that we deliver to
+users.</p>
+<p>Another reason this is important is for image-based artifacts that might use
+many RPMs. If you think of cloud images or container images where you’re
+delivering an image with “preinstalled” RPMs, if you use signed RPMs in the
+images you distribute, you’re providing an extra layer of security.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="setting_rpm_macros.html" class="btn btn-neutral float-left" title="Setting RPM Macros for Builds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tag_inheritance.html" class="btn btn-neutral float-right" title="How tag inheritance works" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

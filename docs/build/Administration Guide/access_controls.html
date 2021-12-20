@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Access Controls &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Permission system" href="permissions.html" />
+    <link rel="prev" title="Administration Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Access Controls</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-builder-authentication">User/Builder Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allowed-scms">Allowed SCMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hub-policies">Hub Policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-permissions">User Permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Access Controls</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/access_controls.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="access-controls">
+<h1>Access Controls<a class="headerlink" href="#access-controls" title="Permalink to this headline">¶</a></h1>
+<p>Koji is a complex system, so there are many places where some kind of access
+control is used. Here is the documentation hub for all the mechanisms in place.</p>
+<div class="section" id="user-builder-authentication">
+<h2>User/Builder Authentication<a class="headerlink" href="#user-builder-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Users (and builders) are authenticated via one of the following mechanisms. Most
+preferred is GSSAPI/Kerberos authentication. Second best is authentication via
+SSL certificates. Mostly for testing environments we also support authenticating via
+username/password but it has its limitations which you should be aware of.</p>
+<p>Details can be found at <a class="reference internal" href="../Operations Guide/server_howto.html#auth-config"><span class="std std-ref">Authentication Configuration</span></a></p>
+</div>
+<div class="section" id="allowed-scms">
+<span id="id1"></span><h2>Allowed SCMs<a class="headerlink" href="#allowed-scms" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> option in builder’s config controls which SCMs (Source Control Management
+systems) are allowed for building.
+We recommend that every production environment choose a limited set of trusted sources.</p>
+<p>Details of the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> option are covered under <a class="reference internal" href="../Operations Guide/server_howto.html#scm-config"><span class="std std-ref">Source Control Configuration</span></a></p>
+<p>We also provides <code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code> hub policy for the same purpose, you can choose either/both
+of the two approaches by the switch options in <code class="docutils literal notranslate"><span class="pre">/etc/kojid.conf</span></code> per build:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allowed_scms_use_config</span></code>, default: <code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">allowed_scms_use_policy</span></code>, default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>For more details of the <code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code>, please read <a class="reference internal" href="defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>.</p>
+</div>
+<div class="section" id="hub-policies">
+<h2>Hub Policies<a class="headerlink" href="#hub-policies" title="Permalink to this headline">¶</a></h2>
+<p>Hub policies are a powerful way for administrators to control Koji’s behavior.
+Koji’s hub allows several different policies to be configured, some of which are
+access control policies.</p>
+<p>An access control policy is consulted by the hub to determine if an action should be allowed.
+Such policies return results of <code class="docutils literal notranslate"><span class="pre">deny</span></code> or <code class="docutils literal notranslate"><span class="pre">allow</span></code>.</p>
+<p>Examples of access control polices are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: control which tag operations are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_list</span></code>: control which package list updates are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cg_import</span></code>: control which content generator imports are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vm</span></code>: control which windows build tasks are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dist_repo</span></code>: control which distRepo tasks are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_srpm</span></code>: control whether builds from srpm are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code>: control whether builds from the SCM are allowed and the behavior of the SCM</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_repo_id</span></code>: control whether builds from user-specified repos ids are allowed</p></li>
+</ul>
+<p>Note that not all policies are access control policies.
+The <code class="docutils literal notranslate"><span class="pre">channel</span></code> and <code class="docutils literal notranslate"><span class="pre">volume</span></code> policies are used to control which channels tasks go to
+and which volumes build are stored on.</p>
+<p>For more details see <a class="reference internal" href="defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>.</p>
+</div>
+<div class="section" id="user-permissions">
+<h2>User Permissions<a class="headerlink" href="#user-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Every user can have a set of permissions which allow them to perform some actions directly.
+These permissions may be checked directly by the hub, or they may be referenced in policies.</p>
+<p>See <a class="reference internal" href="permissions.html"><span class="doc">Permission system</span></a> for details.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Administration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="permissions.html" class="btn btn-neutral float-right" title="Permission system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

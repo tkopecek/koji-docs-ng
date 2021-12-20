@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building for Windows &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notes and miscellaneous details about Koji" href="misc.html" />
+    <link rel="prev" title="How tag inheritance works" href="tag_inheritance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Building for Windows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initiating-a-build">Initiating a build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-windows-spec-file">The Windows “Spec-File”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-repository">Source Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#administration">Administration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#windows-build-hosts">Windows Build Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-vm-images">Managing VM Images</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-windows-spec-file">Example Windows Spec File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Building for Windows</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/winbuild.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="building-for-windows">
+<h1>Building for Windows<a class="headerlink" href="#building-for-windows" title="Permalink to this headline">¶</a></h1>
+<p>Koji provides a fairly basic mechanism to perform builds for Windows.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Koji supports building components in a Windows-based environment.  This is
+accomplished by cloning and starting a Windows VM, checking out sources and
+building from within it.  The VM would have compile tools and utility already
+installed, and the results are then passed back up the hub.  Windows builds are
+treated similarly to RPM builds in that they have a unique name, version, and
+release field.  The resulting builds are built using targets and tagged into tags
+just as normal builds are.  When you build a Windows component, you can
+reference other components and they will be downloaded into the build
+environment to satisfy build-time dependencies.</p>
+</div>
+<div class="section" id="initiating-a-build">
+<h2>Initiating a build<a class="headerlink" href="#initiating-a-build" title="Permalink to this headline">¶</a></h2>
+<p>Note: access to performing Windows builds is governed by the <code class="docutils literal notranslate"><span class="pre">vm</span></code> policy on the hub.
+The default policy requires the user to have the <code class="docutils literal notranslate"><span class="pre">win-admin</span></code> permission.
+Different Koji instances may have different policies.
+If the policy denies you access, you will see an <code class="docutils literal notranslate"><span class="pre">ActionNotAllowed</span></code> error.
+In that case, you will need file a request with your Koji administators.</p>
+<p>Windows builds are initiated with the <code class="docutils literal notranslate"><span class="pre">win-build</span></code> subcommand.</p>
+<blockquote>
+<div><p>$ koji win-build &lt;target&gt; &lt;scm-url&gt; &lt;vm-name&gt;</p>
+</div></blockquote>
+<p>Where <code class="docutils literal notranslate"><span class="pre">target</span></code> is the build target to use for the build,
+<code class="docutils literal notranslate"><span class="pre">scm-url</span></code> is the SCM URL for the sources to build,
+and <code class="docutils literal notranslate"><span class="pre">vm-name</span></code> is the name of the vm image to use for the build.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">target</span></code> works like targets for other types of builds.
+The build tag for the target determines where Koji will pull build dependencies from,
+and the destination tag for the target determines where the resulting build is tagged
+after building is completed.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">scm-url</span></code> follows the same syntax used for other Koji builds</p>
+<blockquote>
+<div><p>scheme://[user&#64;]host/path/to/repo?path/to/module#revision_or_tag_identifier</p>
+</div></blockquote>
+<p>In order for Koji to perform the build, a “Windows spec file” is required (see below).
+This spec file can either be included in the top directory of the sources or specified
+separately with the <code class="docutils literal notranslate"><span class="pre">--specfile</span></code> option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">vm-name</span></code> argument is the name of the vm image that will be used for the build.
+This name must be one of the know images available on the builders.</p>
+<p>An option you may be interested in is <code class="docutils literal notranslate"><span class="pre">--specfile</span></code>, which allows you to specify a second
+remote repository that contains the windows spec file using the same SCM URL syntax as
+described below. That way you are not forced to keep the spec in with the rest of your
+sources if you don’t want to. There is also a <code class="docutils literal notranslate"><span class="pre">--patches</span></code> option which is just
+like <code class="docutils literal notranslate"><span class="pre">--specfile</span></code>, except meant for a repository of separate patches, which will
+be applied to the sources before the build is launched. <code class="docutils literal notranslate"><span class="pre">--specfile</span></code> and
+–patches may reference the same repo.</p>
+</div>
+<div class="section" id="the-windows-spec-file">
+<h2>The Windows “Spec-File”<a class="headerlink" href="#the-windows-spec-file" title="Permalink to this headline">¶</a></h2>
+<p>This is the file that controls the build process, and is modeled very loosely
+on RPM’s spec files. The Windows spec file is in .ini format.</p>
+<p>It’s probably easiest to start by looking at this
+<a class="reference internal" href="#example-windows-spec-file"><span class="std std-ref">example</span></a> spec file.</p>
+<p>All values in the [naming] section must be defined.
+The name, version, and release are used to determine the NVR of the build.
+As with all NVRs in Koji, this must be a unique value.</p>
+<p>The [building] section defines preconditions that must be satisfied before the
+build will be launched, and the commands used to perform the build.  platform
+indicates to VM type the build is running in, and should be in the format of
+osname-arch.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">preinstalled</span></code> value under [building] lists the files and directories
+that must be present for the build
+to run.  Any tools that were installed in the VM when it was setup should be
+listed here.  If any of the files or directories listed here are missing when
+the build runs, it will fail immediately.  Files and directories may be listed
+in Windows format (C:Program Files…), full Cygwin paths (/bin/…), or as
+command names (tar, unzip, etc).  If they are listed as command names, the
+Cygwin PATH will be checked for the command.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">buildrequires</span></code> value under [building] lists other packages that
+the build depends on.  As with rpm
+BuildRequires, the buildrequires entries should be package names only (no
+version information).  The latest build of that package will be looked up in
+the -build tag associated with the build target that was used when launching
+the build, and files from that build will be downloaded into the VM.  Each
+package listed in buildrequires can have a colon-delimited list of options
+associated with it, which determine which files from the build will be
+downloaded.  By default, all Windows files associated with the dependent build
+will be downloaded (this is the same as specifying type=win).  In this case,
+comma-separated lists of platforms= and flags can also be specified, in which
+case the files downloaded into the VM will be limited to those associated with
+one or more of the platform and flag values (more about this in the [files]
+section below.  If type=rpm is specified, then all rpms associated with the
+dependent build will be installed.  In this case a comma-separated list of
+arches= may be specified, and only rpms matching one of those arches will be
+downloaded.  If type=maven is specified, then comma-separated lists of
+group_ids=, artifact_ids=, and/or versions= may be specified, and only Maven
+artifacts matching at least one value in each list will be downloaded.  In all
+cases, a patterns= option may be specified, which is a comma-separated list of
+globs to match against the filenames.  Only files matching at least one of the
+patterns will be downloaded.</p>
+<p>The files downloaded to satisfy the buildrequires are placed in a directory
+based on their type, and variables are set which point to their location.  The
+variable names are constructed by converting the dependency name to variable
+format (a leading number is converted to and underscore, and any character that
+is not a letter, number, or underscore is converted to an underscore).  If
+type= is specified, then &lt;type&gt;_dir is appended to complete the variable name.
+Otherwise, just _dir is appended.  In the example above, the directory
+containing the boost-win files would be indicated by $boost_win_dir.  The
+directory containing the .src.rpm from the qpid-cpp-mrg build would be
+$qpid_cpp_mrg_rpm_dir.  Note the extra _rpm there, because it specified
+type=rpm.  There is also a corresponding _files variable which is a
+newline-delimited list of all files downloaded for each dependency.  In the
+example, both $boost_win_files and $qpid_cpp_mrg_rpm_files would be defined.</p>
+<p>The files are downloaded to the VM unmodified.  It is up to the build process
+to extract them if necessary, and move/copy them to whatever location is
+required by the current build.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">provides</span></code> value under [building] is optional, and can be used to indicate what the build is
+producing.  It is freeform, but a structure like &lt;name&gt;-&lt;version&gt; is
+encouraged.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">shell</span></code> value under [building] indicates how the build script should be run.
+Valid values are
+bash, which will cause the script to be run in bash, and cmd.exe, which will
+cause the script to be run in Windows cmd.exe.  cmd is also an alias for
+cmd.exe.  bash is the default if no shell value is present.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">execute</span></code> value under [building] is required, and this is what drives the build process.
+This value is multiline, and each line is treated as a separate command to be execute in the
+shell specified above.  In addition to the variables defined for the buildrequires, the
+following variables will be available when the script is executed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>name: name from the [naming] section</p></li>
+<li><p>version: version from the [naming] section</p></li>
+<li><p>release: release from the [naming] section</p></li>
+<li><p>source_dir: the directory the sources were checked out into</p></li>
+<li><p>spec_dir: the directory the .ini was checked out into.  If there was no separate –winspec
+option passed on the command-line, this will be the same as source_dir</p></li>
+<li><p>patches_dir: the directory the patches were checked out into.  If there was no –patches
+option passed on the command-line, this will be undefined.</p></li>
+</ul>
+</div></blockquote>
+<p>If using bash, the build script will be executed with -x and -e, which will
+cause all commands to be echoed, and will cause the script to fail if any
+commands have a non-zero exit status.  There is no equivalent fail-fast option
+for Windows cmd.exe.  If executing the script using cmd.exe, it is recommend
+that you frequently check the return value of commands with this:</p>
+<blockquote>
+<div><p>if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%</p>
+</div></blockquote>
+<p>The script will start in the root directory of the sources that were checked
+out ($source_dir).  Extra scripts or supplementary files required by the build
+may be checked in along with the .ini file, and will be available under
+$spec_dir (assuming a separate –specfile option was used).</p>
+<p>The postbuild value is optional, and specifies a list of files and directories
+(relative to $source_dir) that must be present for the build to be considered
+successful.  If any of them are missing, the build will fail.  This is useful
+for verifying that all expected output was generated correctly, in the case
+that some commands may have failed silently.</p>
+<p>The [files] section describes what output should be collected after the build
+completes. The logfiles value is optional, but it should be set to whatever
+build logs are produced from the build. The syntax for the output variable is
+as follows:</p>
+<blockquote>
+<div><p>output = qpid-cpp-x86-$version.zip:i386:chk,fre</p>
+</div></blockquote>
+<p>Note the colon-separated nature. The first token is the path to the file you
+want collected as part of your build output. This path is rooted at the
+checkout from the SCM ($source_dir). The file path relative to $source_dir is
+retained when output is uploaded to Koji and when it is downloaded as a
+buildrequires by future builds.  If you don’t want a long, confusing file path,
+it may be desirable to copy the build output to $source_dir at the end of your
+build script.  File globs are not allowed, but the $name, $version, and
+$release variables will be expanded in the file paths and names, using the
+values from the [naming] section. The second token is a comma-separated list of
+platforms (which we haven’t really standardized on yet, but i386 and/or x86_64
+are logical choices).  The last is a comma-separated list of build flags. These
+fields are purely informational, they do not influence future builds at this
+time, but they do make for good housekeeping in the future.  Common flags are
+chk (indicating a debug build) and fre (indicating an optimized build).  If an
+output file contains both kinds of builds, both may be specified.</p>
+<p>The logs value indicates extra log files generated during the build that should
+be tracked.  The contents of these log files will be streamed to the hub during
+the build and may be watched in realtime using the “Watch logs”
+feature of the web interface, or the “koji watch-logs” cli command.
+They will also be included in the build logs stored on in Koji.</p>
+</div>
+<div class="section" id="source-repository">
+<h2>Source Repository<a class="headerlink" href="#source-repository" title="Permalink to this headline">¶</a></h2>
+<p>As noted earlier, the sources are checked out from within a Windows VM that
+Koji clones and starts when you submit your task with the client. Koji supports
+checking out sources from CVS, SVN, and git.
+As with other types of builds, the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> setting limits which sources
+can be built from.</p>
+</div>
+<div class="section" id="administration">
+<h2>Administration<a class="headerlink" href="#administration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="windows-build-hosts">
+<h3>Windows Build Hosts<a class="headerlink" href="#windows-build-hosts" title="Permalink to this headline">¶</a></h3>
+<p>By default, all <code class="docutils literal notranslate"><span class="pre">winbuild</span></code> tasks go to the <code class="docutils literal notranslate"><span class="pre">vm</span></code> channel.
+The hosts in this channel require special setup.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>They run the <code class="docutils literal notranslate"><span class="pre">kojivmd</span></code> daemon instead of the regular <code class="docutils literal notranslate"><span class="pre">kojid</span></code> daemon</p></li>
+<li><p>VM images for builds must be stored in the local image directory</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="managing-vm-images">
+<h3>Managing VM Images<a class="headerlink" href="#managing-vm-images" title="Permalink to this headline">¶</a></h3>
+<p>The directory where <code class="docutils literal notranslate"><span class="pre">kojivmd</span></code> looks for vm images can be controlled by setting <code class="docutils literal notranslate"><span class="pre">imagedir</span></code>
+in <code class="docutils literal notranslate"><span class="pre">/etc/kojivmd/kojivmd.conf</span></code>. The default value is <code class="docutils literal notranslate"><span class="pre">/var/lib/libvirt/images</span></code>.</p>
+<p>These images must be qcow2 images named with a <code class="docutils literal notranslate"><span class="pre">.qcow2</span></code> extension. The basename of the
+image file is the same name that users refer to in the <code class="docutils literal notranslate"><span class="pre">vm-name</span></code> parameter to the
+<code class="docutils literal notranslate"><span class="pre">win-build</span></code> command.</p>
+</div>
+</div>
+<div class="section" id="example-windows-spec-file">
+<span id="id1"></span><h2>Example Windows Spec File<a class="headerlink" href="#example-windows-spec-file" title="Permalink to this headline">¶</a></h2>
+<p>The following is an example ini-format spec file for a <a class="reference internal" href="#"><span class="doc">Windows build</span></a> in Koji.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[naming]</span>
+<span class="c1">; naming and versioning of the component</span>
+<span class="na">name</span> <span class="o">=</span> <span class="s">qpid-cpp-win</span>
+<span class="na">version</span> <span class="o">=</span> <span class="s">2.0.0.1</span>
+<span class="na">release</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">description</span> <span class="o">=</span> <span class="s">Windows build of qpid-cpp-mrg</span>
+
+<span class="k">[building]</span>
+<span class="c1">; use os-arch</span>
+<span class="na">platform</span> <span class="o">=</span> <span class="s">w2k8r2-x64</span>
+
+<span class="c1">; file, directories, and commands that must be available in the build environment</span>
+<span class="na">preinstalled</span> <span class="o">=</span> <span class="s">/cygdrive/c/Program Files/7-Zip/7z.exe</span>
+<span class="s">               /cygdrive/c/Program Files (x86)/CMake 2.8/bin/cmake.exe</span>
+<span class="s">               /cygdrive/c/Python26/python.exe</span>
+<span class="s">               /cygdrive/c/Ruby186/bin/ruby.exe</span>
+<span class="s">               C:\Ruby186\bin\msvcrt-ruby18.dll</span>
+<span class="s">               /cygdrive/c/Program Files (x86)/doxygen/bin/doxygen.exe</span>
+<span class="s">               /cygdrive/c/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE/devenv.exe</span>
+<span class="s">               cpio</span>
+<span class="s">               tar</span>
+<span class="s">               patch</span>
+<span class="s">               powershell</span>
+
+<span class="c1">; To specify other components you need fetched to be able to build this, fill in a white-space</span>
+<span class="c1">; delimited list of the other components you need by their names. Specific versions are not</span>
+<span class="c1">; yet supported, the latest tagged will always be fetched.</span>
+<span class="na">buildrequires</span> <span class="o">=</span> <span class="s">boost-win</span>
+<span class="s">                qpid-cpp-mrg:type=rpm:arches=src</span>
+
+<span class="c1">; what does this package provide?</span>
+<span class="na">provides</span> <span class="o">=</span> <span class="s">qpid-cpp-win</span>
+
+<span class="c1">; what shell are we running the commands below in?</span>
+<span class="na">shell</span> <span class="o">=</span> <span class="s">bash</span>
+
+<span class="c1">; what should we execute to build it?</span>
+<span class="na">execute</span> <span class="o">=</span> <span class="s">read MAJOR MINOR REVISION BUILD &lt; &lt;(echo $version | tr . &quot; &quot;)</span>
+<span class="s">          pushd $boost_win_dir</span>
+<span class="s">          mkdir dist</span>
+<span class="s">          cd dist</span>
+<span class="s">          for z in ../boost-win-*.tar.bz2; do</span>
+<span class="s">              tar xjf $z</span>
+<span class="s">          done</span>
+<span class="s">          popd</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Program Files/7-Zip:$PATH&quot;</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Program Files (x86)/CMake 2.8/bin:$PATH&quot;</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Python26:$PATH&quot;</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Ruby186/bin:$PATH&quot;</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Program Files (x86)/doxygen/bin:$PATH&quot;</span>
+<span class="s">          PATH=&quot;/cygdrive/c/Program Files (x86)/Microsoft Visual Studio 9.0/Common7/IDE:$PATH&quot;</span>
+<span class="s">          export PATH</span>
+<span class="s">          # extract the tarball from the qpid-cpp-mrg rpm</span>
+<span class="s">          pushd $qpid_cpp_mrg_rpm_dir/src</span>
+<span class="s">          7z x qpid-cpp-*.src.rpm</span>
+<span class="s">          cpio -idmv &lt; qpid-cpp-*.cpio</span>
+<span class="s">          popd</span>
+<span class="s">          mkdir source</span>
+<span class="s">          cd source</span>
+<span class="s">          tar xzf $qpid_cpp_mrg_rpm_dir/src/qpid-cpp-*.tar.gz</span>
+<span class="s">          cd qpid-cpp-*</span>
+<span class="s">          # apply patches</span>
+<span class="s">          for p in ../../*.patch; do</span>
+<span class="s">              patch -p1 --fuzz=0 &lt; $p</span>
+<span class="s">          done</span>
+<span class="s">          cd cpp</span>
+<span class="s">          cat &lt;&lt;EOF &gt;&gt; src/CMakeWinVersions.cmake</span>
+<span class="s">          set(&quot;winver_FILE_VERSION_N1&quot; &quot;$MAJOR&quot;)</span>
+<span class="s">          set(&quot;winver_FILE_VERSION_N2&quot; &quot;$MINOR&quot;)</span>
+<span class="s">          set(&quot;winver_FILE_VERSION_N3&quot; &quot;$REVISION&quot;)</span>
+<span class="s">          set(&quot;winver_FILE_VERSION_N4&quot; &quot;$BUILD&quot;)</span>
+<span class="s">          set(&quot;winver_PRODUCT_VERSION_N1&quot; &quot;$MAJOR&quot;)</span>
+<span class="s">          set(&quot;winver_PRODUCT_VERSION_N2&quot; &quot;$MINOR&quot;)</span>
+<span class="s">          set(&quot;winver_PRODUCT_VERSION_N3&quot; &quot;$REVISION&quot;)</span>
+<span class="s">          set(&quot;winver_PRODUCT_VERSION_N4&quot; &quot;$BUILD&quot;)</span>
+<span class="s">          EOF</span>
+<span class="s">          powershell -ExecutionPolicy unrestricted -File bld-winsdk.ps1 $(basename $(dirname $PWD)) $(cygpath -wa $boost_win_dir/dist/boost-win-*-32bit) $(cygpath -wa $boost_win_dir/dist/boost-win-*-64bit) $version</span>
+<span class="s">          mv ../../x86/qpid-cpp-x86-$version.zip ../../x64/qpid-cpp-x64-$version.zip ../../../</span>
+
+<span class="c1">; list of files that must be present after the build for the build to be</span>
+<span class="c1">; considered successful, but are not included in the list of build output</span>
+<span class="na">postbuild</span> <span class="o">=</span>
+
+<span class="k">[files]</span>
+<span class="c1">; all values in this section may be multi-line</span>
+<span class="c1">; output files we&#39;re concerned with (specify paths relative to scm root)</span>
+<span class="na">output</span> <span class="o">=</span> <span class="s">qpid-cpp-x86-$version.zip:i386:chk,fre</span>
+<span class="s">         qpid-cpp-x64-$version.zip:x86_64:chk,fre</span>
+
+<span class="c1">; logs we should report</span>
+<span class="na">logs</span> <span class="o">=</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tag_inheritance.html" class="btn btn-neutral float-left" title="How tag inheritance works" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="misc.html" class="btn btn-neutral float-right" title="Notes and miscellaneous details about Koji" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

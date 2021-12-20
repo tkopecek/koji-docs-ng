@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How tag inheritance works &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Building for Windows" href="winbuild.html" />
+    <link rel="prev" title="RPM Signing with Koji" href="signing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How tag inheritance works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inheritance-options">Inheritance options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>How tag inheritance works</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/tag_inheritance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="how-tag-inheritance-works">
+<h1>How tag inheritance works<a class="headerlink" href="#how-tag-inheritance-works" title="Permalink to this headline">¶</a></h1>
+<p>Almost everything in koji is dealing with tag and their inheritance.
+What is it good for and how can it be configured?</p>
+<p>Every tag handles its own configuration and as an administrator you
+can live with just this. But true power of tag structure is hidden in
+inheritance. You can compose tags, use parent products from which are
+data inherited to new versions or other layered products and more.</p>
+<p>Each tag has this set of data:</p>
+<dl class="simple">
+<dt>tag data</dt><dd><ol class="arabic simple">
+<li><p>architectures - here is the set of architectures which will be
+used in the moment, when given tag is used as a buildroot (in
+other words, when it is used in target definition)</p></li>
+<li><p>comps groups - similar to architectures, this data are used as
+installation groups, when tag is used as a buildroot. Generally,
+<code class="docutils literal notranslate"><span class="pre">srpm-build</span></code> and <code class="docutils literal notranslate"><span class="pre">build</span></code> groups are required in almost all
+cases. There could be also some additional groups like
+<code class="docutils literal notranslate"><span class="pre">maven-build</span></code> or <code class="docutils literal notranslate"><span class="pre">livemedia-build</span></code> for other operations,
+than just building rpms. Groups can be created and edited via
+<code class="docutils literal notranslate"><span class="pre">*-group-*</span></code> koji commands.</p></li>
+<li><p>maven options - If maven builds are enabled in koji environment
+(needs setup on hub’s side), <code class="docutils literal notranslate"><span class="pre">maven_support</span></code> and
+<code class="docutils literal notranslate"><span class="pre">include_all</span></code> are options related to it. First says, that
+maven repositories should be generated and second one limits if
+all tagged versions of some artifact should be present in such
+repository.</p></li>
+</ol>
+</dd>
+<dt>package list</dt><dd><p>Every tag carries a list of allowed packages, which can be tagged
+there and also owner of such package/tag combination. Note, that
+owner doesn’t mean much in respect to who can do what. It is just a
+default recipients of notifications and can be changed in any time.
+Ownership doesn’t limit anybody in un/tagging builds for that
+tag/package. This is on the other hand driven by hub policies.
+Package list simply says, what is allowed in tag (even if there is
+no build for given package).</p>
+</dd>
+<dt>tagged builds list</dt><dd><p>This is the last component of tag. Obviously it is a list of builds
+for packages from previous point. It will never happen, that you’ll
+see some builds for which is not package listed above.</p>
+</dd>
+</dl>
+<p>All these three groups of data can be inherited and propagated through
+inheritance chains.</p>
+<div class="section" id="inheritance-options">
+<h2>Inheritance options<a class="headerlink" href="#inheritance-options" title="Permalink to this headline">¶</a></h2>
+<p>Whole inheritance can be edited via CLI’s commands
+<code class="docutils literal notranslate"><span class="pre">add-tag-inheritance</span></code> and <code class="docutils literal notranslate"><span class="pre">edit-tag-inheritance</span></code>. They have same
+options which are described with examples here:</p>
+<p>Simple <code class="docutils literal notranslate"><span class="pre">add-tag-inheritance</span></code> requires two existing tags which will
+be linked together in inheritance chain.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji add-tag parent
+<span class="gp">$</span> koji add-tag child
+<span class="gp">$</span> koji add-tag-inheritance child parent
+<span class="gp">$</span> koji list-tag-inheritance child
+<span class="go">       child (168)</span>
+<span class="go">  ....  └─parent (167)</span>
+</pre></div>
+</div>
+<p>In the example you can see basic inheritance chain. You see <code class="docutils literal notranslate"><span class="pre">child</span></code>
+tag which is inheriting data from <code class="docutils literal notranslate"><span class="pre">parent</span></code> tag. Numbers behind tag
+names are numeric ids, which you don’t need to care about in normal
+situations, but which can be useful in scripting koji. Four dots in
+the beginning of line are placeholders for different inheritance
+flags. These can be: M, F, I, N which denotes <code class="docutils literal notranslate"><span class="pre">maxdepth</span></code>,
+<code class="docutils literal notranslate"><span class="pre">pkg_filter</span></code>, <code class="docutils literal notranslate"><span class="pre">intransitive</span></code> and <code class="docutils literal notranslate"><span class="pre">noconfig</span></code> respectively.  All
+these options can specified via CLI.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">priority</span></code></dt><dd><p>When you’re adding new inheritance line to tag, which already has
+some parent, you would like to denote, in which part of
+inheritance chain new parent should appear. Let’s continue with
+previous example.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji add-tag less-significant-parent
+<span class="gp">$</span> koji add-tag-inheritance child less-significant-parent --priority <span class="m">100</span>
+<span class="gp">$</span> koji list-tag-inheritance child
+<span class="go">     child (168)</span>
+<span class="go">....  ├─parent (167)</span>
+<span class="go">....  └─less-significant-parent (169)</span>
+</pre></div>
+</div>
+<p>What happened here is, that <code class="docutils literal notranslate"><span class="pre">parent</span></code> has default priority 0,
+while new one is priority 100. Lower number wins here. If you
+change your mind, you can always use <code class="docutils literal notranslate"><span class="pre">edit-tag-inheritance</span></code> to
+change the priority.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Good rule of thumb is to not create inheritance without priority
+and use 10’s or 100’s steps. In such case you shouldn’t need to
+update priorities, when adding something in the middle (where you
+can use e.g. priority 15 like in good old Basic times).</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">maxdepth</span></code></dt><dd><p>For longer inheritance chains you may not want to treat whole
+chain. Let’s leave our example and get more real-life situation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji list-tag-inheritance linux3-build
+<span class="go">     linux3-build (4380)</span>
+<span class="go">....  └─linux3-override (4379)</span>
+<span class="go">....     └─linux3-updates (4373)</span>
+<span class="go">....        └─linux2 (4368)</span>
+<span class="go">....           └─linux1 (4350)</span>
+<span class="go">....              └─linux0 (4250)</span>
+
+<span class="gp">$</span> koji add-tag linux4-build
+<span class="gp">$</span> koji add-tag-inheritance linux4-build linux3-build --maxdepth <span class="m">0</span>
+<span class="gp">$</span> koji list-tag-inheritance linux4-build
+<span class="go">     linux4-build (4444)</span>
+<span class="go">M...  └─linux3-build (4380)</span>
+</pre></div>
+</div>
+<p>This is not, what you would see in Fedora’s koji, because Fedora is
+not reusing anything from previous releases and is doing mass
+rebuilds instead, but it could have. In this case, we only want
+packages from <code class="docutils literal notranslate"><span class="pre">linux3-build</span></code>, but not anything inherited into it.
+<code class="docutils literal notranslate"><span class="pre">maxdepth</span></code> does exactly this and strips the rest of inheritance
+chain.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">intransitive</span></code></dt><dd><p>Intransitive inheritance links are as what they say. If they are
+used somewhere deeper in inheritance chain, they will be ignored.
+It can be used for ensuring, that something will not be propagated
+by mistake. In combination with <code class="docutils literal notranslate"><span class="pre">maxdepth</span></code> it can mean hard stop
+even before <code class="docutils literal notranslate"><span class="pre">maxdepth</span></code> is reached.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">noconfig</span></code></dt><dd><p>While <cite>normal</cite> inheritance inherits everything - it means tag
+configuration, package list and tagged builds, links with this
+option are used only for propagating list of packages and builds.
+Everything else is ignored (architectures, locks, permissions,
+maven support).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pkg-filter</span></code></dt><dd><p>Package filter is defined as regular expression and limits which
+packages are propagated through this link.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="signing.html" class="btn btn-neutral float-left" title="RPM Signing with Koji" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="winbuild.html" class="btn btn-neutral float-right" title="Building for Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

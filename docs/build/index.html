@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Koji’s documentation! &mdash; Koji alpha documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to Koji’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="welcome-to-koji-s-documentation">
+<h1>Welcome to Koji’s documentation!<a class="headerlink" href="#welcome-to-koji-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="koji">
+<h2>Koji<a class="headerlink" href="#koji" title="Permalink to this headline">¶</a></h2>
+<p>Koji is the software that builds (not only) <a class="reference external" href="https://koji.fedoraproject.org/koji/">RPM packages for the Fedora
+project</a>. It uses <a class="reference external" href="https://github.com/rpm-software-management/mock/wiki">Mock</a> to create chroot environments to perform builds. To
+download the source code, report bugs, join the mailing list etc., see the <a class="reference external" href="https://pagure.io/koji">Koji
+project website</a>.</p>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#koji-architecture">Koji Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#koji-components">Koji Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#package-organization">Package Organization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Operations Guide/index.html">Operations Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Operations Guide/releases.html">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Administration Guide/index.html">Administration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administration Guide/misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="User Guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="User Guide/HOWTO.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="User Guide/HOWTO.html#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="User Guide/HOWTO.html#koji-architecture">Koji Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="User Guide/using_the_koji_build_system.html">Using Koji in Fedora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="User Guide/using_the_koji_build_system.html#koji-xmlrpc-api">Koji XMLRPC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Developer Guide/index.html">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/basic_client.html">Basic Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/writing_a_plugin.html">Writing Koji plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/writing_koji_code.html">Writing Koji Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developer Guide/release_process.html">Release process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="runs_here.html">Runs Here</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="runs_here.html#list-of-locations-that-koji-is-currently-in-use">List of locations that Koji is currently in use</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji Utilities &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tasks Description" href="tasks.html" />
+    <link rel="prev" title="Plugins" href="plugins.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Koji Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kojira">Kojira</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#garbage-collector">Garbage Collector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prune-policy">Prune Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gc-options-config-commmand-line">GC Options (config/commmand-line)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notification-related-options">Notification related options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#server-connection-options">Server connection options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-options">General options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#koji-shadow">Koji Shadow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#koji-db-sweeper">Koji DB Sweeper</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Operations Guide</a> &raquo;</li>
+      <li>Koji Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Operations Guide/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-utilities">
+<h1>Koji Utilities<a class="headerlink" href="#koji-utilities" title="Permalink to this headline">¶</a></h1>
+<p>Basic koji is equipped with few handy utilities for maintaining
+healthy build environment. They are packaged in <code class="docutils literal notranslate"><span class="pre">koji-utils</span></code> rpm and
+can be installed as such.</p>
+<div class="section" id="kojira">
+<span id="utils-kojira"></span><h2>Kojira<a class="headerlink" href="#kojira" title="Permalink to this headline">¶</a></h2>
+<p>Kojira is stand-alone server which handles buildroot repos. It checks
+if any builds were added to buildroots or build tag configuration has
+changed. In such case it will trigger <code class="docutils literal notranslate"><span class="pre">newRepo</span></code> tasks to get build
+repos actual once more. It is worth to create separate usera for
+kojira with only <code class="docutils literal notranslate"><span class="pre">repo</span></code> permission.</p>
+<p>Its usage is straightforward. It is being installed as system service
+<code class="docutils literal notranslate"><span class="pre">kojira</span></code>, so standard systemctl commands like <code class="docutils literal notranslate"><span class="pre">enable</span></code> <code class="docutils literal notranslate"><span class="pre">start</span></code>
+and <code class="docutils literal notranslate"><span class="pre">restart</span></code> simply works.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/kojira/kojira.conf</span></code> contains basic configuration for this
+service. Standard connection options are defined there (keytab,
+server, …) and few options which affects, how kojira works,
+especially in relation to throttling in creating <code class="docutils literal notranslate"><span class="pre">newRepo</span></code> tasks.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">deleted_repo_lifetime</span> <span class="pre">=</span> <span class="pre">one</span> <span class="pre">week</span> <span class="pre">(604800)</span></code></dt><dd><p>This time (in seconds) is uses to clean up expired repositories.
+It makes sense, that you don’t want only the latest repodata. In
+case of debugging some older build. Even in case you don’t want to
+do this, it is recommended to set it at least to few hours in
+case, there is some running build, which is still using these
+older data.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dist_repo_lifetime</span> <span class="pre">=</span> <span class="pre">one</span> <span class="pre">week</span> <span class="pre">(604800)</span></code></dt><dd><p>This is similar to previous one. The only difference is that while
+previous is for buildroots, this one is affecting dist repos.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recent_tasks_lifetime</span> <span class="pre">=</span> <span class="pre">600</span></code></dt><dd><p>kojira is buffering recent <code class="docutils literal notranslate"><span class="pre">newRepo</span></code> finished tasks to avoid
+some race conditions. Generally, there is no reason to change this
+default.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_tags</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Comma-separated globs for tag names. These tags are simply ignored
+by kojira (but they can still be manually regenerated via <code class="docutils literal notranslate"><span class="pre">koji</span>
+<span class="pre">regen-repo</span></code> command.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debuginfo_tags</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Comma-separated globs for tag names. Regenerated repos will have
+separate directory/repodata with corresponding debuginfo RPMs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">source_tags</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Comma-separated globs for tag names. Regenerated repos will
+contain also corresponding SRPMs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">separate_source_tags</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Comma-separated globs for tag names. Regenerated repos will have
+separate directory/repodata with corresponding SRPMs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_stray_repos</span> <span class="pre">=</span> <span class="pre">False</span></code></dt><dd><p>In some strange cases (someone manually deleted repo via API, but
+not corresponding directories), there could stay some repo
+directories. If this is set to False, kojira will just skip these.
+Otherwise, it will remove them as if they would be normal
+repodata referenced from db.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_delete_processes</span> <span class="pre">=</span> <span class="pre">4</span></code></dt><dd><p>How many threads are used for deleting data on disk.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_repo_tasks</span> <span class="pre">=</span> <span class="pre">4</span></code></dt><dd><p>The largest hub impact is from the first part of the <code class="docutils literal notranslate"><span class="pre">newRepo</span></code>
+task. Once it is waiting on subtasks (spawned createrepo), that
+part is over. So, it makes sense to limit running <code class="docutils literal notranslate"><span class="pre">newRepo</span></code>
+tasks to not exhaust hub’s capacity.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_repo_tasks_maven</span> <span class="pre">=</span> <span class="pre">2</span></code></dt><dd><p>Maven repo regeneration is ways more resource-demanding than rpm
+ones. So, we’ve separate limit on this.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">repo_tasks_limit</span> <span class="pre">=</span> <span class="pre">10</span></code></dt><dd><p>Overall limit on running tasks is set here. It involves all
+<code class="docutils literal notranslate"><span class="pre">newRepo</span></code> tasks spawned by kojira and also by other users.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check_external_repos</span> <span class="pre">=</span> <span class="pre">false</span></code></dt><dd><p>If True, monitor external repos and trigger the appropriate Koji repo
+regenerations when they change.
+Note that you need to have your database set to use UTC, as otherwise
+you can end with weird behaviour. For details see
+<a class="reference external" href="https://pagure.io/koji/issue/2159">https://pagure.io/koji/issue/2159</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">queue_file</span> <span class="pre">=</span> <span class="pre">None</span></code></dt><dd><p>Writable path could be set here. In such case, kojira will write a
+list of currently monitored tags there with simple statistics in
+every cycle. File would contain information about how long these
+tags are expired and what is the computed score for them. This can
+be used to debug and check in realtime the actual performance.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="garbage-collector">
+<h2>Garbage Collector<a class="headerlink" href="#garbage-collector" title="Permalink to this headline">¶</a></h2>
+<p>There are tons of builds, which will be never used for anything. GC is
+caring to get rid of these, so they’ll not exhaust disk space. As it
+is a sensitive task to not remove something what will be needed in
+future, everything is driven by policy with same language as hub’s
+one.</p>
+<p>Note, that GC removes only physical content. Every build will stay in
+database, only build artifacts and logs get deleted.</p>
+<p>GC runs all of the following actions (if they are not overriden via
+<code class="docutils literal notranslate"><span class="pre">--action</span></code>):</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">delete</span></code></dt><dd><p>Delete builds that have been in the trashcan for long enough.
+Builds satisfying any of following conditions, will be exempted
+from deletion:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>package is on blacklist <code class="docutils literal notranslate"><span class="pre">pkg_filter</span></code></p></li>
+<li><p>they are not tagged with any other tag</p></li>
+<li><p>their signatures are not in <code class="docutils literal notranslate"><span class="pre">protected_sig</span></code> or they are
+unknown</p></li>
+<li><p>they are tagged in trashcan for shorter time than
+<code class="docutils literal notranslate"><span class="pre">grace_period</span></code></p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">prune</span></code></dt><dd><p>This action goes through all tags and checks tagged builds
+according to <code class="docutils literal notranslate"><span class="pre">prune</span></code> policy from config. Policy can result in
+<code class="docutils literal notranslate"><span class="pre">keep</span></code>, <code class="docutils literal notranslate"><span class="pre">untag</span></code> or <code class="docutils literal notranslate"><span class="pre">skip</span></code> actions. First two are
+self-evident, last one is similar to <code class="docutils literal notranslate"><span class="pre">keep</span></code>, but these builds
+are also ignored in tagged builds ordering.</p>
+<p>Prune policy is not run against trashcan tag itself, also locked
+tags are ignored if <code class="docutils literal notranslate"><span class="pre">bypass_locks</span></code> is not specified.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">purge</span></code> option, untagged builds can be immediately deleted.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trash</span></code></dt><dd><p>Runs through all builds without any tags (for longer than
+<code class="docutils literal notranslate"><span class="pre">delay</span></code>) and put them to trashcan (effectively scheduling them
+for deletion after additional <code class="docutils literal notranslate"><span class="pre">grace_period</span></code> time).</p>
+<dl class="simple">
+<dt>Following builds can’t be put to trashcan during this action:</dt><dd><ul class="simple">
+<li><p>build was tagged somewhere meanwhile (race condition)</p></li>
+<li><p>build was used inside some build’s buildroot. We don’t want to
+delete such build, so we have reproducible build.</p></li>
+<li><p>build is part of any image or archive</p></li>
+<li><p>build was untagged later than before <code class="docutils literal notranslate"><span class="pre">max_age</span></code> seconds.</p></li>
+<li><p>build has some protected or unknown signature(s) <code class="docutils literal notranslate"><span class="pre">protected_sig</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">salvage</span></code></dt><dd><p>Untags builds from trashcan, which now have some protected or
+unknown key. (Note, that you can always remove trashcan tag
+from any build - it is normal tag as any other)</p>
+</dd>
+</dl>
+<div class="section" id="prune-policy">
+<h3>Prune Policy<a class="headerlink" href="#prune-policy" title="Permalink to this headline">¶</a></h3>
+<p>Policy is part of config and without it, <code class="docutils literal notranslate"><span class="pre">prune</span></code> action will refuse
+to work. Best documentation here would be part of example config with
+comments.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[prune]</span>
+<span class="na">policy</span> <span class="o">=</span><span class="s"></span>
+<span class="s">    # stuff to protect</span>
+<span class="s">    # note that tags with master lock engaged are already protected</span>
+<span class="s">    tag *-updates :: keep</span>
+<span class="s">    hastag no-gc :: skip</span>
+<span class="s">    age &lt; 1 day :: skip</span>
+<span class="s">    sig fedora-gold :: skip</span>
+<span class="s">    sig fedora-test &amp;&amp; age &lt; 12 weeks :: keep</span>
+
+    <span class="c1"># stuff to chuck semi-rapidly</span>
+    <span class="na">tag *-testing *-candidate :: {  # nested rules</span>
+        <span class="na">order &gt;</span><span class="o">=</span> <span class="s">2 :: untag</span>
+<span class="s">        order &gt; 0 &amp;&amp; age &gt; 6 weeks :: untag</span>
+<span class="s">    } # closing braces must be on a line by themselves (modulo comments/whitespace)</span>
+<span class="s">    tag *-candidate &amp;&amp; age &gt; 60 weeks :: untag</span>
+
+    <span class="c1"># default: keep the last 3</span>
+    <span class="na">order &gt; 2 :: untag</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gc-options-config-commmand-line">
+<h3>GC Options (config/commmand-line)<a class="headerlink" href="#gc-options-config-commmand-line" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bypass_locks</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>If tag is locked and <code class="docutils literal notranslate"><span class="pre">bypass_locks</span></code> is set and GC user has
+sufficient permissions, even locked tags are pruned.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span> <span class="pre">=</span> <span class="pre">False</span></code></dt><dd><p>Verbose output</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">=</span> <span class="pre">5</span> <span class="pre">days</span></code></dt><dd><p>Time, after which untagged builds can go to trashcan via
+<code class="docutils literal notranslate"><span class="pre">trashcan</span></code> action.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">grace_period</span> <span class="pre">=</span> <span class="pre">4</span> <span class="pre">weeks</span></code></dt><dd><p>How long builds are staying in trashcan before final deletion.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_tags</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Tags corresponding to these globs are ignored.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">key_aliases</span> <span class="pre">=</span> <span class="pre">None</span></code></dt><dd><p>Keys are normally defined by their hashes, which could be
+inconvenient while reading configs. This option (pairs of
+hash/name) make it more readable.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pkg_filter</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Globs for package names which should be processed.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">purge</span> <span class="pre">=</span> <span class="pre">False</span></code></dt><dd><p>If set, delete packages immediately during pruning action
+(effectively skipping <code class="docutils literal notranslate"><span class="pre">delay</span></code> + <code class="docutils literal notranslate"><span class="pre">grace_period</span></code> safety period)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tag_filter</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>If defined, only tags corresponding to these globs are checked.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trashcan_tag</span> <span class="pre">=</span> <span class="pre">trashcan</span></code></dt><dd><p>Default name for trashcan tag, you can use other tags for testing
+policies, or deploy multiple configuration in cascade-like
+workflows (anyway, not recommended)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unprotected_keys</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Set of signing keys, which are treated as in same way as
+“unsigned” packages.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="notification-related-options">
+<h3>Notification related options<a class="headerlink" href="#notification-related-options" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bcc_addr</span></code></dt><dd><p>Blind carbon copy addresses</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cc_addr</span></code></dt><dd><p>Carbon copy addresses</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">email_domain</span> <span class="pre">=</span> <span class="pre">fedoraproject.org</span></code></dt><dd><p>Append this domain to usernames</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">email_template</span> <span class="pre">=</span> <span class="pre">/etc/koji-gc/email.tpl</span></code></dt><dd><p>Simple template which can contain python formatting (via
+<code class="docutils literal notranslate"><span class="pre">string.Template</span></code>) with <code class="docutils literal notranslate"><span class="pre">owner</span></code> (owner name) and <code class="docutils literal notranslate"><span class="pre">builds</span></code>
+(pre-generated list of builds).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">from_addr</span> <span class="pre">=</span> <span class="pre">Koji</span> <span class="pre">Build</span> <span class="pre">System</span> <span class="pre">&lt;buildsys&#64;example.com&gt;</span></code></dt><dd><p>Sender address</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mail</span> <span class="pre">=</span> <span class="pre">True</span></code></dt><dd><p>Send / don’t send e-mail notifications</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">smtp_host</span> <span class="pre">=</span> <span class="pre">None</span></code></dt><dd><p>SMTP connection parameters</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">smtp_pass</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>SMTP connection parameters</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">smtp_user</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>SMTP connection parameters</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">weburl</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Koji base web url. It is used for constructing links in notification messages.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="server-connection-options">
+<h3>Server connection options<a class="headerlink" href="#server-connection-options" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">cert</span> <span class="pre">=</span> <span class="pre">/etc/koji-gc/client.crt</span></code></dt><dd><p>User certificate for SSL authentication</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">keytab</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Path to keytab for GC authentication</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">noauth=False</span></code></dt><dd><p>Don’t authenticate (e.g. for –test call)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">no_ssl_verify</span></code></dt><dd><p>Don’t check SSL CA chain. Should be turned off in production.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">password</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Password for login/password authentication.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">principal</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Kerberos principal to use for authentication</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">runas</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Run as specified user</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>URL for koji hub</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">serverca</span> <span class="pre">=</span> <span class="pre">/etc/koji-gc/serverca.crt</span></code></dt><dd><p>Server certification authority if it is not part of system-wide CAs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">timeout</span> <span class="pre">=</span> <span class="pre">43200</span></code></dt><dd><p>GC will quit after 12 hours of trying to connect to the hub.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">=</span> <span class="pre">''</span></code></dt><dd><p>Use specified user for login/password authentication. (It should be never enabled
+in production environment)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="general-options">
+<h3>General options<a class="headerlink" href="#general-options" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">exit_on_lock</span> <span class="pre">=</span> <span class="pre">False</span></code></dt><dd><p>If lock file is present, exit.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lock_file</span> <span class="pre">=</span> <span class="pre">/run/user/&lt;uid&gt;/koji-gc.lock</span></code></dt><dd><p>Lock file for running GC. It is used to prevent overlapping calls.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">=</span> <span class="pre">False</span></code></dt><dd><p>Run in test mode, no build will be deleted</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="koji-shadow">
+<h2>Koji Shadow<a class="headerlink" href="#koji-shadow" title="Permalink to this headline">¶</a></h2>
+<p>Script for shadowing builds between koji instances.</p>
+</div>
+<div class="section" id="koji-db-sweeper">
+<h2>Koji DB Sweeper<a class="headerlink" href="#koji-db-sweeper" title="Permalink to this headline">¶</a></h2>
+<p>Simple cleaning of database entries which are not expected to persist (basically
+old session info). Details are covered at <a class="reference internal" href="server_howto.html#db-maintenance"><span class="std std-ref">Maintaining database</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plugins.html" class="btn btn-neutral float-left" title="Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tasks.html" class="btn btn-neutral float-right" title="Tasks Description" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

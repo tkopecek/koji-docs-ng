@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrating to Koji 1.8 &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Migrating to Koji 1.7" href="migrating_to_1.7.html" />
+    <link rel="prev" title="Migrating to Koji 1.9" href="migrating_to_1.9.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="migrations.html">Migrations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.27.html">Migrating to Koji 1.27</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.26.html">Migrating to Koji 1.26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.25.html">Migrating to Koji 1.25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.24.html">Migrating to Koji 1.24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.23.html">Migrating to Koji 1.23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.22.html">Migrating to Koji 1.22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.21.html">Migrating to Koji 1.21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.20.html">Migrating to Koji 1.20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.19.html">Migrating to Koji 1.19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.18.html">Migrating to Koji 1.18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.17.html">Migrating to Koji 1.17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.16.html">Migrating to Koji 1.16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.15.html">Migrating to Koji 1.15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.14.html">Migrating to Koji 1.14</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.13.html">Migrating to Koji 1.13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.12.html">Migrating to Koji 1.12</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.11.html">Migrating to Koji 1.11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.10.html">Migrating to Koji 1.10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.9.html">Migrating to Koji 1.9</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Migrating to Koji 1.8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.7.html">Migrating to Koji 1.7</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../release_notes/release_notes.html">Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="migrations.html">Migrations</a> &raquo;</li>
+      <li>Migrating to Koji 1.8</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/migrations/migrating_to_1.8.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="migrating-to-koji-1-8">
+<h1>Migrating to Koji 1.8<a class="headerlink" href="#migrating-to-koji-1-8" title="Permalink to this headline">¶</a></h1>
+<p>The 1.8 release of Koji refactors how images (livecd and appliance) are stored
+in the database and on disc. These changes will require a little extra work
+when updating.</p>
+<p>There have also been some changes to the command line.</p>
+<p>Finally, kojira accepts some new options.</p>
+<div class="section" id="db-schema-updates">
+<h2>DB Schema Updates<a class="headerlink" href="#db-schema-updates" title="Permalink to this headline">¶</a></h2>
+<p>Previous to 1.8, images were stored in separately from other builds, both in
+the database and on disc. The new schema adds new tables: <code class="docutils literal notranslate"><span class="pre">image_builds</span></code>,
+<code class="docutils literal notranslate"><span class="pre">image_listing</span></code>, and <code class="docutils literal notranslate"><span class="pre">image_archives</span></code>.</p>
+<p>The following tables are now obsolete: <code class="docutils literal notranslate"><span class="pre">imageinfo</span></code> and <code class="docutils literal notranslate"><span class="pre">imageinfo_listing</span></code>.
+However you should not drop these tables until you have migrated your image
+data.</p>
+<p>As in previous releases, we provide a migration script that updates the
+database.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> psql koji koji  &lt;/usr/share/doc/koji-1.8.0/docs/schema-upgrade-1.7-1.8.sql
+</pre></div>
+</div>
+<p>Note that the SQL script does not (and can not) automatically migrate your old
+image data to the new tables. After applying the schema changes, you can
+migrate old images using the <code class="docutils literal notranslate"><span class="pre">migrateImage</span></code> hub call. This method is necessary
+because the new schema requires each image to have a name, version, and release
+value. The values for name and version cannot be automatically guessed.</p>
+</div>
+<div class="section" id="migrating-your-old-images">
+<h2>Migrating your old images<a class="headerlink" href="#migrating-your-old-images" title="Permalink to this headline">¶</a></h2>
+<p>If you have old images, you can migrate them to the new system using the
+<code class="docutils literal notranslate"><span class="pre">migrateImage</span></code> hub call. This call requires admin privilege and must also be
+enabled with the <code class="docutils literal notranslate"><span class="pre">EnableImageMigration</span></code> configuration option in <code class="docutils literal notranslate"><span class="pre">hub.conf</span></code>.</p>
+<p>The signature of the call is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">migrateImage(old_image_id, name, version)</span>
+</pre></div>
+</div>
+<p>This call can made from the command line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> koji call migrateImage <span class="m">45</span> my_livecd <span class="m">1</span>.1
+</pre></div>
+</div>
+</div>
+<div class="section" id="cleaning-up">
+<h2>Cleaning up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h2>
+<p>After you have migrated any necessary images to the new system, you may want to
+remove the old database tables and filesystem directories. This step is
+<em>optional</em>. If you want to leave the old data around, it will not affect Koji.</p>
+<p>Before you take any of the following actions, please <em>make sure</em> that you have
+migrated any desired images.</p>
+<p>Removing the old data is simply a matter of dropping tables and deleting files.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">koji=&gt; DROP TABLE imageinfo_listing;</span>
+<span class="go">koji=&gt; DROP TABLE imageinfo;</span>
+<span class="gp">#</span> rm -rf /mnt/koji/images
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-changes">
+<h2>Command line changes<a class="headerlink" href="#command-line-changes" title="Permalink to this headline">¶</a></h2>
+<p>For clarity and consistency, all of the <code class="docutils literal notranslate"><span class="pre">-pkg</span></code> commands have been renamed to
+<code class="docutils literal notranslate"><span class="pre">-build</span></code> commands.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">latest-pkg -&gt; latest-build</span>
+<span class="go">move-pkg -&gt; move-build</span>
+<span class="go">tag-pkg -&gt; tag-build</span>
+<span class="go">untag-pkg -&gt; untag-build</span>
+</pre></div>
+</div>
+<p>For backwards compatibility, the old commands names are also recognized.</p>
+<p>A new command has been added, <code class="docutils literal notranslate"><span class="pre">remove-pkg</span></code>.</p>
+<p>Several commands have been modified to support images.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">spin-livecd</span></code> and <code class="docutils literal notranslate"><span class="pre">spin-appliance</span></code> commands now require additional
+arguments. These arguments specify the name and version to use for the image.</p>
+</div>
+<div class="section" id="new-kojira-options">
+<h2>New kojira options<a class="headerlink" href="#new-kojira-options" title="Permalink to this headline">¶</a></h2>
+<p>The following options are new to kojira:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">max_delete_processes</span>
+<span class="go">max_repo_tasks_maven</span>
+</pre></div>
+</div>
+<p>Previously, kojira ran as a single process and repo deletions could potentially
+slow things down (particularly for Maven-enabled repos). Now kojira spawns
+a separate process to handle these deletions. The <code class="docutils literal notranslate"><span class="pre">max_delete_processes</span></code>
+determines how many such processes it will launch at one time.</p>
+<p>When Maven-enabled repos are in use, they can potentially take a very long time
+to regenerate. If a number of these pile up it can severely slow down
+regeneration of non-Maven repos. The <code class="docutils literal notranslate"><span class="pre">max_repo_tasks_maven</span></code> limits how many
+Maven repos kojira will attempt to regenerate at once.</p>
+<p>Also the following kojira option has been removed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">prune_batch_size</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="migrating_to_1.9.html" class="btn btn-neutral float-left" title="Migrating to Koji 1.9" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="migrating_to_1.7.html" class="btn btn-neutral float-right" title="Migrating to Koji 1.7" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

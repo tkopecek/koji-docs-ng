@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrating to Koji 1.7 &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Release Notes" href="../release_notes/release_notes.html" />
+    <link rel="prev" title="Migrating to Koji 1.8" href="migrating_to_1.8.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="migrations.html">Migrations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.27.html">Migrating to Koji 1.27</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.26.html">Migrating to Koji 1.26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.25.html">Migrating to Koji 1.25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.24.html">Migrating to Koji 1.24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.23.html">Migrating to Koji 1.23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.22.html">Migrating to Koji 1.22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.21.html">Migrating to Koji 1.21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.20.html">Migrating to Koji 1.20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.19.html">Migrating to Koji 1.19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.18.html">Migrating to Koji 1.18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.17.html">Migrating to Koji 1.17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.16.html">Migrating to Koji 1.16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.15.html">Migrating to Koji 1.15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.14.html">Migrating to Koji 1.14</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.13.html">Migrating to Koji 1.13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.12.html">Migrating to Koji 1.12</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.11.html">Migrating to Koji 1.11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.10.html">Migrating to Koji 1.10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.9.html">Migrating to Koji 1.9</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.8.html">Migrating to Koji 1.8</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Migrating to Koji 1.7</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../release_notes/release_notes.html">Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="migrations.html">Migrations</a> &raquo;</li>
+      <li>Migrating to Koji 1.7</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/migrations/migrating_to_1.7.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="migrating-to-koji-1-7">
+<h1>Migrating to Koji 1.7<a class="headerlink" href="#migrating-to-koji-1-7" title="Permalink to this headline">¶</a></h1>
+<p>The 1.7 release of Koji contains changes that will require a little extra
+work when updating. These changes are:</p>
+<ul class="simple">
+<li><p>DB schema updates to support storage volumes</p></li>
+<li><p>The change from mod_python to mod_wsgi</p></li>
+<li><p>The introduction of a separate configuration file for koji-web</p></li>
+<li><p>Changes to url options</p></li>
+</ul>
+<div class="section" id="db-schema-updates">
+<h2>DB Schema Updates<a class="headerlink" href="#db-schema-updates" title="Permalink to this headline">¶</a></h2>
+<p>The 1.7 release adds two new tables to the database. The <code class="docutils literal notranslate"><span class="pre">volume</span></code> table tracks
+the names of available storage volumes, and the <code class="docutils literal notranslate"><span class="pre">tag_updates</span></code> table tracks
+changes to tags that are not easily calculated from other tables. There is
+also a new field in the <code class="docutils literal notranslate"><span class="pre">build</span></code> table, <code class="docutils literal notranslate"><span class="pre">volume_id</span></code>, which indicates which
+volume a build is stored on.</p>
+<p>As in previous releases, we provide a migration script that updates the
+database.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> psql koji koji  &lt;/usr/share/doc/koji-1.7.0/docs/schema-upgrade-1.5-1.7.sql
+</pre></div>
+</div>
+</div>
+<div class="section" id="mod-python-and-mod-wsgi">
+<h2>mod_python and mod_wsgi<a class="headerlink" href="#mod-python-and-mod-wsgi" title="Permalink to this headline">¶</a></h2>
+<p>Koji now defaults to using mod_wsgi to interface with httpd. Support for
+mod_python is _deprecated_ and will disappear in a future version of Koji.
+Koji administrators can opt to stay on mod_python for now, but some minor
+configuration changes will be required.</p>
+<div class="section" id="migrating-to-mod-wsgi">
+<h3>Migrating to mod_wsgi<a class="headerlink" href="#migrating-to-mod-wsgi" title="Permalink to this headline">¶</a></h3>
+<p>The mod_wsgi package is now required for both koji-hub and koji-web. Folks
+running RHEL5 can find mod_wsgi in EPEL.</p>
+<p>You will need to adjust your http config for both koji-hub and koji-web. Our
+example config files default to mod_wsgi. To adapt your existing config, you
+will need to:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>For both the koji-hub and koji-web/scripts directories:</dt><dd><ul>
+<li><p>add <code class="docutils literal notranslate"><span class="pre">Options</span> <span class="pre">ExecCGI</span></code></p></li>
+<li><p>change <code class="docutils literal notranslate"><span class="pre">SetHandler</span></code> from mod_python to wsgi-script</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Ensure that the koji-web Alias points to wsgi_publisher.py</p></li>
+<li><p>If you have not already, migrate all koji-hub PythonOptions to hub.conf</p></li>
+<li><p>Migrate all koji-web PythonOptions to web.conf (see later section)</p></li>
+</ul>
+</div>
+<div class="section" id="staying-on-mod-python">
+<h3>Staying on mod_python<a class="headerlink" href="#staying-on-mod-python" title="Permalink to this headline">¶</a></h3>
+<p>Support for mod_python is _deprecated_ and will disappear in a future version
+of Koji.</p>
+<p>While we have made efforts to maintain mod_python compatibility, there are
+a few configuration changes you will need to make.</p>
+<p>The koji-hub http config should continue to function without modification.</p>
+<p>The koji-web http config will, at minimum, require the following changes:</p>
+<ul class="simple">
+<li><p>Ensure that the koji-web <code class="docutils literal notranslate"><span class="pre">Alias</span></code> points to wsgi_publisher.py</p></li>
+<li><p>Change koji-web’s <code class="docutils literal notranslate"><span class="pre">PythonHandler</span></code> setting to wsgi_publisher</p></li>
+</ul>
+<p>Our example http configurations contain commented examples of mod_python
+configuration.</p>
+<p>Even if you stay on mod_python, we recommend that you migrate away from using
+PythonOptions and place your configuration in web.conf and hub.conf.</p>
+</div>
+</div>
+<div class="section" id="web-configuration">
+<h2>Web Configuration<a class="headerlink" href="#web-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Starting with version 1.7, koji-web uses a separate configuration file, rather
+than PythonOptions embedded in the httpd config. The location of the new file
+is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">/etc/kojiweb/web.conf</span>
+</pre></div>
+</div>
+<p>The web.conf file is an ini-style configuration file. Options should be placed
+in the [web] section. All previous options accepted via PythonOptions are
+accepted in web.conf. Please see the example web.conf file.</p>
+<div class="section" id="custom-config-file-location">
+<h3>Custom Config File Location<a class="headerlink" href="#custom-config-file-location" title="Permalink to this headline">¶</a></h3>
+<p>The location of web.conf can be specified in the httpd configuration. To
+specify the location under mod_wsgi, use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">SetEnv koji.web.ConfigFile /path/to/web.conf</span>
+</pre></div>
+</div>
+<p>Under mod_python, use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">PythonOption koji.web.ConfigFile /path/to/web.conf</span>
+</pre></div>
+</div>
+<p>If you opt to stay on mod_python, the server will continue to process the old
+PythonOptions. To ease migration, it does so by default unless the
+koji.web.ConfigFile PythonOption is specified. In order to use web.conf under
+mod_python, you <em>must</em> specify koji.web.ConfigFile in your http config.</p>
+<p>We strongly recommend moving to web.conf. The server will issue a warning at
+startup if web.conf is not in use.</p>
+</div>
+</div>
+<div class="section" id="changes-to-url-options">
+<h2>Changes to url options<a class="headerlink" href="#changes-to-url-options" title="Permalink to this headline">¶</a></h2>
+<p>The pkgurl option has been removed from the koji command line tool and from
+the build daemon (kojid). The url for packages is deduced from the topurl
+option, which should point to the top of the /mnt/koji tree.</p>
+<p>Any config files that specify pkgurl (e.g. ~/.koji/config, /etc/koji.conf, or
+/etc/kojid/kojid.conf) will need to be adjusted.</p>
+<p>Similarly, the kojiweb config options KojiPackagesURL, KojiMavenURL, and
+KojiImagesURL have been dropped in favor of the new option KojiFilesURL.</p>
+</div>
+<div class="section" id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="split-storage">
+<h3>Split Storage<a class="headerlink" href="#split-storage" title="Permalink to this headline">¶</a></h3>
+<p>Apart from the schema changes, no other migration steps are required for the
+split storage feature. By default, builds are stored in the normal location.</p>
+</div>
+<div class="section" id="web-themes">
+<h3>Web Themes<a class="headerlink" href="#web-themes" title="Permalink to this headline">¶</a></h3>
+<p>Using the old method (httpd aliases for koji static content) should continue
+to work. For (brief) instructions on the new method, see the README file under
+koji-web/static/themes.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="migrating_to_1.8.html" class="btn btn-neutral float-left" title="Migrating to Koji 1.8" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../release_notes/release_notes.html" class="btn btn-neutral float-right" title="Release Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

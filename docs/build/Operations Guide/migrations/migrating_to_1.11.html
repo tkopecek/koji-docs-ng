@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrating to Koji 1.11 &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Migrating to Koji 1.10" href="migrating_to_1.10.html" />
+    <link rel="prev" title="Migrating to Koji 1.12" href="migrating_to_1.12.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="migrations.html">Migrations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.27.html">Migrating to Koji 1.27</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.26.html">Migrating to Koji 1.26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.25.html">Migrating to Koji 1.25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.24.html">Migrating to Koji 1.24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.23.html">Migrating to Koji 1.23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.22.html">Migrating to Koji 1.22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.21.html">Migrating to Koji 1.21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.20.html">Migrating to Koji 1.20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.19.html">Migrating to Koji 1.19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.18.html">Migrating to Koji 1.18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.17.html">Migrating to Koji 1.17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.16.html">Migrating to Koji 1.16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.15.html">Migrating to Koji 1.15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.14.html">Migrating to Koji 1.14</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.13.html">Migrating to Koji 1.13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.12.html">Migrating to Koji 1.12</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Migrating to Koji 1.11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.10.html">Migrating to Koji 1.10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.9.html">Migrating to Koji 1.9</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.8.html">Migrating to Koji 1.8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrating_to_1.7.html">Migrating to Koji 1.7</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../release_notes/release_notes.html">Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="migrations.html">Migrations</a> &raquo;</li>
+      <li>Migrating to Koji 1.11</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/migrations/migrating_to_1.11.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="migrating-to-koji-1-11">
+<h1>Migrating to Koji 1.11<a class="headerlink" href="#migrating-to-koji-1-11" title="Permalink to this headline">¶</a></h1>
+<p>The 1.11 release of Koji includes a several changes that you should consider when
+migrating.</p>
+<div class="section" id="db-updates">
+<h2>DB Updates<a class="headerlink" href="#db-updates" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>There are a number of new tables and columns to support content generators. Here is a summary:</dt><dd><ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">btype</span></code> table tracks the known btypes [LINK] in the system</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">build_types</span></code> table links builds to their btype(s)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">content_generator</span></code> table tracks the known content generators in the system</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">cg_users</span></code> table tracks which users have access to which content generators</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">buildroot</span></code> table now tracks more generic buildroots</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">standard_buildroot</span></code> table tracks data for “normal” koji buildroots</p></li>
+<li><p>Several tables now have an <code class="docutils literal notranslate"><span class="pre">extra</span></code> column that stores json data</p></li>
+<li><p>There are several new entries in the <code class="docutils literal notranslate"><span class="pre">archivetypes</span></code> table</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">image_listing</span></code> table has been replace by the more general <code class="docutils literal notranslate"><span class="pre">archive_rpm_components</span></code> table</p></li>
+<li><p>The new <code class="docutils literal notranslate"><span class="pre">archive_components</span></code> complements this and tracks non-rpm components</p></li>
+</ul>
+</dd>
+</dl>
+<p>As in previous releases, we provide a migration script that updates the
+database.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> psql koji koji  &lt;/usr/share/doc/koji-1.11.0/docs/schema-upgrade-1.10-1.11.sql
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note: prior to this release, we had some interim update scripts:</dt><dd><ul class="simple">
+<li><p>schema-update-cgen.sql</p></li>
+<li><p>schema-update-cgen2.sql</p></li>
+</ul>
+</dd>
+</dl>
+<p>Most users should not need these scripts. The new schema upgrade script includes
+those changes.</p>
+</div>
+<div class="section" id="command-line-changes">
+<h2>Command line changes<a class="headerlink" href="#command-line-changes" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">help</span></code> command now shows a categorized list of commands.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">hello</span></code> command now reports the authentication type.</p>
+<p>Several commands support new arguments. Here are the notable changes:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">add-tag</span></code></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--extra</span></code>       : Set an extra option for tag at creation</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">watch-task</span></code></dt><dd><ul class="simple">
+<li><p>Supports several new task selection options</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">download-build</span></code></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--rpm</span></code>         : Used to download a particular rpm by name</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">runroot</span></code></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--new-chroot</span></code>  : Run command with the –new-chroot (systemd-nspawn) option to mock</p></li>
+</ul>
+</dd>
+</dl>
+<p>And there are five new commands</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assign-task</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import-cg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grant-cg-access</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">revoke-cg-access</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spin-livemedia</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="client-configuration-options">
+<h2>Client configuration options<a class="headerlink" href="#client-configuration-options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>The command line and several other tools support the following new configuration options:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">use_old_ssl</span></code>   : Use the old ssl code instead of python-requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_ssl_verify</span></code>   : Disable certificate verification for https connections</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upload_blocksize</span></code> : Override the blocksize for uploads</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">ca</span></code> option is deprecated and no longer required for ssl authentication (<code class="docutils literal notranslate"><span class="pre">serverca</span></code> is still required).</p>
+<p>Even if not using ssl authentication, the <code class="docutils literal notranslate"><span class="pre">serverca</span></code> option, if specified, is used to verify the certificate of the
+server.</p>
+</div>
+<div class="section" id="other-configuration-changes">
+<h2>Other Configuration changes<a class="headerlink" href="#other-configuration-changes" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>The Koji web interface supports the following new configuration options:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">KrbRDNS</span></code>       : Use the fqdn of the server when authenticating via kerberos</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LoginDisabled</span></code> : Hide the login link at the top of the page</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="rpc-api-changes">
+<h2>RPC API Changes<a class="headerlink" href="#rpc-api-changes" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>New rpc calls:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CGImport</span></code>      : Used by content generators</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getBuildType</span></code>  : Returns typeinfo for a build</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">listBTypes</span></code>    : List the known btypes for the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addBType</span></code>      : Adds a new btype</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grantCGAccess</span></code> : Grants a user content generator access</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">revokeCGAccess</span></code> : Revokes content generator access</p></li>
+</ul>
+</dd>
+<dt>Changes to calls</dt><dd><ul class="simple">
+<li><p>Several information calls now return additional fields</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getRPMDeps</span></code> returns optional deps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">listTasks</span></code> supports new selection options</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getLoggedInUser</span></code> includes an authtype field</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="migrating_to_1.12.html" class="btn btn-neutral float-left" title="Migrating to Koji 1.12" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="migrating_to_1.10.html" class="btn btn-neutral float-right" title="Migrating to Koji 1.10" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

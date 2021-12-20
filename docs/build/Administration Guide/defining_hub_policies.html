@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Defining Hub Policies &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exporting repositories" href="exporting_repositories.html" />
+    <link rel="prev" title="Permission system" href="permissions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Defining Hub Policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-a-bit-more-complicated">Getting a bit more complicated</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general-format">General format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-policies">Available policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#actions">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-tests">Available tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Defining Hub Policies</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/defining_hub_policies.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="defining-hub-policies">
+<h1>Defining Hub Policies<a class="headerlink" href="#defining-hub-policies" title="Permalink to this headline">¶</a></h1>
+<p>Defining a policy on the hub allows you fine control over certain activities
+in the system. At present, policy allows you to control:</p>
+<ul class="simple">
+<li><p>tag/untag/move operations</p></li>
+<li><p>allowing builds from srpm</p></li>
+<li><p>allowing builds from SCM, and managing properties/behaviors related to the SCM
+if it is allowed</p></li>
+<li><p>allowing builds from expired repos</p></li>
+<li><p>managing the package list for a tag</p></li>
+<li><p>managing which channel a task goes to</p></li>
+<li><p>altering task priority</p></li>
+</ul>
+<p>In the future, we expect to add more policy hooks for controlling more aspects
+of the system.</p>
+<p>Policy configuration is optional. If you don’t define one, then by default:</p>
+<ul class="simple">
+<li><p>tag/untag/move operations are governed by tag locks/permissions</p></li>
+<li><p>builds from srpm are only allowed for admins</p></li>
+<li><p>builds from any SCM are only allowed for admins. It’s used when
+<code class="docutils literal notranslate"><span class="pre">allowed_scms_use_policy</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/kojid.conf</span></code> of the builders
+(<code class="docutils literal notranslate"><span class="pre">false</span></code> by default). And the SCM’s properies: <code class="docutils literal notranslate"><span class="pre">use_common</span></code> and
+<code class="docutils literal notranslate"><span class="pre">source_cmd</span></code> are set to their default values: <code class="docutils literal notranslate"><span class="pre">False</span></code> and
+<code class="docutils literal notranslate"><span class="pre">['make',</span> <span class="pre">'source']</span></code></p></li>
+<li><p>builds from expired repos are only allowed for admins</p></li>
+<li><p>only admins and users with <code class="docutils literal notranslate"><span class="pre">tag</span></code> permission may modify package lists</p></li>
+<li><p>tasks go to the default channel</p></li>
+<li><p>vm tasks need <code class="docutils literal notranslate"><span class="pre">admin</span></code> or <code class="docutils literal notranslate"><span class="pre">win-admin</span></code> permission</p></li>
+<li><p>content generator import can be done by anyone</p></li>
+<li><p>all content ends in <code class="docutils literal notranslate"><span class="pre">DEFAULT</span></code> volume.</p></li>
+</ul>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The hub policy is configured in the <code class="docutils literal notranslate"><span class="pre">hub.conf</span></code> file, which is an ini-style
+configuration file. Policies are defined in the section named <code class="docutils literal notranslate"><span class="pre">[policy]</span></code>.
+Each <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">value</span></code> pair defines the policy of that name. With multiple line
+policies, successive lines should be indented so that the parser treats them
+as part of the whole.</p>
+<p>Consider the following simple (and strict) example:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[policy]</span>
+<span class="na">tag</span> <span class="o">=</span><span class="s"></span>
+<span class="s">    has_perm admin :: allow</span>
+<span class="s">    tag *-candidate :: allow</span>
+<span class="s">    all :: deny</span>
+</pre></div>
+</div>
+<p>This policy section defines a single policy (named ‘tag’). The policy is a
+series of rules, one per line. The rule lines must be indented. Each rule is
+a test and an action, separated by a double colon. The valid actions for
+current policies are ‘allow’ and ‘deny’. There are many tests available,
+though not all of them are applicable for all policies. Each test is specified
+by giving the name of the test followed by any arguments the test accepts.</p>
+<p>Each rule in the policy is checked until a match is found. Upon finding a
+match, the action is applied. Our example above limits non-admins to tags
+ending in -candidate.</p>
+<div class="section" id="getting-a-bit-more-complicated">
+<h3>Getting a bit more complicated<a class="headerlink" href="#getting-a-bit-more-complicated" title="Permalink to this headline">¶</a></h3>
+<p>The example above is very simple. The policy syntax also supports compound
+tests, negated tests, and nested tests. Consider the following example:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[policy]</span>
+<span class="na">tag</span> <span class="o">=</span><span class="s"></span>
+<span class="s">    buildtag *epel* :: {</span>
+<span class="s">        tag *epel* !! deny</span>
+<span class="s">    }</span>
+<span class="s">    tag *-updates :: {</span>
+<span class="s">        operation move :: {</span>
+<span class="s">            fromtag *-updates-candidate :: allow</span>
+<span class="s">            fromtag *-updates-testing :: allow</span>
+<span class="s">            all :: deny Tagging from some tags to *-updates is forbidden.</span>
+<span class="s">        }</span>
+<span class="s">        operation tag &amp;&amp; hastag *-updates-candidate *-updates-testing :: deny</span>
+<span class="s">    }</span>
+<span class="s">    all :: allow</span>
+</pre></div>
+</div>
+<p>This policy sets up some rules concerning tags ending in -updates and tags
+containing epel, but is otherwise permissive.</p>
+<p>The first nested rule limits builds built from a tag matching <code class="docutils literal notranslate"><span class="pre">epel</span></code>  to only
+such tags. Note the use of !! instead of :: negates the test.</p>
+<p>For tags matching <code class="docutils literal notranslate"><span class="pre">*-updates</span></code>, a particular work-flow is enforced. Moving is
+only allowed if the move is coming from a tag matching <code class="docutils literal notranslate"><span class="pre">*-updates-candidate</span></code>
+or <code class="docutils literal notranslate"><span class="pre">*-updates-testing</span></code>. Conversely, a basic tag operation (not a move) is
+denied if the build also has such a tag (the policy requires a move instead).</p>
+<p>For denied operations some clarifying message is sent to user. If there is no
+specific message (everything after action keyword), only generic ‘policy
+violation (policy_name)’ is sent, so it could be helpful to specify such
+messages in more complicated cases.</p>
+</div>
+</div>
+<div class="section" id="general-format">
+<h2>General format<a class="headerlink" href="#general-format" title="Permalink to this headline">¶</a></h2>
+<p>The general form of a basic policy line is one of the following</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">test [params] [&amp;&amp; test [params] ...] :: action-if-true</span>
+<span class="na">test [params] [&amp;&amp; test [params] ...] !! action-if-false</span>
+</pre></div>
+</div>
+<p>And for nested rules:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">test [params] [&amp;&amp; ...] [::|!!] {</span>
+    <span class="na">test [params] [&amp;&amp; ...] [::|!!] action</span>
+    <span class="na">test [params] [&amp;&amp; ...] [::|!!] {</span>
+        <span class="na">...</span>
+        <span class="na">}</span>
+<span class="na">}</span>
+</pre></div>
+</div>
+<p>Note that each closing brace must be on a line by itself.
+Using <code class="docutils literal notranslate"><span class="pre">!!</span></code> instead of <code class="docutils literal notranslate"><span class="pre">::</span></code> negates the entire test.
+Tests can only be joined with &amp;&amp;, the syntax does not support <code class="docutils literal notranslate"><span class="pre">||</span></code>.</p>
+</div>
+<div class="section" id="available-policies">
+<h2>Available policies<a class="headerlink" href="#available-policies" title="Permalink to this headline">¶</a></h2>
+<p>The system currently looks for the following policies</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: checked during tag/untag/move operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_srpm</span></code>: checked when a build from srpm (not an SCM reference) is
+requested.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code>: checked when a build task from SCM is executing on builder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_repo_id</span></code>: checked when a build from a specified repo id is
+requested</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_list</span></code>: checked when the package list for a tag is modified</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channel</span></code>: consulted when a task is created</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cg_import</span></code>: consulted during content generator imports</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volume</span></code>: determine which volume a build should live on</p></li>
+</ul>
+<p>These policies are set by assigning a rule set to the given name in the policy
+section.</p>
+<p>Note that the use of tag policies does not bypass tag locks or permissions</p>
+<p>Note that an admin can bypass the tag policy by using <code class="docutils literal notranslate"><span class="pre">--force</span></code>.</p>
+</div>
+<div class="section" id="actions">
+<h2>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h2>
+<p>Most of the policies are simply allow/deny policies. They have two possible
+actions: <code class="docutils literal notranslate"><span class="pre">allow</span></code> or <code class="docutils literal notranslate"><span class="pre">deny</span></code>.</p>
+<p>The <strong>channel</strong> policy is used to determine the channel for a task. It supports
+the following actions:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">&lt;channel&gt;</span></code></dt><dd><ul class="simple">
+<li><p>use the given channel</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">req</span></code></dt><dd><ul class="simple">
+<li><p>use the requested channel</p></li>
+<li><p>generally this means the default, though some calls allow the client to
+request a channel</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><ul class="simple">
+<li><p>use the parent’s channel</p></li>
+<li><p>only valid for child tasks</p></li>
+<li><p>recommend using the <code class="docutils literal notranslate"><span class="pre">is_child_task</span></code> test to be sure</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <strong>priority</strong> policy is used to alter task’s priority. In most cases you
+should manage priorities by different channels and builders assigned to them.
+There is nevertheless few corner-cases which can benefit from altering task’s
+priority.</p>
+<p>Note, that you can easily get to deadlock situation if this is not handled with
+caution (lower priority tasks will get assigned only if there is no higher
+priority task for given channel).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For example OSBS use this mechanism to propagate higher priority tasks to
+its plugin.  Deadlock problem is here mitigated by limiting policy to
+<code class="docutils literal notranslate"><span class="pre">buildContainer</span></code> tasks only. These tasks are consumed only by dedicated
+builders/channel, so they will not take priority over other types of tasks
+(e.g. <code class="docutils literal notranslate"><span class="pre">newRepo</span></code> or <code class="docutils literal notranslate"><span class="pre">tagBuild</span></code> tasks which could be blocked otherwise.</p>
+</div>
+<p>Technically it is very similar to <strong>channel</strong> policy. Only actions are
+different:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">stay</span></code></dt><dd><ul class="simple">
+<li><p>don’t touch the default priority of the task</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">&lt;int&gt;</span></code></dt><dd><ul class="simple">
+<li><p>set priority to this value</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">adjust</span> <span class="pre">+&lt;int&gt;</span></code></dt><dd><ul class="simple">
+<li><p>increment default priority</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">adjust</span> <span class="pre">-&lt;int&gt;</span></code></dt><dd><ul class="simple">
+<li><p>decrement default priority</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <strong>build_from_scm</strong> policy is used to assert if the SCM is allowed or not,
+like the basic allow/deny one. It is also used to manage the SCM’s properties as
+the same as the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> option of the koji builder. The actions could
+be defined as:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">allow</span> <span class="pre">[use_common]</span> <span class="pre">[&lt;source_cmd&gt;]</span></code></dt><dd><ul class="simple">
+<li><p>allow the SCM</p></li>
+<li><p>use(clone) the /common repo when <code class="docutils literal notranslate"><span class="pre">use_common</span></code> follows <code class="docutils literal notranslate"><span class="pre">allow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;source_cmd&gt;</span></code> is a <em>optional</em> shell command for preparing the source
+between checkout and srpm build. If it is omitted, it will follow the
+default value: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">source</span></code>. The explicit value: <code class="docutils literal notranslate"><span class="pre">none</span></code> means <strong>No</strong>
+<code class="docutils literal notranslate"><span class="pre">source_cmd</span></code> is defined.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">deny</span> <span class="pre">[&lt;reason&gt;]</span></code></dt><dd><ul class="simple">
+<li><p>disallow the SCM</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;reason&gt;</span></code> is the error message which is shown as the task result</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="available-tests">
+<h2>Available tests<a class="headerlink" href="#available-tests" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">true</span></code></dt><dd><ul class="simple">
+<li><p>always true. no arguments</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">all</span></code></dt><dd><ul class="simple">
+<li><p>an alias of true</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">false</span></code></dt><dd><ul class="simple">
+<li><p>always false. no arguments</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">none</span></code></dt><dd><ul class="simple">
+<li><p>an alias of false</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">operation</span></code></dt><dd><ul class="simple">
+<li><p>for tag operations, the operation is one of: tag, untag, move. This test
+checks its arguments against the name of the operation and returns true if
+there is a match. Accepts glob patterns.</p></li>
+<li><p>only applicable to the tag policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">package</span></code></dt><dd><ul class="simple">
+<li><p>Matches its arguments against the package name. Accepts glob patterns.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><ul class="simple">
+<li><p>Matches its arguments against the build version. Accepts glob patterns.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><ul class="simple">
+<li><p>Matches its arguments against the build release. Accepts glob patterns.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tag</span></code></dt><dd><ul class="simple">
+<li><p>matches its arguments against the tag name. Accepts glob patterns.</p></li>
+<li><p>for move operations, the tag name tested is the destination tag (see
+fromtag)</p></li>
+<li><p>for untag operations, the tag name is null and this test will always be
+false (see fromtag)</p></li>
+<li><p>for the build_from_* policies, tests the destination tag for the build
+(which will be null is –skip-tag is used)</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fromtag</span></code></dt><dd><ul class="simple">
+<li><p>matches against the tag name that a build is leaving. Accepts glob
+patterns</p></li>
+<li><p>for tag operations, the tag name is null and this test will always be
+false</p></li>
+<li><p>for move operations, the tag name test is the one that the build is
+moving from</p></li>
+<li><p>for untag operations, tests the tag the build is being removed from</p></li>
+<li><p>only applicable to the tag policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><ul class="simple">
+<li><p>matches against the build’s target name. Accepts glob patterns.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hastag</span></code></dt><dd><ul class="simple">
+<li><p>checks the current tags for the build in question against the arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">buildtag</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>checks the build tag name against the arguments</p></li>
+<li><p>for the build_from_* policies the build tag is determined by the build
+target requested</p></li>
+<li><p>for the tag policies, determines the build tag from the build data,
+which will by null for imported builds</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">buildtype</span></code></dt><dd><ul class="simple">
+<li><p>checks the build type(s) against the arguments</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">skip_tag</span></code></dt><dd><ul class="simple">
+<li><p>checks to see if the –skip-tag option was used</p></li>
+<li><p>only applicable to the build_from_* policies</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">imported</span></code></dt><dd><ul class="simple">
+<li><p>checks to see if the build in question was imported</p></li>
+<li><p>takes no arguments</p></li>
+<li><p>true if any of the component rpms in the build lacks buildroot data</p></li>
+<li><p>only applicable to the tag policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_build_owner</span></code></dt><dd><ul class="simple">
+<li><p>Check if requesting user owns the build (not the same as package
+ownership)</p></li>
+<li><p>take no arguments</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">user_in_group</span></code></dt><dd><ul class="simple">
+<li><p>matches the users groups against the arguments</p></li>
+<li><p>true if user is in /any/ matching group</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">has_perm</span></code></dt><dd><ul class="simple">
+<li><p>matches the user’s permissions against the arguments</p></li>
+<li><p>true is user has /any/ matching permission</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">source</span></code></dt><dd><ul class="simple">
+<li><p>test the build source against the arguments</p></li>
+<li><p>for the build_from_* policies, this is the source specified for the build</p></li>
+<li><p>for the tag policy, this comes from the task corresponding to the build
+(and will be null for imported builds)</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">policy</span></code></dt><dd><ul class="simple">
+<li><p>takes a single argument, which is the name of another policy to check</p></li>
+<li><p>checks the named policy. true if the resulting action is one of: yes,
+true, allow</p></li>
+<li><p>additional policies are defined in the [policy] section, just like the
+others</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_new_package</span></code></dt><dd><ul class="simple">
+<li><p>true if the package being added is new to the system</p></li>
+<li><p>intended for use with the package_list policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_child_task</span></code></dt><dd><ul class="simple">
+<li><p>true if the task is a child task</p></li>
+<li><p>for use with the channel policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">method</span></code></dt><dd><ul class="simple">
+<li><p>matches the task method name against glob pattern(s)</p></li>
+<li><p>true if the method name matches any of the patterns</p></li>
+<li><p>for use with the channel policy</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">user</span></code></dt><dd><ul class="simple">
+<li><p>checks the username against glob patterns</p></li>
+<li><p>true if any pattern matches</p></li>
+<li><p>the user matched is the user performing the action</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">match</span></code></dt><dd><ul class="simple">
+<li><p>matches a field in the data against glob patterns</p></li>
+<li><p>true if any pattern matches</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="permissions.html" class="btn btn-neutral float-left" title="Permission system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exporting_repositories.html" class="btn btn-neutral float-right" title="Exporting repositories" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

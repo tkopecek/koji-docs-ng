@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setting RPM Macros for Builds &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RPM Signing with Koji" href="signing.html" />
+    <link rel="prev" title="Exporting repositories" href="exporting_repositories.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting RPM Macros for Builds</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-rpm-macros-with-a-build">Setting rpm macros with a build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-rpm-macro-values">Setting rpm.macro values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Setting RPM Macros for Builds</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/setting_rpm_macros.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="setting-rpm-macros-for-builds">
+<h1>Setting RPM Macros for Builds<a class="headerlink" href="#setting-rpm-macros-for-builds" title="Permalink to this headline">¶</a></h1>
+<p>The values of RPM macros can have significant effects on the results of RPM builds.
+Note that the subject of RPM macros is complicated and goes well beyond Koji.
+For the purposes of this document, we assume the reader is familiar with the basic concepts.</p>
+<p>Further reading:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://rpm-guide.readthedocs.io/en/latest/rpm-guide.html#rpm-macros">https://rpm-guide.readthedocs.io/en/latest/rpm-guide.html#rpm-macros</a></p></li>
+<li><p><a class="reference external" href="https://rpm.org/user_doc/macros.html">https://rpm.org/user_doc/macros.html</a></p></li>
+<li><p><a class="reference external" href="https://rpm-packaging-guide.github.io/#more-on-macros">https://rpm-packaging-guide.github.io/#more-on-macros</a></p></li>
+</ul>
+<p>When Koji builds RPMs, it does so by running <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> in a controlled build environment.
+Inside that environment, <code class="docutils literal notranslate"><span class="pre">rpm</span></code> can pull macro values from multiple sources.</p>
+<p>There are two basic ways to set rpm macro values for builds in Koji:</p>
+<ul class="simple">
+<li><p>using a build that places an rpmmacros file in the build environment</p></li>
+<li><p>setting <code class="docutils literal notranslate"><span class="pre">rpm.macro.</span></code> values for the build tag</p></li>
+</ul>
+<div class="section" id="setting-rpm-macros-with-a-build">
+<h2>Setting rpm macros with a build<a class="headerlink" href="#setting-rpm-macros-with-a-build" title="Permalink to this headline">¶</a></h2>
+<p>Prior to Koji 1.18, this was the only way to set rpm macros in Koji.
+This method is still valid, and in some cases preferred.
+However, values set this way can be overridden by <code class="docutils literal notranslate"><span class="pre">rpm.macro.*</span></code> values set for the build tag.</p>
+<p>In short, this method involves:</p>
+<ul class="simple">
+<li><p>creating an rpm build that places an rpm macros file in the buildroot</p></li>
+<li><p>requiring this build to be installed in the build environment</p></li>
+</ul>
+<p>This might be a very simple build that only provides a single rpm macros file.
+Such files will be read by <code class="docutils literal notranslate"><span class="pre">rpm</span></code> when they are installed into <code class="docutils literal notranslate"><span class="pre">/etc/rpm</span></code> or
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/rpm/macros.d/</span></code>.</p>
+<p>There are many examples of this.
+In Fedora, there are numerous packages like <code class="docutils literal notranslate"><span class="pre">python-rpm-macros</span></code>, <code class="docutils literal notranslate"><span class="pre">perl-macros</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">systemd-rpm-macros</span></code>.
+Other packages might package such macro files alongside other content.
+The <code class="docutils literal notranslate"><span class="pre">ansible</span></code> package is currently an example of this.</p>
+<p><em>In order for such a build to affect the build environment, it must be installed there.</em>
+First the build needs to be in the build tag, either tagged there directly or indirectly via
+inheritance.
+Second, the package needs to be either part of the base buildroot install, or pulled in via
+build requirements.</p>
+<p>Often, you want to make sure these macros affect <em>all</em> builds for a tag.
+This means making your macros build part of the base install for the buildroot.
+This can be done by adding the rpm name to the <code class="docutils literal notranslate"><span class="pre">build</span></code> group for the tag.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji add-group-pkg f33-build build my-custom-rpm-macros
+</pre></div>
+</div>
+<p>If your macro also needs to be available when building source rpms (e.g. <code class="docutils literal notranslate"><span class="pre">%dist</span></code>), then you’ll
+also want to add it to the the <code class="docutils literal notranslate"><span class="pre">srpm-build</span></code> group.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji add-group-pkg f33-build build my-custom-rpm-macros
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-rpm-macro-values">
+<h2>Setting rpm.macro values<a class="headerlink" href="#setting-rpm-macro-values" title="Permalink to this headline">¶</a></h2>
+<p>(this feature was added in <a class="reference internal" href="../Operations Guide/release_notes/release_notes_1.18.html"><span class="doc">Koji 1.18</span></a>)</p>
+<p>As a convenience, Koji will honor any <code class="docutils literal notranslate"><span class="pre">rpm.macro.NAME</span></code> values in the “tag extra” settings for
+a given build tag.
+These values can be set by tag administrators with the <code class="docutils literal notranslate"><span class="pre">edit-tag</span></code> command and viewed with
+the <code class="docutils literal notranslate"><span class="pre">taginfo</span></code> command.
+For example, to set the <code class="docutils literal notranslate"><span class="pre">dist</span></code> macro value, you could use a command like the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji edit-tag f33-build -x rpm.macro.dist<span class="o">=</span>.fc33
+</pre></div>
+</div>
+<p>This will cause Koji to pass this value to <code class="docutils literal notranslate"><span class="pre">mock</span></code> when constructing the buildroot.
+These values are placed in the mock configuration file.</p>
+<p><strong>Use case</strong></p>
+<p>This feature is best used for macros with simple values that need to be managed by tag administrators.
+The canonical example is managing the <code class="docutils literal notranslate"><span class="pre">%dist</span></code> macro, but other simple macros would also make sense.</p>
+<p>We do not recommend setting complicated macros in this way.
+E.g. macros that contain complex expansions, or those that are central to the rpmbuild process.</p>
+<p><strong>Inheritance</strong></p>
+<p>In Koji, the “tag extra” values are inherited.
+So, by default, any tag a given build tag inherits from will contribute its settings.
+The exception is if the inheritance line has the <code class="docutils literal notranslate"><span class="pre">noconfig</span></code> flag set.</p>
+<p><strong>Priority over macros builds</strong></p>
+<p>Koji places these macro values in the <code class="docutils literal notranslate"><span class="pre">mock</span></code> configuration file in for the buildroot.
+The <code class="docutils literal notranslate"><span class="pre">mock</span></code> program places them in the <code class="docutils literal notranslate"><span class="pre">.rpmmacros</span></code> file in the build directory, which causes
+them to take priority over other macros defined in the build environment.</p>
+<p>In short, this method for setting rpm macros “wins”.</p>
+<p>This can be important when other build tags inherit from yours.
+If the child tag has its own macros build, but inherits your <code class="docutils literal notranslate"><span class="pre">rpm.macro.*</span></code> setting, then the
+inherited value will win.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="exporting_repositories.html" class="btn btn-neutral float-left" title="Exporting repositories" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="signing.html" class="btn btn-neutral float-right" title="RPM Signing with Koji" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

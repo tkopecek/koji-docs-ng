@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji Content Generators &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Koji Content Generator Metadata" href="content_generator_metadata.html" />
+    <link rel="prev" title="Writing Koji plugins" href="writing_a_plugin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Koji Content Generators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements-for-writing-a-content-generator">Requirements for writing a Content Generator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#avoid-using-the-host-s-software">Avoid Using the Host’s Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-of-build-environment-content">Source of build environment content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#binaries-or-other-compiled-content-from-upstream-may-not-become-included-in-output">Binaries (or other compiled content) from Upstream May Not become included in output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-all-transformations-of-content">Log all Transformations of Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preserve-all-inputs">Preserve All Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preserve-all-outputs">Preserve All Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#do-not-use-caching-mechanisms">Do Not Use Caching Mechanisms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#current-public-implementations">Current Public Implementations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html">Release process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+      <li>Koji Content Generators</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developer Guide/content_generators.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-content-generators">
+<h1>Koji Content Generators<a class="headerlink" href="#koji-content-generators" title="Permalink to this headline">¶</a></h1>
+<p>A Koji Content Generator is an external service that generates content
+(jars, zips, tarballs, .npm, .wheel, .gem, etc) which is then passed to
+Koji for management and delivery to other processes in the release
+workflow. Content Generators can evolve independently of the Koji
+codebase, enabling the build process to be more agile and flexible to
+changing requirements and new technologies, while allowing Koji to
+provide stable APIs and interfaces to other processes.</p>
+<p>Along with the content to be managed by Koji, a Content Generator will
+provide enough metadata to enable a reasonable level of auditing and
+reproducibility. The exact data provided and the format used is being
+discussed, but will include information like the upstream source URL,
+build tools used, build environment contents, and any
+container/virtualization technologies used.</p>
+<p>The intention is that a team dedicated to managing a specific content
+type will design and maintain their own Content Generator, in
+coordination with the Koji developers. Once the Content Generator is
+ready for production use it will be given permission to import content
+and metadata it produces into Koji. Policies on the Koji hub will
+validate imported content and metadata and ensure that it is complete
+and consistent.</p>
+<div class="section" id="requirements-for-writing-a-content-generator">
+<h2>Requirements for writing a Content Generator<a class="headerlink" href="#requirements-for-writing-a-content-generator" title="Permalink to this headline">¶</a></h2>
+<p>From an implementation perspective, content generators have wide
+latitude in how they perform builds. To ensure sanity in the build
+process, we strongly recommend that administrators of Koji systems set
+policies about what content generators are allowed to do, and make sure
+that those policies are followed before the content generator is granted
+authorization in their Koji system.</p>
+<p>Below are some examples of the sorts of policies that one might require.
+Content Generators should be designed and implemented with these
+requirements in mind. Please note that the list below is not complete.</p>
+<div class="section" id="avoid-using-the-host-s-software">
+<h3>Avoid Using the Host’s Software<a class="headerlink" href="#avoid-using-the-host-s-software" title="Permalink to this headline">¶</a></h3>
+<p>During the building process, the code should avoid using the host’s
+installed software. The more reliance on installed software, the more
+risk in the future that changes (such as upgrading a builder) will break
+the build processes. Use mock chroots, VM guests, or containers wherever
+possible to insulate against changes. Isolating the build environment
+from the host environment makes reproducing work much easier and
+predictable.</p>
+</div>
+<div class="section" id="source-of-build-environment-content">
+<h3>Source of build environment content<a class="headerlink" href="#source-of-build-environment-content" title="Permalink to this headline">¶</a></h3>
+<p>The build environment must come from somewhere. In a standard Koji
+build, it comes from content already in Koji, or from configured
+external repositories.</p>
+<p>CG authors will likely want to pull content from sources outside of
+Koji. Koji administrators should set a clear policy about which sources
+are acceptable. The use of arbitrary sources can make it difficult or
+impossible to reproduce build environments.</p>
+</div>
+<div class="section" id="binaries-or-other-compiled-content-from-upstream-may-not-become-included-in-output">
+<h3>Binaries (or other compiled content) from Upstream May Not become included in output<a class="headerlink" href="#binaries-or-other-compiled-content-from-upstream-may-not-become-included-in-output" title="Permalink to this headline">¶</a></h3>
+<p>If tools or other content downloaded from external sources are used in
+the build, they may not be included in CG build output, and may not be
+imported into Koji. In other words, output must be built from sources in
+the CG or Koji, not retrieved from the internet. Tools necessary to
+build product content can be downloaded and cached in the CG.</p>
+</div>
+<div class="section" id="log-all-transformations-of-content">
+<h3>Log all Transformations of Content<a class="headerlink" href="#log-all-transformations-of-content" title="Permalink to this headline">¶</a></h3>
+<p>When the content is building, as much should be logged as possible. In
+addition to compilation, if the content goes through other
+transformations, perhaps changing formats, that should be logged as
+well. There can be no black-box transformations of the output. Imagine
+having to figure out how a piece of content was built 5 years into the
+future to understand the motivation behind this requirement. Details of
+the build environment and tools used in the environment should be
+recorded too.</p>
+</div>
+<div class="section" id="preserve-all-inputs">
+<h3>Preserve All Inputs<a class="headerlink" href="#preserve-all-inputs" title="Permalink to this headline">¶</a></h3>
+<p>All inputs to a build task should be preserved either as logs, a
+database, or as output of the build itself.</p>
+</div>
+<div class="section" id="preserve-all-outputs">
+<h3>Preserve All Outputs<a class="headerlink" href="#preserve-all-outputs" title="Permalink to this headline">¶</a></h3>
+<p>Naturally the outputs of a build should be preserved too. Transient
+artifacts are not strictly required, but if they’re not onerous to
+maintain, they should be included. It must not be necessary to further
+transform the content to make it usable.</p>
+</div>
+<div class="section" id="do-not-use-caching-mechanisms">
+<h3>Do Not Use Caching Mechanisms<a class="headerlink" href="#do-not-use-caching-mechanisms" title="Permalink to this headline">¶</a></h3>
+<p>Content Generators must build without caching mechanisms (in compilers
+or DNF|YUM) wherever possible. Caches make
+reproducing results in the future more difficult, and also introduce
+layers of indirection that can make debugging a build more difficult.
+Consider the risk of re-shipping a security flaw that is compiled in
+because an outdated library was cached in the Content Generator, this is
+why we have this requirement.</p>
+</div>
+</div>
+<div class="section" id="metadata">
+<h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
+<p>Metadata will be provided by the Content Generator as a JSON file. There
+is a proposal of the <a class="reference internal" href="content_generator_metadata.html"><span class="doc">Content Generator
+Metadata</span></a> format available for review.</p>
+</div>
+<div class="section" id="api">
+<span id="cg-api"></span><h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>Relevant API calls for Content Generator are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CGImport(metadata,</span> <span class="pre">directory,</span> <span class="pre">token=None)</span></code>: This is basic integration point
+of Content Generator with koji. It is supplied with metadata as json encoded
+string or dict or filename of metadata described in previous chapter and
+directory with all uploaded content referenced from metadata. These files
+needs to be uploaded before <code class="docutils literal notranslate"><span class="pre">CGImport</span></code> is called.</p>
+<p>Optionally, <code class="docutils literal notranslate"><span class="pre">token</span></code> can be specified in case, that build ID reservation was
+done before.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CGInitBuild(cg,</span> <span class="pre">data)</span></code>: It can be helpful in many cases to reserve NVR for
+future build before Content Generator evend starts building.  Especially, if
+there is some CI or other workflow competing for same NVRs.  This call creates
+special <code class="docutils literal notranslate"><span class="pre">token</span></code> which can be used to claim specific build (ID + NVR). Such
+claimed build will be displayed as BUILDING and can be used by <code class="docutils literal notranslate"><span class="pre">CGImport</span></code>
+call later.</p>
+<p>As an input are here Content Generator name and <cite>data</cite> which is basically
+dictionary with name/version/release/epoch keys. Call will return a dict
+containing <code class="docutils literal notranslate"><span class="pre">token</span></code> and <code class="docutils literal notranslate"><span class="pre">build_id</span></code>. <code class="docutils literal notranslate"><span class="pre">token</span></code> would be used in subsequent
+call of <code class="docutils literal notranslate"><span class="pre">CGImport</span></code> while <code class="docutils literal notranslate"><span class="pre">build_id</span></code> needs to be part of metadata (as item
+in <code class="docutils literal notranslate"><span class="pre">build</span></code> key).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="current-public-implementations">
+<h2>Current Public Implementations<a class="headerlink" href="#current-public-implementations" title="Permalink to this headline">¶</a></h2>
+<p>Following koji plugins uses CGs as part of their workflow.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/containerbuildsystem/">OpenShift Build Service</a></p></li>
+<li><p><a class="reference external" href="https://github.com/osbuild/">OSBuild</a></p></li>
+<li><p><a class="reference external" href="https://pagure.io/fm-orchestrator/blob/master/f/module_build_service/builder/KojiContentGenerator.py">MBS</a></p></li>
+</ul>
+<p>Standalone CG utilites are here:
+- <a class="reference external" href="https://github.com/coreos/coreos-assembler/blob/master/src/cmd-koji-upload">CoreOS</a>
+- <a class="reference external" href="https://github.com/red-hat-storage/misoctl">misoctl - Debian package CG</a>
+- <a class="reference external" href="https://github.com/project-ncl/causeway">Project NewCastle - Java package CG component</a></p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="writing_a_plugin.html" class="btn btn-neutral float-left" title="Writing Koji plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_generator_metadata.html" class="btn btn-neutral float-right" title="Koji Content Generator Metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

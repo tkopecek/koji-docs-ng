@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing Koji plugins &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Koji Content Generators" href="content_generators.html" />
+    <link rel="prev" title="Koji Profiles" href="profiles.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing Koji plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-task-types">Adding new task types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-new-api-methods-over-xmlrpc">Exporting new API methods over XMLRPC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ensuring-the-user-has-the-required-permissions">Ensuring the user has the required permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-code-automatically-triggered-on-events">Running code automatically triggered on events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-callbacks">List of callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-command-for-cli">New command for CLI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pull-requests">Pull requests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#getting-started-hacking-on-koji">Getting Started Hacking on Koji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#task-flow">Task Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#component-overview">Component Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#building-and-deploying-changes">Building and Deploying Changes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="writing_koji_code.html#writing-koji-plugins">Writing Koji plugins</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Writing Koji plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#unit-tests">Unit Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#further-testing">Further testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#code-style">Code Style</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html">Release process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+      <li>Writing Koji plugins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developer Guide/writing_a_plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="writing-koji-plugins">
+<h1>Writing Koji plugins<a class="headerlink" href="#writing-koji-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Depending on what you are trying to do, there are different ways to
+write a Koji plugin.</p>
+<p>Each is described in this file, by use case.</p>
+<div class="section" id="adding-new-task-types">
+<h2>Adding new task types<a class="headerlink" href="#adding-new-task-types" title="Permalink to this headline">¶</a></h2>
+<p>Koji can do several things, for example build RPMs, or live CDs. Those
+are types of tasks which Koji knows about.</p>
+<p>If you need to do something which Koji does not know yet how to do, you
+could create a Koji Builder plugin.</p>
+<p>Such a plugin would minimally look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.tasks</span> <span class="kn">import</span> <span class="n">BaseTaskHandler</span>
+
+<span class="k">class</span> <span class="nc">MyTask</span><span class="p">(</span><span class="n">BaseTaskHandler</span><span class="p">):</span>
+    <span class="n">Methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mytask&#39;</span><span class="p">]</span>
+    <span class="n">_taskWeight</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running my task...&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Here is where you actually do something</span>
+</pre></div>
+</div>
+<p>A few explanations on what goes on here:</p>
+<ul class="simple">
+<li><p>Your task needs to inherit from <code class="docutils literal notranslate"><span class="pre">koji.tasks.BaseTaskHandler</span></code></p></li>
+<li><p>Your task must have a <code class="docutils literal notranslate"><span class="pre">Methods</span></code> attribute, which is a list of the
+method names your task can handle.</p></li>
+<li><p>You can specify the weight of your task with the <code class="docutils literal notranslate"><span class="pre">_taskWeight</span></code>
+attribute. The more intensive (CPU, IO, …) your task is, the higher
+this number should be.</p></li>
+<li><p>The task object has a <code class="docutils literal notranslate"><span class="pre">logger</span></code> attribute, which is a Python logger
+with the usual <code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code>, <code class="docutils literal notranslate"><span class="pre">warning</span></code> and <code class="docutils literal notranslate"><span class="pre">error</span></code>
+methods. The messages you send with it will end up in the Koji
+Builder logs (<code class="docutils literal notranslate"><span class="pre">kojid.log</span></code>)</p></li>
+<li><p>Your task must have a <code class="docutils literal notranslate"><span class="pre">handler()</span></code> method. That is the method Koji
+will call to run your task. It is the method that should actually do
+what you need. It can have as many positional and named arguments as
+you want.</p></li>
+</ul>
+<p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mytask.py</span></code>, then install it in the Koji
+Builder plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-builder-plugins/</span></code></p>
+<p>Finally, edit the Koji Builder config file, <code class="docutils literal notranslate"><span class="pre">/etc/kojid/kojid.conf</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<span class="n">plugins</span> <span class="o">=</span> <span class="n">mytask</span>
+</pre></div>
+</div>
+<p>Restart the Koji Builder service, and your plugin will be enabled.</p>
+<p>You can try running a task from your new task type with the
+command-line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji make-task mytask arg1 arg2 kwarg1
+</pre></div>
+</div>
+</div>
+<div class="section" id="exporting-new-api-methods-over-xmlrpc">
+<h2>Exporting new API methods over XMLRPC<a class="headerlink" href="#exporting-new-api-methods-over-xmlrpc" title="Permalink to this headline">¶</a></h2>
+<p>Koji clients talk to the Koji Hub via an XMLRPC API.</p>
+<p>It is sometimes desirable to add to that API, so that clients can
+request things Koji does not expose right now.</p>
+<p>Such a plugin would minimally look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">assertPerm</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+    <span class="c1"># Here is where you actually do something</span>
+
+<span class="n">mymethod</span><span class="o">.</span><span class="n">exported</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>A few explanations on what goes on here:</p>
+<ul class="simple">
+<li><p>Your plugin is just a method, with whatever positional and/or named
+arguments you need.</p></li>
+<li><p>You must export your method by setting its <code class="docutils literal notranslate"><span class="pre">exported</span></code> attribute to
+<code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">context.session.assertPerm('admin')</span></code> is how you ensure that only
+the user with administrator privileges can use this call. Read-only
+methods can be (in most cases) public, so such line is not needed.</p></li>
+</ul>
+<p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mymethod.py</span></code>, then install it in the Koji Hub
+plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-hub-plugins/</span></code></p>
+<p>Finally, edit the Koji Hub config file, <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<span class="na">Plugins</span> <span class="o">=</span> <span class="s">mymethod</span>
+</pre></div>
+</div>
+<p>Restart the Koji Hub service, and your plugin will be enabled.</p>
+<p>You can try calling the new XMLRPC API with the Python client library:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">koji</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">koji</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="s2">&quot;http://koji/example.org/kojihub&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="s1">&#39;some value&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="ensuring-the-user-has-the-required-permissions">
+<h3>Ensuring the user has the required permissions<a class="headerlink" href="#ensuring-the-user-has-the-required-permissions" title="Permalink to this headline">¶</a></h3>
+<p>If you want your new XMLRPC API to require specific permissions from the
+user, all you need to do is add the following to your method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.context</span> <span class="kn">import</span> <span class="n">context</span>
+
+<span class="k">def</span> <span class="nf">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">assertPerm</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Here is where you actually do something</span>
+
+<span class="n">mymethod</span><span class="o">.</span><span class="n">exported</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>In the example above, Koji will ensure that the user is an
+administrator. You could of course create your own permission, and check
+for that.</p>
+</div>
+</div>
+<div class="section" id="running-code-automatically-triggered-on-events">
+<h2>Running code automatically triggered on events<a class="headerlink" href="#running-code-automatically-triggered-on-events" title="Permalink to this headline">¶</a></h2>
+<p>You might want to run something automatically when something else
+happens in Koji.</p>
+<p>A typical example is to automatically sign a package right after a build
+finished. Another would be to send a notification to a message bus after
+any kind of event.</p>
+<p>This can be achieved with a plugin, which would look minimally as
+follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">callback</span>
+
+<span class="nd">@callback</span><span class="p">(</span><span class="s1">&#39;preTag&#39;</span><span class="p">,</span> <span class="s1">&#39;postTag&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mycallback</span><span class="p">(</span><span class="n">cbtype</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">build</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Here is where you actually do something</span>
+</pre></div>
+</div>
+<p>A few explanations on what goes on here:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&#64;callback</span></code> decorator allows you to declare which events should
+trigger your function. You can pass as many as you want. For a list
+of supported events, see <code class="docutils literal notranslate"><span class="pre">koji/plugins.py</span></code>.</p></li>
+<li><p>The arguments of the function depend on the event you subscribed to.
+As a result, you need to know how it will be called by Koji. You
+probably should use <code class="docutils literal notranslate"><span class="pre">*kwargs</span></code> to be safe. You can see how callbacks
+are called in the <code class="docutils literal notranslate"><span class="pre">hub/kojihub.py</span></code> file, search for calls of the
+<code class="docutils literal notranslate"><span class="pre">run_callbacks</span></code> function.</p></li>
+</ul>
+<p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mycallback.py</span></code>, then install it in the Koji
+Hub plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-hub-plugins</span></code></p>
+<p>Finally, edit the Koji Hub config file, <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<span class="na">Plugins</span> <span class="o">=</span> <span class="s">mycallback</span>
+</pre></div>
+</div>
+<p>Restart the Koji Hub service, and your plugin will be enabled.</p>
+<p>You can try triggering your callback plugin with the command-line. For
+example, if you registered a callback for the <code class="docutils literal notranslate"><span class="pre">postTag</span></code> event, try
+tagging a build:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> koji tag-build mytag mypkg-1.0-1
+</pre></div>
+</div>
+</div>
+<div class="section" id="list-of-callbacks">
+<h2>List of callbacks<a class="headerlink" href="#list-of-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>hub:</p>
+<ul class="simple">
+<li><p>preBuildStateChange</p></li>
+<li><p>preImport</p></li>
+<li><p>prePackageListChange</p></li>
+<li><p>preRPMSign</p></li>
+<li><p>preRepoDone</p></li>
+<li><p>preRepoInit</p></li>
+<li><p>preTag</p></li>
+<li><p>preTaskStateChange</p></li>
+<li><p>preUntag</p></li>
+<li><p>postBuildStateChange</p></li>
+<li><p>postImport</p></li>
+<li><p>postPackageListChange</p></li>
+<li><p>postRPMSign</p></li>
+<li><p>postRepoDone</p></li>
+<li><p>postRepoInit</p></li>
+<li><p>postTag</p></li>
+<li><p>postTaskStateChange</p></li>
+<li><p>postUntag</p></li>
+</ul>
+<p>builder:</p>
+<ul class="simple">
+<li><p>preSCMCheckout</p></li>
+<li><p>postSCMCheckout</p></li>
+<li><p>postCreateDistRepo</p></li>
+<li><p>postCreateRepo</p></li>
+</ul>
+</div>
+<div class="section" id="new-command-for-cli">
+<span id="plugin-cli-command"></span><h2>New command for CLI<a class="headerlink" href="#new-command-for-cli" title="Permalink to this headline">¶</a></h2>
+<p>When you add new XMLRPC call or just wanted to do some more complicated
+things with API, you can benefit from writing a new command for CLI.</p>
+<p>Most simple command would look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">export_cli</span>
+
+<span class="nd">@export_cli</span>
+<span class="k">def</span> <span class="nf">anon_handle_echo</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="s2">&quot;[info] Print arguments&quot;</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="s2">&quot;usage: %prog echo &lt;message&gt;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;export_cli</span></code> is a decorator which registers a new command. The command
+name is derived from name of the function. The function name must start with
+either <code class="docutils literal notranslate"><span class="pre">anon_handle_</span></code> or <code class="docutils literal notranslate"><span class="pre">handle_</span></code>. The rest of the name becomes the name of
+the command.</p>
+<p>In the first case, the command will not automatically
+authenticate with the hub (though the user can still override
+this behavior with <code class="docutils literal notranslate"><span class="pre">--force-auth</span></code> option). In the second case, the command
+will perform authentication by default (this too can be overridden by the
+user with the <code class="docutils literal notranslate"><span class="pre">--noauth</span></code> option).</p>
+<p>The example above is very simplistic. We recommend that developers also
+examine the actual calls included in Koji. The built in commands live in
+<code class="docutils literal notranslate"><span class="pre">koji_cli.commands</span></code> and our standard cli plugins live in <code class="docutils literal notranslate"><span class="pre">plugins/cli</span></code>.</p>
+<p>Koji provides some important functions via in the client cli library
+(<code class="docutils literal notranslate"><span class="pre">koji_cli.lib</span></code>) for use by cli commands. Some notable examples are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">activate_session(session,</span> <span class="pre">options)</span></code> - It is needed to authenticate
+against hub. Both parameters are same as those passed to handler.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">watch_tasks(session,</span> <span class="pre">tasklist,</span> <span class="pre">quiet=False,</span> <span class="pre">poll_interval=60)</span></code> - It is
+the same function used e.g. in <code class="docutils literal notranslate"><span class="pre">build</span></code> command for waiting for spawned
+tasks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list_task_output_all_volumes(session,</span> <span class="pre">task_id)</span></code> - wrapper function for
+<code class="docutils literal notranslate"><span class="pre">listTaskOutput</span></code> with different versions of hub.</p></li>
+</ul>
+</div></blockquote>
+<p>Final command has to be saved in python system-wide library path - e.g. in
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3.4/site-packages/koji_cli_plugins</span></code>. Filename doesn’t matter
+as all files in this directory are searched for <code class="docutils literal notranslate"><span class="pre">&#64;export_cli</span></code> macros. Note,
+that python 3 variant of CLI is looking to different directory than python 2
+one.</p>
+<p>CLI plugins structure will be extended (made configurable and allowing more
+than just adding commands - e.g. own authentication methods, etc.) in future.</p>
+</div>
+<div class="section" id="pull-requests">
+<h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
+<p>Plugins for CLI  have to be written in python 2.6+/3.x compatible way. We are
+using <code class="docutils literal notranslate"><span class="pre">six</span></code> library to support this, so we will also prefer pull requests
+written this way. CLI (and client library) is meant to be fully compatible with
+python 3 from koji 1.13.</p>
+<p>Hub is already Python 3 only, so <code class="docutils literal notranslate"><span class="pre">six</span></code> is not needed there. For details about
+supported eco-systems see <a class="reference internal" href="../Operations Guide/supported_platforms.html#supported-platforms"><span class="std std-ref">Supported Platforms</span></a>.</p>
+<p>Tests are also recommended for PR. For example one see
+<code class="docutils literal notranslate"><span class="pre">tests/test_plugins/test_runroot_cli.py</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="profiles.html" class="btn btn-neutral float-left" title="Koji Profiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_generators.html" class="btn btn-neutral float-right" title="Koji Content Generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

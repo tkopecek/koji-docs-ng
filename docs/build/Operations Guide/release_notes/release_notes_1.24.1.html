@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji 1.24.1 Release notes &mdash; Koji alpha documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Koji 1.24.0 Release notes" href="release_notes_1.24.html" />
+    <link rel="prev" title="Koji 1.25.0 Release notes" href="release_notes_1.25.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migrations/migrations.html">Migrations</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.27.html">Koji 1.27.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.1.html">Koji 1.26.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.html">Koji 1.26.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.1.html">Koji 1.25.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.html">Koji 1.25.0 Release notes</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Koji 1.24.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.24.html">Koji 1.24.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.23.1.html">Koji 1.23.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.23.html">Koji 1.23.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.1.html">Koji 1.22.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.html">Koji 1.22.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.1.html">Koji 1.21.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.html">Koji 1.21.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.1.html">Koji 1.20.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.html">Koji 1.20.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.1.html">Koji 1.19.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.html">Koji 1.19.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.1.html">Koji 1.18.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.html">Koji 1.18.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.17.html">Koji 1.17.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.2.html">Koji 1.16.2 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.1.html">Koji 1.16.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.html">Koji 1.16.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.1.html">Koji 1.15.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.html">Koji 1.15 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.14.html">Koji 1.14 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.13.html">Koji 1.13 Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="release_notes.html">Release Notes</a> &raquo;</li>
+      <li>Koji 1.24.1 Release notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/release_notes/release_notes_1.24.1.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-1-24-1-release-notes">
+<h1>Koji 1.24.1 Release notes<a class="headerlink" href="#koji-1-24-1-release-notes" title="Permalink to this headline">¶</a></h1>
+<p>All changes can be found at <a class="reference external" href="https://pagure.io/koji/roadmap/1.24.1/">pagure</a>.
+Most important changes are listed here.</p>
+<div class="section" id="migrating-from-koji-1-24">
+<h2>Migrating from Koji 1.24<a class="headerlink" href="#migrating-from-koji-1-24" title="Permalink to this headline">¶</a></h2>
+<p>No special actions are needed.</p>
+</div>
+<div class="section" id="security-fixes">
+<h2>Security Fixes<a class="headerlink" href="#security-fixes" title="Permalink to this headline">¶</a></h2>
+<p>None</p>
+</div>
+<div class="section" id="system-changes">
+<h2>System Changes<a class="headerlink" href="#system-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>drop PyOpenSSL usage</strong></p>
+<p>Library is no longer needed (superseded by <code class="docutils literal notranslate"><span class="pre">requests</span></code>).</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2753">https://pagure.io/koji/pull-request/2753</a></div>
+</div>
+</div>
+<div class="section" id="library-changes">
+<h2>Library changes<a class="headerlink" href="#library-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>revert “requests exception”</strong></p>
+<p>Regression fix for retrying requests to hub.</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2787">https://pagure.io/koji/pull-request/2787</a></div>
+</div>
+</div>
+<div class="section" id="cli-changes">
+<h2>CLI changes<a class="headerlink" href="#cli-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>adding check for the license header key</strong></p>
+<p>The CLI could sometimes fail on a missing header key. This no longer happens.</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2692">https://pagure.io/koji/pull-request/2692</a></div>
+</div>
+</div>
+<div class="section" id="hub-changes">
+<h2>Hub Changes<a class="headerlink" href="#hub-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>set correct import_type for volume policy in completeImageBuild</strong></p>
+<p>Policy data provided incorrect <code class="docutils literal notranslate"><span class="pre">import_type</span></code> (maven instead of image)</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2713">https://pagure.io/koji/pull-request/2713</a></div>
+</div>
+</div>
+<div class="section" id="web-changes">
+<h2>Web Changes<a class="headerlink" href="#web-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>escape vcs and disturl</strong></p>
+<p>Web page correctly escapes these URLs now.</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2747">https://pagure.io/koji/pull-request/2747</a></div>
+</div>
+<p><strong>optional KojiHubCA usage</strong></p>
+<p>Koji 1.24 introduced a bug where the <code class="docutils literal notranslate"><span class="pre">KojiHubCA</span></code> option was required even in
+cases when SSL auth was not used for web. Fixed.</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2749">https://pagure.io/koji/pull-request/2749</a></div>
+</div>
+</div>
+<div class="section" id="utilities-changes">
+<h2>Utilities Changes<a class="headerlink" href="#utilities-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>repo removal improvements</strong></p>
+<p>A few bugs related to kojira’s repo removal have been fixed. In some cases,
+these bugs could have stalled delete threads or even blocked repo deletions
+altogether.</p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2755">https://pagure.io/koji/pull-request/2755</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2715">https://pagure.io/koji/pull-request/2715</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2699">https://pagure.io/koji/pull-request/2699</a></div>
+</div>
+</div>
+<div class="section" id="documentation-devtools-changes">
+<h2>Documentation/DevTools Changes<a class="headerlink" href="#documentation-devtools-changes" title="Permalink to this headline">¶</a></h2>
+<p><strong>remove “ca” option from server howto</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2725">https://pagure.io/koji/pull-request/2725</a></div>
+</div>
+<p><strong>update kojid steps in server howto</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2724">https://pagure.io/koji/pull-request/2724</a></div>
+</div>
+<p><strong>fix Fedora’s koji URL</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2777">https://pagure.io/koji/pull-request/2777</a></div>
+</div>
+<p><strong>jenkins fedora -&gt; centos migration</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2754">https://pagure.io/koji/pull-request/2754</a></div>
+</div>
+<p><strong>document getNextRelease method</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2706">https://pagure.io/koji/pull-request/2706</a></div>
+</div>
+<p><strong>Additional docs for CVE-2020-15856</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2717">https://pagure.io/koji/pull-request/2717</a></div>
+</div>
+<p><strong>Fix small documentation typo</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2772">https://pagure.io/koji/pull-request/2772</a></div>
+</div>
+<p><strong>set WSGIProcessGroup inside Directory</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2731">https://pagure.io/koji/pull-request/2731</a></div>
+</div>
+<p><strong>tests: stop mock in DBQueryTest</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2759">https://pagure.io/koji/pull-request/2759</a></div>
+</div>
+<p><strong>devtools: updated Dockerfiles</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2744">https://pagure.io/koji/pull-request/2744</a></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="release_notes_1.25.html" class="btn btn-neutral float-left" title="Koji 1.25.0 Release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="release_notes_1.24.html" class="btn btn-neutral float-right" title="Koji 1.24.0 Release notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

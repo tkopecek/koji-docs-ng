@@ -166,7 +166,7 @@ Example Metadata JSON
 
 The below JSON is based loosely on the output of a docker image build.
 
-::
+.. code-block:: json
 
     {"metadata_version": 0,
      "build": {"name": "rhel-server-docker",

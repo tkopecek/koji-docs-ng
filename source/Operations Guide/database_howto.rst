@@ -1,6 +1,8 @@
 Database Performance Howto
 ==========================
 
+.. highlight:: console
+
 For small to middle-sized deployments you should be ok with standard
 distribution settings. Anyway, for larger one, it can start to be
 problematic to deal with specific indices, disk space allocation, etc.
@@ -159,12 +161,12 @@ Create two files:
 
 Set the ownership appropriately::
 
-  chown postgres:postgres /var/lib/pgsql/data/server.{crt,key}
-  chmod 0600 /var/lib/pgsql/data/server.key
+  root@localhost$ chown postgres:postgres /var/lib/pgsql/data/server.{crt,key}
+  root@localhost$ chmod 0600 /var/lib/pgsql/data/server.key
 
 Restart postgresql for the new settings to take effect::
 
-  systemctl restart postgresql
+  root@localhost$ systemctl restart postgresql
 
 Configuring the Koji hub to use SSL to Postgres
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,7 +174,7 @@ Configuring the Koji hub to use SSL to Postgres
 Once you've enabled SSL on the PostgreSQL server, you can test it with the
 CLI::
 
-  psql 'postgresql://koji:example_password@db.example.com/koji?sslmode=verify-full&sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt'
+  $ psql 'postgresql://koji:example_password@db.example.com/koji?sslmode=verify-full&sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt'
 
 You should be able to list tables, run queries, etc.
 
@@ -182,6 +184,6 @@ Edit ``/etc/koji-hub/hub.conf`` to use this connection string::
 
 Restart the hub and verify the new ``DBConnectionString`` is working::
 
-  systemctl restart httpd
+  root@localhost$ systemctl restart httpd
 
-  koji hello
+  $ koji hello

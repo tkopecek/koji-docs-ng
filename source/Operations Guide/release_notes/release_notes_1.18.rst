@@ -95,8 +95,8 @@ With this new implementation:
 * method calls return a `VirtualCall` instance that can later be used to access the result
 * `MultiCallSession` can be used as a context manager, ensuring that the calls are executed
 
-Usage examples can be found in the :doc:`Writing Koji Code <../writing_koji_code>`
-document.
+Usage examples can be found in the :doc:`Writing Koji Code <../../Developer
+Guide/writing_koji_code>` document.
 
 
 

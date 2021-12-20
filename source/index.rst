@@ -22,8 +22,6 @@ Contents
     User Guide/index.rst
     Developer Guide/index.rst
 
-    HOWTO
-    misc
     runs_here
 
 Indices and tables

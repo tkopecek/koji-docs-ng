@@ -1,8 +1,3 @@
-========================
-Koji Miscellaneous Notes
-========================
-
-
 Notes and miscellaneous details about Koji
 ==========================================
 
@@ -21,17 +16,17 @@ Getting Help
    -  List of user commands:
       ::
 
-          koji help
+          $ koji help
 
    -  Command-specific help:
       ::
 
-          koji [command] --help
+          $ koji [command] --help
 
    -  List of admin commands:
       ::
 
-          koji help --admin
+          $ koji help --admin
 
 Building from SRPM
 ~~~~~~~~~~~~~~~~~~
@@ -46,8 +41,8 @@ SCM Layout
 ^^^^^^^^^^
 
 When building out of an SCM, Koji expects there will be a Makefile in
-the project root that has a 'sources' target. Koji will call 'make
-sources' on the checked out files.
+the project root that has a ``sources`` target. Koji will call ``make
+sources`` on the checked out files.
 
 This target simply needs to download all the sources for the SRPM that
 are not already included in the SCM repository.
@@ -63,35 +58,20 @@ Koji accepts an SCM URI in this format:
 
 ::
 
-    koji build [target] [scheme]://[user]@[hostname]/[path/to/repository]?[path/to/project]#[revision]
+    $ koji build [target] [scheme]://[user]@[hostname]/[path/to/repository]?[path/to/project]#[revision]
 
 Note the division between repository path and project path. During setup
-of kojid, the allowed\_scms parameter is configured in
-/etc/kojid/kojid.conf. This value of this parameter should match the
+of kojid, the ``allowed_scms`` parameter is configured in
+``/etc/kojid/kojid.conf``. This value of this parameter should match the
 path to the repository.
 
 In some SCM configurations, there isn't a difference between repository
 path and project path. In these cases, it should be understood that
 dividing your SCM path into two components, URI path and URI query, can
 seem somewhat arbitrary. An easy way to remember this detail is that the
-path specified in allowed\_scms is the portion of your SCM path that
+path specified in ``allowed_scms`` is the portion of your SCM path that
 goes before the URI query, any sub-directories not specified in
-allowed\_scms is given to koji as the URI query.
-
-Koji tasks
-----------
-
-BuildNotifications
-~~~~~~~~~~~~~~~~~~
-
--  Koji sends build notifications to the package owner and the user who
-   submitted the build. For BuildNotifications to work successfully, the
-   package owner's username needs to match a valid username for an
-   e-mail address, because kojihub sends to
-   username@domain\_in\_kojihub.conf.
-
-   -  For SSL authentication, this means that your CN must be valid as
-      the user portion of an e-mail address.
+``allowed_scms`` is given to koji as the URI query.
 
 Koji server administration
 --------------------------
@@ -106,7 +86,7 @@ your koji instance:
 
 ::
 
-    koji import --create-build [package]
+    $ koji import --create-build [package]
 
 Multi-arch builds
 ~~~~~~~~~~~~~~~~~
@@ -118,17 +98,17 @@ arches, use this command:
 
 ::
 
-    koji set-pkg-arches [options] <arches> <tag> <package> [<package2> ...]
+    $ koji set-pkg-arches [options] <arches> <tag> <package> [<package2> ...]
 
 Note: is a single entity, so denote multiple arches within quotes (e.g.
-'i386 i586 i686').
+``'i386 i586 i686'``).
 
 How noarch sub-packages are built
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is a technical detail, but can make sense for someone debugging
 noarch issues. If there are multiple architectures defined, multiple
-`buildArch` tasks are spawned. Each of them will produce arch and also
+``buildArch`` tasks are spawned. Each of them will produce arch and also
 noarch packages. While arch packages are unique compared to other
 subtasks, noarch packages should be the same. It shouldn't matter on
 which arch you're building it. If there is a difference, it is a bug.
@@ -139,7 +119,7 @@ rpmdiff variant, which checks for each file included in rpm: mode,
 device, vflags, user, group, digest. Furthermore, Name, Summary,
 Description, Group, License, URL, PreIn, PostIn, PreUn, PostUn,
 Provides, Requires, Conflicts and Obsoletes are compared.  In case of
-failing this test, `BuildError` is raised.
+failing this test, ``BuildError`` is raised.
 
 Manually submitting a task
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,16 +129,16 @@ usage is to manually trigger a createRepo. To do this, use this command:
 
 ::
 
-    koji make-task [options] <arg1> [<arg2>...]
+    $ koji make-task [options] <arg1> [<arg2>...]
 
-The make-task command is a bit of under-documented black magic. Task
-parameters are defined in kojihub.py. The easiest way I have found to
-figure out the right incantations for make-task is to query the *task*
+The ``make-task`` command is a bit of under-documented black magic. Task
+parameters are defined in ``kojihub.py``. The easiest way I have found to
+figure out the right incantations for ``make-task`` is to query the ``task``
 table in the koji database directly. Find a similar task to the one you
 want to create, and look in the request field for the parameters the
 task used, and mimic those.
 
-So, citing the createRepo case above, here is an example:
+So, citing the ``createRepo`` case above, here is an example:
 
 ::
 
@@ -176,16 +156,16 @@ package or specific package version.
 
 ::
 
-    koji untag-build [options] <tag> <pkg> [<pkg>...]
+    $ koji untag-build [options] <tag> <pkg> [<pkg>...]
 
- supports either %name or %name-%version-%release
+supports either ``%name`` or ``%name-%version-%release``
 
 -  To remove all versions of a package, you can untag it as above or you
    can administratively block it from being listed in a tag:
 
 ::
 
-    koji block-pkg [options] tag package [package2 ...]
+    $ koji block-pkg [options] tag package [package2 ...]
 
 Spec file processing
 --------------------
@@ -195,14 +175,14 @@ Macro processing
 
 Macros in the spec file are expanded before Requires and BuildRequires
 are processed. If there are any custom macros in the spec file, the
-package that drops those macros into /etc/rpm must be tagged under your
-dist-build tag
+package that drops those macros into ``/etc/rpm`` must be tagged under your
+``dist-build`` tag
 
 %dist tags
 ^^^^^^^^^^
 
 For packages that incorporate the %dist tags in their filename, they
-expect %dist to be defined in /etc/rpm/macros.dist, which was added in
+expect ``%dist`` to be defined in ``/etc/rpm/macros.dist``, which was added in
 Fedora 7. For building on RHEL5/FC6 and earlier, koji needs the
 `https://buildsys.fedoraproject.org/buildgroups/
 buildsys-macros <https://buildsys.fedoraproject.org/buildgroups/ buildsys-macros>`__

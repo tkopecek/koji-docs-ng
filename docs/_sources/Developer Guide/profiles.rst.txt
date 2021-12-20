@@ -41,7 +41,9 @@ Using Koji Profiles in Python
 =============================
 
 Instead of using the ``koji`` Python module directly, you can get a
-profile-specific module by calling::
+profile-specific module by calling:
+
+.. code-block:: python
 
     mykoji = koji.get_profile_module("cbs")
 
@@ -49,7 +51,9 @@ This ``mykoji`` module is clone of the ``koji`` module with additional
 profile-specific tweaks.
 
 You can read all the settings in the profile configuration with the
-``.config`` property::
+``.config`` property:
+
+.. code-block:: python
 
     mykoji.config        # optparse.Values object
     vars(mykoji.config)  # plain python dict
@@ -58,7 +62,9 @@ You can read all the settings in the profile configuration with the
 Examples
 --------
 
-Print configurations for multiple profiles::
+Print configurations for multiple profiles:
+
+.. code-block:: python
 
     import koji
 
@@ -72,7 +78,9 @@ Print configurations for multiple profiles::
         print("")
 
 
-Use ``ClientSession`` to send RPCs to the hub::
+Use ``ClientSession`` to send RPCs to the hub:
+
+.. code-block:: python
 
     import koji
 

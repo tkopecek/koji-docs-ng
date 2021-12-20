@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Exporting repositories" href="exporting_repositories.html" />
-    <link rel="prev" title="Access Controls" href="access_controls.html" /> 
+    <link rel="prev" title="Permission system" href="permissions.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,6 +41,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Defining Hub Policies</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#getting-a-bit-more-complicated">Getting a bit more complicated</a></li>
@@ -53,18 +54,15 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -133,11 +131,11 @@ Each <code class="docutils literal notranslate"><span class="pre">name</span> <s
 policies, successive lines should be indented so that the parser treats them
 as part of the whole.</p>
 <p>Consider the following simple (and strict) example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">policy</span><span class="p">]</span>
-<span class="n">tag</span> <span class="o">=</span>
-    <span class="n">has_perm</span> <span class="n">admin</span> <span class="p">::</span> <span class="n">allow</span>
-    <span class="n">tag</span> <span class="o">*-</span><span class="n">candidate</span> <span class="p">::</span> <span class="n">allow</span>
-    <span class="nb">all</span> <span class="p">::</span> <span class="n">deny</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[policy]</span>
+<span class="na">tag</span> <span class="o">=</span>
+    <span class="na">has_perm admin :: allow</span>
+    <span class="na">tag *-candidate :: allow</span>
+    <span class="na">all :: deny</span>
 </pre></div>
 </div>
 <p>This policy section defines a single policy (named ‘tag’). The policy is a
@@ -153,20 +151,20 @@ ending in -candidate.</p>
 <h3>Getting a bit more complicated<a class="headerlink" href="#getting-a-bit-more-complicated" title="Permalink to this headline"></a></h3>
 <p>The example above is very simple. The policy syntax also supports compound
 tests, negated tests, and nested tests. Consider the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[policy]
-tag =
-    buildtag *epel* :: {
-        tag *epel* !! deny
-    }
-    tag *-updates :: {
-        operation move :: {
-            fromtag *-updates-candidate :: allow
-            fromtag *-updates-testing :: allow
-            all :: deny Tagging from some tags to *-updates is forbidden.
-        }
-        operation tag &amp;&amp; hastag *-updates-candidate *-updates-testing :: deny
-    }
-    all :: allow
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[policy]</span>
+<span class="na">tag</span> <span class="o">=</span>
+    <span class="na">buildtag *epel* :: {</span>
+        <span class="na">tag *epel* !! deny</span>
+    <span class="na">}</span>
+    <span class="na">tag *-updates :: {</span>
+        <span class="na">operation move :: {</span>
+            <span class="na">fromtag *-updates-candidate :: allow</span>
+            <span class="na">fromtag *-updates-testing :: allow</span>
+            <span class="na">all :: deny Tagging from some tags to *-updates is forbidden.</span>
+        <span class="na">}</span>
+        <span class="na">operation tag &amp;&amp; hastag *-updates-candidate *-updates-testing :: deny</span>
+    <span class="na">}</span>
+    <span class="na">all :: allow</span>
 </pre></div>
 </div>
 <p>This policy sets up some rules concerning tags ending in -updates and tags
@@ -186,17 +184,17 @@ messages in more complicated cases.</p>
 <div class="section" id="general-format">
 <h2>General format<a class="headerlink" href="#general-format" title="Permalink to this headline"></a></h2>
 <p>The general form of a basic policy line is one of the following</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>test [params] [&amp;&amp; test [params] ...] :: action-if-true
-test [params] [&amp;&amp; test [params] ...] !! action-if-false
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">test [params] [&amp;&amp; test [params] ...] :: action-if-true</span>
+<span class="na">test [params] [&amp;&amp; test [params] ...] !! action-if-false</span>
 </pre></div>
 </div>
 <p>And for nested rules:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>test [params] [&amp;&amp; ...] [::|!!] {
-    test [params] [&amp;&amp; ...] [::|!!] action
-    test [params] [&amp;&amp; ...] [::|!!] {
-        ...
-        }
-}
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">test [params] [&amp;&amp; ...] [::|!!] {</span>
+    <span class="na">test [params] [&amp;&amp; ...] [::|!!] action</span>
+    <span class="na">test [params] [&amp;&amp; ...] [::|!!] {</span>
+        <span class="na">...</span>
+        <span class="na">}</span>
+<span class="na">}</span>
 </pre></div>
 </div>
 <p>Note that each closing brace must be on a line by itself.
@@ -464,7 +462,7 @@ others</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="access_controls.html" class="btn btn-neutral float-left" title="Access Controls" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="permissions.html" class="btn btn-neutral float-left" title="Permission system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="exporting_repositories.html" class="btn btn-neutral float-right" title="Exporting repositories" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

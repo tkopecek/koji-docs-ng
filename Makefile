@@ -185,5 +185,6 @@ pseudoxml:
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
 
 gh-pages: clean html
-	cp -a build/html/. ../docs
+	rm -rf docs/*
+	cp -a build/html/. docs
 

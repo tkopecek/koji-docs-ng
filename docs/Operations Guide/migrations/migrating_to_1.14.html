@@ -41,18 +41,18 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="migrations.html">Migrations</a><ul class="current">
@@ -87,8 +87,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -133,7 +131,7 @@
 </div></blockquote>
 <p>As in previous releases, we provide a migration script that updates the
 database.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># psql koji koji  &lt;/usr/share/doc/koji/docs/schema-upgrade-1.13-1.14.sql</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>psql koji koji  &lt;/usr/share/doc/koji/docs/schema-upgrade-1.13-1.14.sql
 </pre></div>
 </div>
 </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using the koji build system &mdash; Koji alpha documentation</title>
+  <title>Using Koji in Fedora &mdash; Koji alpha documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Developer Guide" href="../Developer%20Guide/index.html" />
-    <link rel="prev" title="User Guide" href="index.html" /> 
+    <link rel="prev" title="Introduction" href="HOWTO.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,25 +41,46 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Using the koji build system</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#using-koji-in-fedora">Using Koji in Fedora</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#installing-koji">Installing Koji</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-web-interface">The web interface</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#building-with-fedpkg-targets">Building with fedpkg targets</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scratch-builds">Scratch Builds</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#build-failures">Build Failures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#advanced-use-of-koji">Advanced use of Koji</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#koji-tags-and-packages-organization">Koji tags and packages organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HOWTO.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HOWTO.html#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HOWTO.html#koji-architecture">Koji Architecture</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using Koji in Fedora</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-koji">Installing Koji</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installing-the-koji-cli">Installing the Koji CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#koji-config">Koji Config</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#koji-xmlrpc-api">Koji XMLRPC API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-web-interface">The web interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installing-ssl-certificates-in-firefox">Installing SSL Certificates in Firefox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installing-ssl-certificates-in-chromium">Installing SSL Certificates in Chromium</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notifications">Notifications</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#building-with-fedpkg-targets">Building with fedpkg targets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chained-builds">Chained builds</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scratch-builds">Scratch Builds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-failures">Build Failures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-use-of-koji">Advanced use of Koji</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-koji-to-generate-a-mock-config-to-replicate-a-buildroot">Using koji to generate a mock config to replicate a buildroot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tuning-mock-s-behavior-per-tag">Tuning mock’s behavior per tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-koji-to-control-tasks">Using Koji to control tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-a-package-with-the-command-line-tool">Building a Package with the command-line tool</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#koji-tags-and-packages-organization">Koji tags and packages organization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tags-and-targets">Tags and targets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#koji-commands-for-tags">Koji commands for tags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#koji-xmlrpc-api">Koji XMLRPC API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -78,7 +99,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">User Guide</a> &raquo;</li>
-      <li>Using the koji build system</li>
+      <li>Using Koji in Fedora</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/User Guide/using_the_koji_build_system.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -88,21 +109,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="using-the-koji-build-system">
-<h1>Using the koji build system<a class="headerlink" href="#using-the-koji-build-system" title="Permalink to this headline"></a></h1>
-<div class="section" id="using-koji-in-fedora">
-<h2>Using Koji in Fedora<a class="headerlink" href="#using-koji-in-fedora" title="Permalink to this headline"></a></h2>
+  <div class="section" id="using-koji-in-fedora">
+<h1>Using Koji in Fedora<a class="headerlink" href="#using-koji-in-fedora" title="Permalink to this headline"></a></h1>
 <p>The <a class="reference external" href="Koji">Koji Build System</a> is Fedora’s RPM buildsystem. Packagers
 use the koji client to request package builds and get information about
 the buildsystem. Koji runs on top of Mock to build RPM packages for
 specific architectures and ensure that they build correctly.</p>
 <div class="section" id="installing-koji">
-<h3>Installing Koji<a class="headerlink" href="#installing-koji" title="Permalink to this headline"></a></h3>
+<h2>Installing Koji<a class="headerlink" href="#installing-koji" title="Permalink to this headline"></a></h2>
 <div class="section" id="installing-the-koji-cli">
-<h4>Installing the Koji CLI<a class="headerlink" href="#installing-the-koji-cli" title="Permalink to this headline"></a></h4>
+<h3>Installing the Koji CLI<a class="headerlink" href="#installing-the-koji-cli" title="Permalink to this headline"></a></h3>
 <p>Everything you need to use Koji (and be a Fedora contributor) can be
 installed in a single step:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">fedora</span><span class="o">-</span><span class="n">packager</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root@localhost$ </span>dnf install fedora-packager
 </pre></div>
 </div>
 <p>fedora-packager provides useful scripts to help maintain and setup your
@@ -133,7 +152,7 @@ sufficient for them or who can profit from some utilities in e.g. basic
 </div></blockquote>
 </div>
 <div class="section" id="koji-config">
-<h4>Koji Config<a class="headerlink" href="#koji-config" title="Permalink to this headline"></a></h4>
+<h3>Koji Config<a class="headerlink" href="#koji-config" title="Permalink to this headline"></a></h3>
 <p>The global local client configuration file for koji is
 <code class="docutils literal notranslate"><span class="pre">/etc/koji.conf</span></code>. You should not need to change this from the defaults
 for building Fedora packages.These will allow you to use the primary
@@ -141,9 +160,14 @@ build system as well as secondary arch build systems.</p>
 </div>
 </div>
 <div class="section" id="the-web-interface">
-<h3>The web interface<a class="headerlink" href="#the-web-interface" title="Permalink to this headline"></a></h3>
+<h2>The web interface<a class="headerlink" href="#the-web-interface" title="Permalink to this headline"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The web interface is optional.  You may skip to the
+next section if you like.</p>
+</div>
 <p>The primary interface for viewing Koji data is a web application. It is
-available at <a class="reference external" href="https://koji.fedoraproject.org/koji/">https://koji.fedoraproject.org/koji/</a> . Most of the interface
+available at <a class="reference external" href="https://koji.fedoraproject.org/koji/">https://koji.fedoraproject.org/koji/</a>. Most of the interface
 is read-only, but with sufficient privileges, you can log in and perform
 some additional actions. For example:</p>
 <ul class="simple">
@@ -161,8 +185,25 @@ some additional actions. For example:</p>
 need a valid SSL certificate and your web browser will need to be
 configured to trust the SSL cert. Instructions on how to do this are
 printed when running <code class="docutils literal notranslate"><span class="pre">fedora-packager-setup</span> <span class="pre">--with-browser-cert</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using the certificate directly downloaded from the FAS web
+interface|If you have generated and downloaded the certificate
+<code class="docutils literal notranslate"><span class="pre">~/.fedora.cert</span></code> directly from FAS using the form referenced
+above, you need to convert it into a format that the browser can understand
+using the following command:
+<code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">pkcs12</span> <span class="pre">-export</span> <span class="pre">-in</span> <span class="pre">~/.fedora.cert</span> <span class="pre">-CAfile</span> <span class="pre">~/.fedora-upload-ca.cert</span> <span class="pre">-out</span> <span class="pre">~/fedora-browser-cert.p12</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">.fedora-upload-ca.cert</span></code> can be downloaded from the URL
+referenced above.</p>
+</div>
 <div class="section" id="installing-ssl-certificates-in-firefox">
-<h4>Installing SSL Certificates in Firefox<a class="headerlink" href="#installing-ssl-certificates-in-firefox" title="Permalink to this headline"></a></h4>
+<h3>Installing SSL Certificates in Firefox<a class="headerlink" href="#installing-ssl-certificates-in-firefox" title="Permalink to this headline"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You only need to check these instructions if you are intending to
+authenticate with the web interface with Firefox.  Authenticating with the
+web interface is optional.</p>
+</div>
 <p>Once you have created your FAS account, generated your certificate in
 the form posted in the link above and ran
 <code class="docutils literal notranslate"><span class="pre">fedora-packager-setup</span> <span class="pre">--with-browser-cert</span></code>, you will need to import
@@ -189,15 +230,21 @@ have asked you to set a password for the cert)</p>
 koji web interface.</p>
 </div>
 <div class="section" id="installing-ssl-certificates-in-chromium">
-<h4>Installing SSL Certificates in Chromium<a class="headerlink" href="#installing-ssl-certificates-in-chromium" title="Permalink to this headline"></a></h4>
+<h3>Installing SSL Certificates in Chromium<a class="headerlink" href="#installing-ssl-certificates-in-chromium" title="Permalink to this headline"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You only need to check these instructions if you are intending to
+authenticate with the web interface with Chromium.  Authenticating with the
+web interface is optional.</p>
+</div>
 <p>Chromium uses the NSS Shared DB, you will need the nss-tools package
 installed.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pk12util -d sql:$HOME/.pki/nssdb -i fedora-browser-cert.p12
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pk12util -d sql:<span class="nv">$HOME</span>/.pki/nssdb -i fedora-browser-cert.p12
 </pre></div>
 </div>
 </div>
 <div class="section" id="notifications">
-<h4>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline"></a></h4>
+<span id="notification-basics"></span><h3>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline"></a></h3>
 <p>Koji supports a limited number of email notifications:</p>
 <blockquote>
 <div><ul class="simple">
@@ -231,36 +278,47 @@ on the command line. The relevant commands are:</p>
 </div>
 </div>
 <div class="section" id="building-with-fedpkg-targets">
-<h3>Building with fedpkg targets<a class="headerlink" href="#building-with-fedpkg-targets" title="Permalink to this headline"></a></h3>
+<h2>Building with fedpkg targets<a class="headerlink" href="#building-with-fedpkg-targets" title="Permalink to this headline"></a></h2>
 <p>Every push is automatically tagged via git. All you have done to build
 the package is to run,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fedpkg</span> <span class="n">build</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg build
 </pre></div>
 </div>
 <p>This will trigger a build request for the branch. Easy!</p>
 <p>It is also possible to target a specific koji tag as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fedpkg</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="n">TARGET</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg build --target TARGET
 </pre></div>
 </div>
 <p>for example, if building on rawhide against a special tag created by
 rel-eng for updating API for many packages, e.g. <code class="docutils literal notranslate"><span class="pre">dist-f14-python</span></code> you
 would use the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fedpkg</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="s1">&#39;dist-f14-python&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg build --target <span class="s1">&#39;dist-f14-python&#39;</span>
 </pre></div>
 </div>
 <div class="section" id="chained-builds">
-<h4>Chained builds<a class="headerlink" href="#chained-builds" title="Permalink to this headline"></a></h4>
+<h3>Chained builds<a class="headerlink" href="#chained-builds" title="Permalink to this headline"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>chain-builds only work when building on the devel/ branch (aka rawhide).  To
+chain-build packages to update a released OS version, <a class="reference external" href="https://fedoraproject.org/wiki/Bodhi/BuildRootOverrides">set up an override
+using bodhi</a>
+requesting packages to be included in the proper buildroot.</p>
+</div>
 <p>Sometimes you want to make sure than one build succeeded before
 launching the next one, for example when you want to rebuild a package
 against a just rebuilt dependency. In that case you can use a chain
 build with:</p>
-<p><code class="docutils literal notranslate"><span class="pre">fedpkg chain-build libwidget libgizmo</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg chain-build libwidget libgizmo
+</pre></div>
+</div>
 <p>The current package is added to the end of the CHAIN list. Colons (:)
 can be used in the CHAIN parameter to define groups of packages.
 Packages in any single group will be built in parallel and all packages
 in a group must build successfully and populate the repository before
 the next group will begin building. For example:</p>
-<p><code class="docutils literal notranslate"><span class="pre">fedpkg chain-build libwidget libaselib : libgizmo :</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg chain-build libwidget libaselib : libgizmo :
+</pre></div>
+</div>
 <p>will cause libwidget and libaselib to be built in parallel, followed by
 libgizmo and then the correct directory package. If no groups are
 defined, packages will be built sequentially.</p>
@@ -269,18 +327,18 @@ already succeeded are pushed to the repository.</p>
 </div>
 </div>
 <div class="section" id="scratch-builds">
-<h3>Scratch Builds<a class="headerlink" href="#scratch-builds" title="Permalink to this headline"></a></h3>
+<h2>Scratch Builds<a class="headerlink" href="#scratch-builds" title="Permalink to this headline"></a></h2>
 <p>Sometimes it is useful to be able to build a package against the
 buildroot but without actually including it in the release. This is
 called a scratch build. The following section covers using koji directly
 as well as the fedpkg tool to do scratch builds. To create a scratch
 build from changes you haven’t committed, do the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpmbuild</span> <span class="o">-</span><span class="n">bs</span> <span class="n">foo</span><span class="o">.</span><span class="n">spec</span>
-<span class="n">koji</span> <span class="n">build</span> <span class="o">--</span><span class="n">scratch</span> <span class="n">rawhide</span> <span class="n">foo</span><span class="o">.</span><span class="n">srpm</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpmbuild -bs foo.spec
+<span class="gp">$ </span>koji build --scratch rawhide foo.srpm
 </pre></div>
 </div>
 <p>From the latest git commit:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">build</span> <span class="o">--</span><span class="n">scratch</span> <span class="n">rawhide</span> <span class="s1">&#39;git url&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji build --scratch rawhide <span class="s1">&#39;git url&#39;</span>
 </pre></div>
 </div>
 <p>Warning: Scratch builds will <em>not</em> work correctly if your .spec file
@@ -292,29 +350,28 @@ first re-building the source RPM.</p>
 <p>If you have committed the changes to git and you are in the current
 branch, you can do a scratch build with fedpkg tool which wraps the koji
 command line tool with the appropriate options:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fedpkg</span> <span class="n">scratch</span><span class="o">-</span><span class="n">build</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg scratch-build
 </pre></div>
 </div>
 <p>if you want to do a scratch build for a specific architecture, you can
 type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">fedpkg</span> <span class="n">scratch</span><span class="o">-</span><span class="n">build</span><span class="o">-&lt;</span><span class="n">archs</span><span class="o">&gt;</span>
-
-<span class="n">can</span> <span class="n">be</span> <span class="n">a</span> <span class="n">comma</span> <span class="n">separated</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">several</span> <span class="n">architectures</span><span class="o">.</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg scratch-build-&lt;archs&gt;
 </pre></div>
 </div>
+<p>can be a comma separated list of several architectures.</p>
 <p>finally is possible to combine the scratch-build command with a specific
 koji tag in the form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fedpkg</span> <span class="n">scratch</span><span class="o">-</span><span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="n">TARGET</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>fedpkg scratch-build --target TARGET
 </pre></div>
 </div>
 <p>fedpkg scratch-build –help or koji build –help for more information.</p>
 </div>
 <div class="section" id="build-failures">
-<h3>Build Failures<a class="headerlink" href="#build-failures" title="Permalink to this headline"></a></h3>
+<h2>Build Failures<a class="headerlink" href="#build-failures" title="Permalink to this headline"></a></h2>
 <p>If your package fails to build, you will see something like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">420066</span> <span class="n">buildArch</span> <span class="n">kernel</span><span class="o">-</span><span class="mf">2.6.18</span><span class="o">-</span><span class="mf">1.2739.10.9</span><span class="o">.</span><span class="n">el5</span><span class="o">.</span><span class="n">jjf</span><span class="mf">.215394.2</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">rpm</span><span class="p">,</span>
-<span class="n">ia64</span><span class="p">):</span> <span class="nb">open</span> <span class="p">(</span><span class="n">build</span><span class="o">-</span><span class="mf">1.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FAILED</span><span class="p">:</span> <span class="n">BuildrootError</span><span class="p">:</span>
-<span class="n">error</span> <span class="n">building</span> <span class="n">package</span> <span class="p">(</span><span class="n">arch</span> <span class="n">ia64</span><span class="p">),</span> <span class="n">mock</span> <span class="n">exited</span> <span class="k">with</span> <span class="n">status</span> <span class="mi">10</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>420066 buildArch kernel-2.6.18-1.2739.10.9.el5.jjf.215394.2.src.rpm, ia64):
+  open (build-1.example.com) -&gt; FAILED: BuildrootError:
+  error building package (arch ia64), mock exited with status 10
 </pre></div>
 </div>
 <p>You can figure out why the build failed by looking at the log files. If
@@ -322,72 +379,78 @@ there is a build.log, start there. Otherwise, look at init.log.</p>
 <p>Logs can be found via the web interface in the Task pages for the failed
 task. Alternatively the koji client can be used to view the logs via the
 <code class="docutils literal notranslate"><span class="pre">watch-logs</span></code> command. See the help output for more details.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For more hidden issues you can use <code class="docutils literal notranslate"><span class="pre">save-failed-tree</span></code> plugin to download
+content of the buildroot. Check the details with <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">save-failed-tree</span>
+<span class="pre">--help</span></code>. (Note, that you need to have enabled that plugin)</p>
+</div>
 </div>
 <div class="section" id="advanced-use-of-koji">
-<h3>Advanced use of Koji<a class="headerlink" href="#advanced-use-of-koji" title="Permalink to this headline"></a></h3>
+<h2>Advanced use of Koji<a class="headerlink" href="#advanced-use-of-koji" title="Permalink to this headline"></a></h2>
 <p>We’ve tried to make Koji self-documenting wherever possible. The command
 line tool will print a list of valid commands and each command supports
 –help. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji help
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji <span class="nb">help</span>
 
-Koji commands are:
-build                Build a package from source
-cancel-task          Cancel a task
-help                 List available commands
-latest-build         Print the latest builds for a tag
-[...]
+<span class="go">Koji commands are:</span>
+<span class="go">build                Build a package from source</span>
+<span class="go">cancel-task          Cancel a task</span>
+<span class="go">help                 List available commands</span>
+<span class="go">latest-build         Print the latest builds for a tag</span>
+<span class="go">[...]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji build --help
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji build --help
 
-usage: koji build [options]  tag URL
-(Specify the --help global option for a list of other help options)
+<span class="go">usage: koji build [options]  tag URL</span>
+<span class="gp gp-VirtualEnv">(Specify the --help global option for a list of other help options)</span>
 
-options:
--h, --help            show this help message and exit
---skip-tag            Do not attempt to tag package
---scratch             Perform a scratch build
---nowait              Don&#39;t wait on build
-[...]
+<span class="go">options:</span>
+<span class="go">-h, --help            show this help message and exit</span>
+<span class="go">--skip-tag            Do not attempt to tag package</span>
+<span class="go">--scratch             Perform a scratch build</span>
+<span class="go">--nowait              Don&#39;t wait on build</span>
+<span class="go">[...]</span>
 </pre></div>
 </div>
 <div class="section" id="using-koji-to-generate-a-mock-config-to-replicate-a-buildroot">
-<h4>Using koji to generate a mock config to replicate a buildroot<a class="headerlink" href="#using-koji-to-generate-a-mock-config-to-replicate-a-buildroot" title="Permalink to this headline"></a></h4>
+<h3>Using koji to generate a mock config to replicate a buildroot<a class="headerlink" href="#using-koji-to-generate-a-mock-config-to-replicate-a-buildroot" title="Permalink to this headline"></a></h3>
 <p>koji can be used to replicate a build root for local debugging</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">mock</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">help</span>
-<span class="n">Usage</span><span class="p">:</span> <span class="n">koji</span> <span class="n">mock</span><span class="o">-</span><span class="n">config</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">name</span>
-<span class="p">(</span><span class="n">Specify</span> <span class="n">the</span> <span class="o">--</span><span class="n">help</span> <span class="k">global</span> <span class="n">option</span> <span class="k">for</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">other</span> <span class="n">help</span> <span class="n">options</span><span class="p">)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji mock-config --help
+<span class="go">Usage: koji mock-config [options] name</span>
+<span class="gp gp-VirtualEnv">(Specify the --help global option for a list of other help options)</span>
 
-<span class="n">Options</span><span class="p">:</span>
-  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
-  <span class="o">--</span><span class="n">arch</span><span class="o">=</span><span class="n">ARCH</span>           <span class="n">Specify</span> <span class="n">the</span> <span class="n">arch</span>
-  <span class="o">--</span><span class="n">tag</span><span class="o">=</span><span class="n">TAG</span>             <span class="n">Create</span> <span class="n">a</span> <span class="n">mock</span> <span class="n">config</span> <span class="k">for</span> <span class="n">a</span> <span class="n">tag</span>
-  <span class="o">--</span><span class="n">task</span><span class="o">=</span><span class="n">TASK</span>           <span class="n">Duplicate</span> <span class="n">the</span> <span class="n">mock</span> <span class="n">config</span> <span class="n">of</span> <span class="n">a</span> <span class="n">previous</span> <span class="n">task</span>
-  <span class="o">--</span><span class="n">buildroot</span><span class="o">=</span><span class="n">BUILDROOT</span>
-                        <span class="n">Duplicate</span> <span class="n">the</span> <span class="n">mock</span> <span class="n">config</span> <span class="k">for</span> <span class="n">the</span> <span class="n">specified</span> <span class="n">buildroot</span>
-                        <span class="nb">id</span>
-  <span class="o">--</span><span class="n">mockdir</span><span class="o">=</span><span class="n">DIR</span>         <span class="n">Specify</span> <span class="n">mockdir</span>
-  <span class="o">--</span><span class="n">topdir</span><span class="o">=</span><span class="n">DIR</span>          <span class="n">Specify</span> <span class="n">topdir</span>
-  <span class="o">--</span><span class="n">topurl</span><span class="o">=</span><span class="n">URL</span>          <span class="n">url</span> <span class="n">under</span> <span class="n">which</span> <span class="n">Koji</span> <span class="n">files</span> <span class="n">are</span> <span class="n">accessible</span>
-  <span class="o">--</span><span class="n">distribution</span><span class="o">=</span><span class="n">DISTRIBUTION</span>
-                        <span class="n">Change</span> <span class="n">the</span> <span class="n">distribution</span> <span class="n">macro</span>
-  <span class="o">-</span><span class="n">o</span> <span class="n">FILE</span>               <span class="n">Output</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span>
+<span class="go">Options:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --arch=ARCH           Specify the arch</span>
+<span class="go">  --tag=TAG             Create a mock config for a tag</span>
+<span class="go">  --task=TASK           Duplicate the mock config of a previous task</span>
+<span class="go">  --buildroot=BUILDROOT</span>
+<span class="go">                        Duplicate the mock config for the specified buildroot</span>
+<span class="go">                        id</span>
+<span class="go">  --mockdir=DIR         Specify mockdir</span>
+<span class="go">  --topdir=DIR          Specify topdir</span>
+<span class="go">  --topurl=URL          url under which Koji files are accessible</span>
+<span class="go">  --distribution=DISTRIBUTION</span>
+<span class="go">                        Change the distribution macro</span>
+<span class="go">  -o FILE               Output to a file</span>
 </pre></div>
 </div>
 <p>for example to get the latest buildroot for dist-f12-build run</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">mock</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">tag</span> <span class="n">dist</span><span class="o">-</span><span class="n">f12</span><span class="o">-</span><span class="n">build</span> <span class="o">--</span><span class="n">arch</span><span class="o">=</span><span class="n">x86_64</span> <span class="o">--</span><span class="n">topurl</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">kojipkgs</span><span class="o">.</span><span class="n">fedoraproject</span><span class="o">.</span><span class="n">org</span><span class="o">/</span> <span class="n">dist</span><span class="o">-</span><span class="n">f12</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji mock-config --tag dist-f12-build --arch<span class="o">=</span>x86_64 --topurl<span class="o">=</span>https://kojipkgs.fedoraproject.org/ dist-f12
 </pre></div>
 </div>
 <p>you will need to pass in –topurl=https://kojipkgs.fedoraproject.org/ to
 any mock-config command to get a working mock-config from fedoras koji.</p>
 </div>
 <div class="section" id="tuning-mock-s-behavior-per-tag">
-<span id="tuning-mock-per-tag"></span><h4>Tuning mock’s behavior per tag<a class="headerlink" href="#tuning-mock-s-behavior-per-tag" title="Permalink to this headline"></a></h4>
+<span id="tuning-mock-per-tag"></span><h3>Tuning mock’s behavior per tag<a class="headerlink" href="#tuning-mock-s-behavior-per-tag" title="Permalink to this headline"></a></h3>
 <p>Few options for mock can be configured per-tag. These options are stored in
 tag info’s <em>extra</em> field. Extra values can be checked via <cite>koji taginfo</cite>
 command.  Example for forcing <cite>dnf</cite> usage in specific build
 environment follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">edit</span><span class="o">-</span><span class="n">tag</span> <span class="n">dnf</span><span class="o">-</span><span class="n">fedora</span><span class="o">-</span><span class="n">tag</span> <span class="o">-</span><span class="n">x</span> <span class="n">mock</span><span class="o">.</span><span class="n">package_manager</span><span class="o">=</span><span class="n">dnf</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji edit-tag dnf-fedora-tag -x mock.package_manager<span class="o">=</span>dnf
 </pre></div>
 </div>
 <ul class="simple">
@@ -442,68 +505,73 @@ not accessible.</p></li>
 <p>You may also specify per-tag environment variables for mock to use.
 For example, to set the CC environment variable to clang, you could
 do:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">edit</span><span class="o">-</span><span class="n">tag</span> <span class="n">dnf</span><span class="o">-</span><span class="n">fedora</span><span class="o">-</span><span class="n">tag</span> <span class="o">-</span><span class="n">x</span> <span class="n">rpm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">CC</span><span class="o">=</span><span class="n">clang</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji edit-tag dnf-fedora-tag -x rpm.env.CC<span class="o">=</span>clang
 </pre></div>
 </div>
 </div>
 <div class="section" id="using-koji-to-control-tasks">
-<h4>Using Koji to control tasks<a class="headerlink" href="#using-koji-to-control-tasks" title="Permalink to this headline"></a></h4>
+<h3>Using Koji to control tasks<a class="headerlink" href="#using-koji-to-control-tasks" title="Permalink to this headline"></a></h3>
 <p>List tasks:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="nb">list</span><span class="o">-</span><span class="n">tasks</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-tasks
 </pre></div>
 </div>
 <p>List only tasks requested by you:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="nb">list</span><span class="o">-</span><span class="n">tasks</span> <span class="o">--</span><span class="n">mine</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-tasks --mine
 </pre></div>
 </div>
 <p>requeue an already-processed task: general syntax is: koji resubmit
 [options] taskID</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">resubmit</span> <span class="mi">3</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji resubmit <span class="m">3</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="building-a-package-with-the-command-line-tool">
-<h4>Building a Package with the command-line tool<a class="headerlink" href="#building-a-package-with-the-command-line-tool" title="Permalink to this headline"></a></h4>
+<h3>Building a Package with the command-line tool<a class="headerlink" href="#building-a-package-with-the-command-line-tool" title="Permalink to this headline"></a></h3>
 <p>Instead of using the fedpkg target, you can also directly use the
 command_line tool, koji.</p>
 <p>To build a package, the syntax is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji build &lt;build target&gt; &lt;git URL&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji build &lt;build target&gt; &lt;git URL&gt;
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji build dist-f14 &#39;git url&#39;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji build dist-f14 <span class="s1">&#39;git url&#39;</span>
 </pre></div>
 </div>
 <p>The koji build command creates a build task in Koji. By default the tool
 will wait and print status updates until the build completes. You can
 override this with the –nowait option.</p>
-</pre><p>NOTE: For fedora koji, the git url MUST be based on
-pkgs.fedoraproject.org. Other arbitrary git repos cannot be used for
-builds.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For fedora koji, the git url MUST be based on pkgs.fedoraproject.org. Other
+arbitrary git repos cannot be used for builds.</p>
+</div>
 </div>
 </div>
 <div class="section" id="koji-tags-and-packages-organization">
-<h3>Koji tags and packages organization<a class="headerlink" href="#koji-tags-and-packages-organization" title="Permalink to this headline"></a></h3>
+<h2>Koji tags and packages organization<a class="headerlink" href="#koji-tags-and-packages-organization" title="Permalink to this headline"></a></h2>
 <div class="section" id="terminology">
-<h4>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline"></a></h4>
+<h3>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline"></a></h3>
 <p>In Koji, it is sometimes necessary to distinguish between a package in
 general, a specific build of a package, and the various rpm files
 created by a build. When precision is needed, these terms should be
 interpreted as follows:</p>
-<ul class="simple">
-<li><p>Package: The name of a source rpm. This refers to the package in
+<dl class="simple">
+<dt>Package</dt><dd><p>The name of a source rpm. This refers to the package in
 general and not any particular build or subpackage. For example:
-kernel, glibc, etc.</p></li>
-<li><p>Build: A particular build of a package. This refers to the entire
+kernel, glibc, etc.</p>
+</dd>
+<dt>Build</dt><dd><p>A particular build of a package. This refers to the entire
 build: all arches and subpackages. For example: kernel-2.6.9-34.EL,
-glibc-2.3.4-2.19.</p></li>
-<li><p>RPM: A particular rpm. A specific arch and subpackage of a build. For
+glibc-2.3.4-2.19.</p>
+</dd>
+<dt>RPM</dt><dd><p>A particular rpm. A specific arch and subpackage of a build. For
 example: kernel-2.6.9-34.EL.x86_64, kernel-devel-2.6.9-34.EL.s390,
-glibc-2.3.4-2.19.i686, glibc-common-2.3.4-2.19.ia64</p></li>
-</ul>
+glibc-2.3.4-2.19.i686, glibc-common-2.3.4-2.19.ia64</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="tags-and-targets">
-<h4>Tags and targets<a class="headerlink" href="#tags-and-targets" title="Permalink to this headline"></a></h4>
+<h3>Tags and targets<a class="headerlink" href="#tags-and-targets" title="Permalink to this headline"></a></h3>
 <p>Koji organizes packages using tags. In Koji a tag is roughly a
 collection of packages:</p>
 <ul class="simple">
@@ -517,41 +585,41 @@ should be tagged afterwards. This allows target names to remain fixed as
 tags change through releases.</p>
 </div>
 <div class="section" id="koji-commands-for-tags">
-<h4>Koji commands for tags<a class="headerlink" href="#koji-commands-for-tags" title="Permalink to this headline"></a></h4>
+<h3>Koji commands for tags<a class="headerlink" href="#koji-commands-for-tags" title="Permalink to this headline"></a></h3>
 <div class="section" id="targets">
-<h5>Targets<a class="headerlink" href="#targets" title="Permalink to this headline"></a></h5>
+<h4>Targets<a class="headerlink" href="#targets" title="Permalink to this headline"></a></h4>
 <p>You can get a full list of build targets with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji list-targets
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-targets
 </pre></div>
 </div>
-<p>You can see just a single target with the –name option:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji list-targets --name dist-f14
+<p>You can see just a single target with the <code class="docutils literal notranslate"><span class="pre">--name</span></code> option:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-targets --name dist-f14
 
-Name                           Buildroot                      Destination
----------------------------------------------------------------------------------------------
-dist-f14                     dist-f14-build                 dist-f14
+<span class="go">Name                           Buildroot                      Destination</span>
+<span class="go">---------------------------------------------------------------------------------------------</span>
+<span class="go">dist-f14                     dist-f14-build                 dist-f14</span>
 </pre></div>
 </div>
-<p>This tells you a build for target dist-f14 will use a buildroot with
-packages from the tag dist-f14-build and tag the resulting packages as
-dist-f14.</p>
+<p>This tells you a build for target <code class="docutils literal notranslate"><span class="pre">dist-f14</span></code> will use a buildroot with
+packages from the tag <code class="docutils literal notranslate"><span class="pre">dist-f14-build</span></code> and tag the resulting packages as
+<code class="docutils literal notranslate"><span class="pre">dist-f14</span></code>.</p>
 <p>Watch out: You probably don’t want to build against dist-rawhide. If
 Fedora N is the latest one out, to build to the next one, choose
-dist-f{N+1}.</p>
+<code class="docutils literal notranslate"><span class="pre">dist-f{N+1}</span></code>.</p>
 </div>
 <div class="section" id="tags">
-<h5>Tags<a class="headerlink" href="#tags" title="Permalink to this headline"></a></h5>
+<h4>Tags<a class="headerlink" href="#tags" title="Permalink to this headline"></a></h4>
 <p>You can get a list of tags with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji list-tags
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-tags
 </pre></div>
 </div>
 </div>
 <div class="section" id="packages">
-<h5>Packages<a class="headerlink" href="#packages" title="Permalink to this headline"></a></h5>
+<h4>Packages<a class="headerlink" href="#packages" title="Permalink to this headline"></a></h4>
 <p>As mentioned above, each tag has its own list of packages that may be
-placed in the tag. To see that list for a tag, use the list-pkgs
+placed in the tag. To see that list for a tag, use the <code class="docutils literal notranslate"><span class="pre">list-pkgs</span></code>
 command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji list-pkgs --tag dist-f14
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-pkgs --tag dist-f14
 </pre></div>
 </div>
 <p>The first column is the name of the package, the second tells you which
@@ -559,9 +627,9 @@ tag the package entry has been inherited from, and the third tells you
 the owner of the package.</p>
 </div>
 <div class="section" id="latest-builds">
-<h5>Latest Builds<a class="headerlink" href="#latest-builds" title="Permalink to this headline"></a></h5>
-<p>To see the latest builds for a tag, use the latest-build command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji latest-build --all dist-f14
+<h4>Latest Builds<a class="headerlink" href="#latest-builds" title="Permalink to this headline"></a></h4>
+<p>To see the latest builds for a tag, use the <code class="docutils literal notranslate"><span class="pre">latest-build</span></code> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji latest-build --all dist-f14
 </pre></div>
 </div>
 <p>The output gives you not only the latest builds, but which tag they have
@@ -572,10 +640,10 @@ been inherited from and who built them.</p>
 </div>
 </div>
 <div class="section" id="koji-xmlrpc-api">
-<h2>Koji XMLRPC API<a class="headerlink" href="#koji-xmlrpc-api" title="Permalink to this headline"></a></h2>
+<h1>Koji XMLRPC API<a class="headerlink" href="#koji-xmlrpc-api" title="Permalink to this headline"></a></h1>
 <p>All features supported by command-line client are also accessible by XMLRPC
 API. You can get listing of all available calls, arguments and basic help via
-calling <cite>koji list-api</cite> command. This call will also provide you API
+calling <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">list-api</span></code> command. This call will also provide you API
 extensions provided by plugins in that particular koji instance.</p>
 <p>Because of the data Koji routinely deals with, we use the following extensions
 to the xmlrpc standard:</p>
@@ -586,19 +654,18 @@ Python). Koji’s library handles this automatically. If you are using a
 different library, you may need to explicitly enable this (e.g. enabling
 allow_none in Python’s own xmlrpc library).</p></li>
 <li><p>We represent large integers with the <code class="docutils literal notranslate"><span class="pre">i8</span></code> tag. This standard is borrowed
-from Apache’s <cite>ws-xmlrpc &lt;https://ws.apache.org/xmlrpc/types.html&gt;</cite>
+from Apache’s <a class="reference external" href="https://ws.apache.org/xmlrpc/types.html">ws-xmlrpc</a>
 implementation. Python’s own xmlrpc library understands this tag, even
 thought it will not emit it.</p></li>
 </ul>
 </div></blockquote>
-</div>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HOWTO.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../Developer%20Guide/index.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

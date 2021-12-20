@@ -14,8 +14,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Setting RPM Macros for Builds" href="setting_rpm_macros.html" />
-    <link rel="prev" title="Exporting repositories" href="exporting_repositories.html" /> 
+    <link rel="next" title="Defining Hub Policies" href="defining_hub_policies.html" />
+    <link rel="prev" title="Access Controls" href="access_controls.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,8 +41,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Permission system</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#permission-management">Permission management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#built-in-permissions">Built-in permissions</a><ul>
@@ -54,17 +52,17 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -166,12 +164,9 @@ respectively.</p>
 </div>
 <div class="section" id="data-import">
 <h3>Data Import<a class="headerlink" href="#data-import" title="Permalink to this headline"></a></h3>
-<p>The following import permissions allow a user to directly import build
-artifacts of different types.
-We recommend caution when granting these.
-In general, it is better to use the
-<span class="xref std std-doc">content generator interface</span> rather than the direct
-import calls these govern.</p>
+<p>The following import permissions allow a user to directly import build artifacts
+of different types.  We recommend caution when granting these.  In general, it
+is better to use the <a class="reference internal" href="../Developer%20Guide/content_generators.html"><span class="doc">content generator interface</span></a> rather than the direct import calls these govern.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">image-import</span></code></dt><dd><p>used for importing external maven artifacts
 (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-archive</span> <span class="pre">--type</span> <span class="pre">maven</span></code>)</p>
@@ -210,8 +205,8 @@ signed copies (<code class="docutils literal notranslate"><span class="pre">koji
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="exporting_repositories.html" class="btn btn-neutral float-left" title="Exporting repositories" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="setting_rpm_macros.html" class="btn btn-neutral float-right" title="Setting RPM Macros for Builds" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="access_controls.html" class="btn btn-neutral float-left" title="Access Controls" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="defining_hub_policies.html" class="btn btn-neutral float-right" title="Defining Hub Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

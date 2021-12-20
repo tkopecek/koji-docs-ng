@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Release process &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Runs Here" href="../runs_here.html" />
+    <link rel="prev" title="Unit tests in Fedora’s Jenkins" href="configuring_jenkins.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Release process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#merging-prs">Merging PRs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-notes">Release Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushing-the-code">Pushing the Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-the-site">Updating the Site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushing-to-pypi">Pushing to PyPi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-email">Release Email</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#required-permissions">Required Permissions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+      <li>Release process</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developer Guide/release_process.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="release-process">
+<h1>Release process<a class="headerlink" href="#release-process" title="Permalink to this headline"></a></h1>
+<div class="section" id="merging-prs">
+<h2>Merging PRs<a class="headerlink" href="#merging-prs" title="Permalink to this headline"></a></h2>
+<p>We’re not using pagure’s merge button as it doesn’t do everything we want.
+Instead <a class="reference external" href="https://github.com/mikem23/pagure-tool">pg script</a> is used.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pg pr checkout &lt;PR number&gt;
+</pre></div>
+</div>
+<p>will checkout given PR and it can be reviewed locally. It can be rebased in this
+time or it can be done automatically in the moment of merging:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pg pr merge -r
+</pre></div>
+</div>
+<p>This will merge the changes, fetch info from pagure, and show you the current
+git changelog. The changelog should be looked over for any issues, and it will
+require special formatting so pagure will close out the release notes pull
+request automatically.</p>
+<p>For example, you’ll want the ‘Merges’ and ‘Fixes’ lines.</p>
+<p>The unit tests should be run before pushing if there were any new code changes
+since the last tests. After that, it will be ready to push. Test with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span>
+<span class="pre">-n</span></code> first before the push to make sure it’s correct.</p>
+</div>
+<div class="section" id="release-notes">
+<h2>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline"></a></h2>
+<p>There should be separate PR with release notes (and version bumps) for every
+release.</p>
+</div>
+<div class="section" id="pushing-the-code">
+<h2>Pushing the Code<a class="headerlink" href="#pushing-the-code" title="Permalink to this headline"></a></h2>
+<p>Once Koji is ready to release, double check that the release notes are the only
+open pull request. If that’s the case, the release notes are ready to merge.</p>
+<p>Once the code is pushed, make sure all the PRs in the release roadmap are
+closed, including the release notes PR.</p>
+<p>Now the release should be tagged. All Koji releases have been signed, using this
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git tag -a -s -m <span class="s1">&#39;Koji 1.18.0&#39;</span> koji-1.18.0
+</pre></div>
+</div>
+<p>Then the tag must be pushed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git push origin refs/tags/koji-1.18.0
+</pre></div>
+</div>
+<p>To create the tarball, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">tarball</span></code> from the base koji directory. You
+should then copy the tarball to some other directory, just to have a backup. The
+tarball should be uploaded through the pagure interface, though the upload can
+also be done via ssh.</p>
+<p>Once it’s uploaded, download it and check the shasum against your local tarball.
+If there are no issues, Koji’s code release is complete.</p>
+</div>
+<div class="section" id="updating-the-site">
+<h2>Updating the Site<a class="headerlink" href="#updating-the-site" title="Permalink to this headline"></a></h2>
+<p>The next step is to update the Koji site with the new docs and release notes.
+This content is based in a separate repo from the Koji one.</p>
+<p>Simple bash script for this repo could be used, <code class="docutils literal notranslate"><span class="pre">kdoc</span></code>. Using <code class="docutils literal notranslate"><span class="pre">kdoc</span></code>, run
+these commands in the docs repo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kdoc release-1.18.0:test
+<span class="gp">$ </span>kdoc
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">kdoc</span></code> checks out the master branch of the koji git repo, constructs docs from
+that, and copies those changes into the doc repo. Once the changes are in place,
+commit them and push them to your fork:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git commit -m <span class="s1">&#39;koji 1.18.0 release&#39;</span>
+<span class="gp">$ </span>git diff --stat <span class="nb">test</span>
+<span class="gp">$ </span>git push mikem
+</pre></div>
+</div>
+<p>Check your fork to make sure everything looks good (for example, check against a
+previous release), then push the changes with ‘git push.’</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># kdoc shell script</span>
+
+<span class="nb">set</span> -x
+<span class="nb">set</span> -e
+
+<span class="c1"># TODO more sanity checks</span>
+
+<span class="nv">KDIR</span><span class="o">=</span>~/cvs/koji
+<span class="nv">DOCDIR</span><span class="o">=</span>~/cvs/koji-docs
+<span class="nv">DBRANCH</span><span class="o">=</span>master
+<span class="nv">SBRANCH</span><span class="o">=</span>master
+
+<span class="nv">branches</span><span class="o">=</span><span class="nv">$1</span>
+<span class="k">if</span> <span class="nb">test</span> -n <span class="s2">&quot;</span><span class="nv">$branches</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nv">dst</span><span class="o">=</span><span class="si">${</span><span class="nv">branches</span><span class="p">#*:</span><span class="si">}</span>
+    <span class="nv">src</span><span class="o">=</span><span class="si">${</span><span class="nv">branches</span><span class="p">%:*</span><span class="si">}</span>
+    <span class="nb">test</span> -n <span class="s2">&quot;</span><span class="nv">$src</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> <span class="nv">SBRANCH</span><span class="o">=</span><span class="nv">$src</span>
+    <span class="nb">test</span> -n <span class="s2">&quot;</span><span class="nv">$dst</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> <span class="nv">DBRANCH</span><span class="o">=</span><span class="nv">$dst</span>
+<span class="k">fi</span>
+
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$KDIR</span><span class="s2">/docs&quot;</span>
+<span class="nb">test</span> -n <span class="s2">&quot;</span><span class="nv">$SBRANCH</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> git checkout <span class="nv">$SBRANCH</span>
+make dirhtml
+
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$DOCDIR</span><span class="s2">&quot;</span>
+<span class="nb">test</span> -n <span class="s2">&quot;</span><span class="nv">$DBRANCH</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> git checkout <span class="nv">$DBRANCH</span>
+rsync -avPH --delete --exclude .git <span class="s2">&quot;</span><span class="nv">$KDIR</span><span class="s2">/docs/build/dirhtml/&quot;</span> <span class="s2">&quot;</span><span class="nv">$DOCDIR</span><span class="s2">/&quot;</span>
+git status
+
+<span class="nb">echo</span> <span class="s2">&quot;Docdir is: </span><span class="nv">$DOCDIR</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushing-to-pypi">
+<h2>Pushing to PyPi<a class="headerlink" href="#pushing-to-pypi" title="Permalink to this headline"></a></h2>
+<p>All releases should also go to PyPi repository, even if we’ve not publicly
+announced, that it is the supported delivery channel.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dnf install twine
+<span class="gp">$ </span>make pypi
+<span class="gp">$ </span>make pypi-upload
+</pre></div>
+</div>
+</div>
+<div class="section" id="release-email">
+<h2>Release Email<a class="headerlink" href="#release-email" title="Permalink to this headline"></a></h2>
+<p>The last step is to send out an email to <a class="reference external" href="mailto:koji-devel&#37;&#52;&#48;lists&#46;fedorahosted&#46;org">koji-devel<span>&#64;</span>lists<span>&#46;</span>fedorahosted<span>&#46;</span>org</a>. See
+previous release emails for how to format the message.</p>
+<p>Generally the email should include a link to the release notes, list some
+highlights from the release, links to the release roadmap and current roadmap,
+and a link to the download.</p>
+</div>
+<div class="section" id="required-permissions">
+<h2>Required Permissions<a class="headerlink" href="#required-permissions" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Merge permissions for the koji repo</p></li>
+<li><p>Merge permissions / access to the docs repo</p></li>
+<li><p>Key for signing</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuring_jenkins.html" class="btn btn-neutral float-left" title="Unit tests in Fedora’s Jenkins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../runs_here.html" class="btn btn-neutral float-right" title="Runs Here" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -14,8 +14,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Unit tests in Fedora’s Jenkins" href="configuring_jenkins.html" />
-    <link rel="prev" title="Using the koji build system" href="../User%20Guide/using_the_koji_build_system.html" /> 
+    <link rel="next" title="Basic Client" href="basic_client.html" />
+    <link rel="prev" title="Using Koji in Fedora" href="../User%20Guide/using_the_koji_build_system.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,16 +42,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html">Release process</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -81,11 +81,37 @@
              
   <div class="section" id="developer-guide">
 <h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline"></a></h1>
+<p>This guide is intended for three groups of developers</p>
+<ul class="simple">
+<li><p>those using the XMLRPC API</p></li>
+<li><p>those developing 3rd-party plugins</p></li>
+<li><p>developers hacking on the koji</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_client.html">Basic Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html#multicalls">Multicalls</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="profiles.html">Koji Profiles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html#configuration-files">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html#using-koji-profiles-in-python">Using Koji Profiles in Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profiles.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#adding-new-task-types">Adding new task types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#exporting-new-api-methods-over-xmlrpc">Exporting new API methods over XMLRPC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing_a_plugin.html#ensuring-the-user-has-the-required-permissions">Ensuring the user has the required permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#running-code-automatically-triggered-on-events">Running code automatically triggered on events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#list-of-callbacks">List of callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#new-command-for-cli">New command for CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#pull-requests">Pull requests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="content_generators.html">Koji Content Generators</a><ul>
@@ -113,27 +139,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html#example-metadata-json">Example Metadata JSON</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="profiles.html">Koji Profiles</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profiles.html#command-line-interface">Command Line Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profiles.html#configuration-files">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profiles.html#using-koji-profiles-in-python">Using Koji Profiles in Python</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="profiles.html#examples">Examples</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#adding-new-task-types">Adding new task types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#exporting-new-api-methods-over-xmlrpc">Exporting new API methods over XMLRPC</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="writing_a_plugin.html#ensuring-the-user-has-the-required-permissions">Ensuring the user has the required permissions</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#running-code-automatically-triggered-on-events">Running code automatically triggered on events</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#list-of-callbacks">List of callbacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#new-command-for-cli">New command for CLI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html#pull-requests">Pull requests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a><ul>
@@ -180,16 +185,21 @@
 <li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html#unit-tests">Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html#further-testing">Further testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html#code-style">Code Style</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html#release-process">Release process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#merging-prs">Merging PRs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#release-notes">Release Notes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#pushing-the-code">Pushing the Code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#updating-the-site">Updating the Site</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#pushing-to-pypi">Pushing to PyPi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#release-email">Release Email</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#required-permissions">Required Permissions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release_process.html">Release process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#merging-prs">Merging PRs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#release-notes">Release Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#pushing-the-code">Pushing the Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#updating-the-site">Updating the Site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#pushing-to-pypi">Pushing to PyPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#release-email">Release Email</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html#required-permissions">Required Permissions</a></li>
 </ul>
 </li>
 </ul>
@@ -200,8 +210,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../User%20Guide/using_the_koji_build_system.html" class="btn btn-neutral float-left" title="Using the koji build system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="configuring_jenkins.html" class="btn btn-neutral float-right" title="Unit tests in Fedora’s Jenkins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../User%20Guide/using_the_koji_build_system.html" class="btn btn-neutral float-left" title="Using Koji in Fedora" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="basic_client.html" class="btn btn-neutral float-right" title="Basic Client" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

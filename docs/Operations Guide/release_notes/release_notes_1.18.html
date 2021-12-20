@@ -41,18 +41,18 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../migrations/migrations.html">Migrations</a></li>
@@ -93,8 +93,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -196,8 +194,7 @@ The old way will still work.</p>
 <li><p>method calls return a <cite>VirtualCall</cite> instance that can later be used to access the result</p></li>
 <li><p><cite>MultiCallSession</cite> can be used as a context manager, ensuring that the calls are executed</p></li>
 </ul>
-<p>Usage examples can be found in the <span class="xref std std-doc">Writing Koji Code</span>
-document.</p>
+<p>Usage examples can be found in the <a class="reference internal" href="../../Developer%20Guide/writing_koji_code.html"><span class="doc">Writing Koji Code</span></a> document.</p>
 </div>
 <div class="section" id="web-ui-changes">
 <h2>Web UI Changes<a class="headerlink" href="#web-ui-changes" title="Permalink to this headline"></a></h2>
@@ -295,7 +292,7 @@ calling <code class="docutils literal notranslate"><span class="pre">CGInitBuild
 will be added to the mock configuration for the buildroot. The system
 looks for extra values of the form <code class="docutils literal notranslate"><span class="pre">rpm.macro.NAME</span></code>.</p>
 <p>For example, to set the dist tag for a given tag, you could use a command like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji edit-tag f30-build -x rpm.macro.dist=MYDISTTAG
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji edit-tag f30-build -x rpm.macro.dist<span class="o">=</span>MYDISTTAG
 </pre></div>
 </div>
 <p><strong>Per-tag configuration for module_hotfixes setting</strong></p>

@@ -195,7 +195,7 @@ System Changes
 
 There is a new ``priority`` policy which can be used to alter task priorities
 based on data about task/build.
-See :doc:`../defining_hub_policies` for details.
+See :doc:`../../Administration Guide/defining_hub_policies` for details.
 
 **Python egginfo**
 

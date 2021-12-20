@@ -14,7 +14,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example Windows Spec File" href="win_spec_example.html" />
+    <link rel="next" title="Building for Windows" href="winbuild.html" />
     <link rel="prev" title="RPM Signing with Koji" href="signing.html" /> 
 </head>
 
@@ -41,23 +41,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How tag inheritance works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#inheritance-options">Inheritance options</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -138,12 +136,12 @@ inheritance chains.</p>
 options which are described with examples here:</p>
 <p>Simple <code class="docutils literal notranslate"><span class="pre">add-tag-inheritance</span></code> requires two existing tags which will
 be linked together in inheritance chain.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji add-tag parent
-$ koji add-tag child
-$ koji add-tag-inheritance child parent
-$ koji list-tag-inheritance child
-       child (168)
-  ....  └─parent (167)
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-tag parent
+<span class="gp">$ </span>koji add-tag child
+<span class="gp">$ </span>koji add-tag-inheritance child parent
+<span class="gp">$ </span>koji list-tag-inheritance child
+<span class="go">       child (168)</span>
+<span class="go">  ....  └─parent (167)</span>
 </pre></div>
 </div>
 <p>In the example you can see basic inheritance chain. You see <code class="docutils literal notranslate"><span class="pre">child</span></code>
@@ -159,12 +157,12 @@ these options can specified via CLI.</p>
 some parent, you would like to denote, in which part of
 inheritance chain new parent should appear. Let’s continue with
 previous example.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji add-tag less-significant-parent
-$ koji add-tag-inheritance child less-significant-parent --priority 100
-$ koji list-tag-inheritance child
-     child (168)
-....  ├─parent (167)
-....  └─less-significant-parent (169)
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-tag less-significant-parent
+<span class="gp">$ </span>koji add-tag-inheritance child less-significant-parent --priority <span class="m">100</span>
+<span class="gp">$ </span>koji list-tag-inheritance child
+<span class="go">     child (168)</span>
+<span class="go">....  ├─parent (167)</span>
+<span class="go">....  └─less-significant-parent (169)</span>
 </pre></div>
 </div>
 <p>What happened here is, that <code class="docutils literal notranslate"><span class="pre">parent</span></code> has default priority 0,
@@ -181,19 +179,19 @@ can use e.g. priority 15 like in good old Basic times).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">maxdepth</span></code></dt><dd><p>For longer inheritance chains you may not want to treat whole
 chain. Let’s leave our example and get more real-life situation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji list-tag-inheritance linux3-build
-     linux3-build (4380)
-....  └─linux3-override (4379)
-....     └─linux3-updates (4373)
-....        └─linux2 (4368)
-....           └─linux1 (4350)
-....              └─linux0 (4250)
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji list-tag-inheritance linux3-build
+<span class="go">     linux3-build (4380)</span>
+<span class="go">....  └─linux3-override (4379)</span>
+<span class="go">....     └─linux3-updates (4373)</span>
+<span class="go">....        └─linux2 (4368)</span>
+<span class="go">....           └─linux1 (4350)</span>
+<span class="go">....              └─linux0 (4250)</span>
 
-$ koji add-tag linux4-build
-$ koji add-tag-inheritance linux4-build linux3-build --maxdepth 0
-$ koji list-tag-inheritance linux4-build
-     linux4-build (4444)
-M...  └─linux3-build (4380)
+<span class="gp">$ </span>koji add-tag linux4-build
+<span class="gp">$ </span>koji add-tag-inheritance linux4-build linux3-build --maxdepth <span class="m">0</span>
+<span class="gp">$ </span>koji list-tag-inheritance linux4-build
+<span class="go">     linux4-build (4444)</span>
+<span class="go">M...  └─linux3-build (4380)</span>
 </pre></div>
 </div>
 <p>This is not, what you would see in Fedora’s koji, because Fedora is
@@ -227,7 +225,7 @@ packages are propagated through this link.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="signing.html" class="btn btn-neutral float-left" title="RPM Signing with Koji" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="win_spec_example.html" class="btn btn-neutral float-right" title="Example Windows Spec File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="winbuild.html" class="btn btn-neutral float-right" title="Building for Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes and miscellaneous details about Koji &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guide" href="../User%20Guide/index.html" />
+    <link rel="prev" title="Building for Windows" href="winbuild.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Notes and miscellaneous details about Koji</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#koji-cli">Koji CLI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-from-srpm">Building from SRPM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-from-scm">Building from SCM</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#koji-server-administration">Koji server administration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#importing-an-rpm-without-srpm">Importing an rpm without srpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-arch-builds">Multi-arch builds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-noarch-sub-packages-are-built">How noarch sub-packages are built</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manually-submitting-a-task">Manually submitting a task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-your-tags">Managing your tags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spec-file-processing">Spec file processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#macro-processing">Macro processing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Notes and miscellaneous details about Koji</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/misc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="notes-and-miscellaneous-details-about-koji">
+<h1>Notes and miscellaneous details about Koji<a class="headerlink" href="#notes-and-miscellaneous-details-about-koji" title="Permalink to this headline"></a></h1>
+<p>This document is intended to illuminate some of the small quirks that
+you may encounter while running your own koji server.</p>
+<div class="section" id="koji-cli">
+<h2>Koji CLI<a class="headerlink" href="#koji-cli" title="Permalink to this headline"></a></h2>
+<div class="section" id="getting-help">
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline"></a></h3>
+<ul>
+<li><p>There are multiple ways to receive help from the koji command, each
+of them gives you something a little different:</p>
+<ul>
+<li><p>List of user commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji <span class="nb">help</span>
+</pre></div>
+</div>
+</li>
+<li><p>Command-specific help:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji <span class="o">[</span>command<span class="o">]</span> --help
+</pre></div>
+</div>
+</li>
+<li><p>List of admin commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji <span class="nb">help</span> --admin
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="building-from-srpm">
+<h3>Building from SRPM<a class="headerlink" href="#building-from-srpm" title="Permalink to this headline"></a></h3>
+<p>Koji only allows admins access to build directly from srpm. It expects
+normal users to build out of an SCM.</p>
+</div>
+<div class="section" id="building-from-scm">
+<h3>Building from SCM<a class="headerlink" href="#building-from-scm" title="Permalink to this headline"></a></h3>
+<div class="section" id="scm-layout">
+<h4>SCM Layout<a class="headerlink" href="#scm-layout" title="Permalink to this headline"></a></h4>
+<p>When building out of an SCM, Koji expects there will be a Makefile in
+the project root that has a <code class="docutils literal notranslate"><span class="pre">sources</span></code> target. Koji will call <code class="docutils literal notranslate"><span class="pre">make</span>
+<span class="pre">sources</span></code> on the checked out files.</p>
+<p>This target simply needs to download all the sources for the SRPM that
+are not already included in the SCM repository.</p>
+</div>
+<div class="section" id="scm-uri-structure">
+<h4>SCM URI Structure<a class="headerlink" href="#scm-uri-structure" title="Permalink to this headline"></a></h4>
+<p>In Fedora, this detail is typically handled by the fedpkg tool. Outside
+of Fedora, you may need to know how to manually submit builds from an
+SCM to koji.</p>
+<p>Koji accepts an SCM URI in this format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji build <span class="o">[</span>target<span class="o">]</span> <span class="o">[</span>scheme<span class="o">]</span>://<span class="o">[</span>user<span class="o">]</span>@<span class="o">[</span>hostname<span class="o">]</span>/<span class="o">[</span>path/to/repository<span class="o">]</span>?<span class="o">[</span>path/to/project<span class="o">]</span><span class="c1">#[revision]</span>
+</pre></div>
+</div>
+<p>Note the division between repository path and project path. During setup
+of kojid, the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> parameter is configured in
+<code class="docutils literal notranslate"><span class="pre">/etc/kojid/kojid.conf</span></code>. This value of this parameter should match the
+path to the repository.</p>
+<p>In some SCM configurations, there isn’t a difference between repository
+path and project path. In these cases, it should be understood that
+dividing your SCM path into two components, URI path and URI query, can
+seem somewhat arbitrary. An easy way to remember this detail is that the
+path specified in <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> is the portion of your SCM path that
+goes before the URI query, any sub-directories not specified in
+<code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> is given to koji as the URI query.</p>
+</div>
+</div>
+</div>
+<div class="section" id="koji-server-administration">
+<h2>Koji server administration<a class="headerlink" href="#koji-server-administration" title="Permalink to this headline"></a></h2>
+<div class="section" id="importing-an-rpm-without-srpm">
+<h3>Importing an rpm without srpm<a class="headerlink" href="#importing-an-rpm-without-srpm" title="Permalink to this headline"></a></h3>
+<p>If you are running a private koji instance, you may run into a situation
+where you need to integrate a proprietary rpm into your build system. To
+do this, it is similar to the package imports you did when bootstrapping
+your koji instance:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji import --create-build <span class="o">[</span>package<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multi-arch-builds">
+<h3>Multi-arch builds<a class="headerlink" href="#multi-arch-builds" title="Permalink to this headline"></a></h3>
+<p>There are some packages that need to build across multiple arches. For
+example, the kernel package no longer builds an i386 kernel, kernels are
+built on i586 and above. To instruct koji to build these additional
+arches, use this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji set-pkg-arches <span class="o">[</span>options<span class="o">]</span> &lt;arches&gt; &lt;tag&gt; &lt;package&gt; <span class="o">[</span>&lt;package2&gt; ...<span class="o">]</span>
+</pre></div>
+</div>
+<p>Note: is a single entity, so denote multiple arches within quotes (e.g.
+<code class="docutils literal notranslate"><span class="pre">'i386</span> <span class="pre">i586</span> <span class="pre">i686'</span></code>).</p>
+</div>
+<div class="section" id="how-noarch-sub-packages-are-built">
+<h3>How noarch sub-packages are built<a class="headerlink" href="#how-noarch-sub-packages-are-built" title="Permalink to this headline"></a></h3>
+<p>It is a technical detail, but can make sense for someone debugging
+noarch issues. If there are multiple architectures defined, multiple
+<code class="docutils literal notranslate"><span class="pre">buildArch</span></code> tasks are spawned. Each of them will produce arch and also
+noarch packages. While arch packages are unique compared to other
+subtasks, noarch packages should be the same. It shouldn’t matter on
+which arch you’re building it. If there is a difference, it is a bug.
+Koji internally checks some data from these noarch packages and
+chooses randomly one, which will appear in final builds. If
+differences are found, build will fail. Koji is using simple embedded
+rpmdiff variant, which checks for each file included in rpm: mode,
+device, vflags, user, group, digest. Furthermore, Name, Summary,
+Description, Group, License, URL, PreIn, PostIn, PreUn, PostUn,
+Provides, Requires, Conflicts and Obsoletes are compared.  In case of
+failing this test, <code class="docutils literal notranslate"><span class="pre">BuildError</span></code> is raised.</p>
+</div>
+<div class="section" id="manually-submitting-a-task">
+<h3>Manually submitting a task<a class="headerlink" href="#manually-submitting-a-task" title="Permalink to this headline"></a></h3>
+<p>Occasionally, you may need to manually submit a task to koji. One likely
+usage is to manually trigger a createRepo. To do this, use this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji make-task <span class="o">[</span>options<span class="o">]</span> &lt;arg1&gt; <span class="o">[</span>&lt;arg2&gt;...<span class="o">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">make-task</span></code> command is a bit of under-documented black magic. Task
+parameters are defined in <code class="docutils literal notranslate"><span class="pre">kojihub.py</span></code>. The easiest way I have found to
+figure out the right incantations for <code class="docutils literal notranslate"><span class="pre">make-task</span></code> is to query the <code class="docutils literal notranslate"><span class="pre">task</span></code>
+table in the koji database directly. Find a similar task to the one you
+want to create, and look in the request field for the parameters the
+task used, and mimic those.</p>
+<p>So, citing the <code class="docutils literal notranslate"><span class="pre">createRepo</span></code> case above, here is an example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">kojiadmin@localhost$ </span>koji make-task --channel<span class="o">=</span>createrepo --priority<span class="o">=</span><span class="m">15</span> <span class="se">\</span>
+<span class="go">newRepo dist-foo-build</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="managing-your-tags">
+<h3>Managing your tags<a class="headerlink" href="#managing-your-tags" title="Permalink to this headline"></a></h3>
+<p>Occasionally an unwanted package or version of a package will be built
+by koji. Don’t fret. There are two mechanisms to handle rescinding a
+package or specific package version.</p>
+<ul class="simple">
+<li><p>To remove a specific version of a package, you can untag it:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji untag-build <span class="o">[</span>options<span class="o">]</span> &lt;tag&gt; &lt;pkg&gt; <span class="o">[</span>&lt;pkg&gt;...<span class="o">]</span>
+</pre></div>
+</div>
+<p>supports either <code class="docutils literal notranslate"><span class="pre">%name</span></code> or <code class="docutils literal notranslate"><span class="pre">%name-%version-%release</span></code></p>
+<ul class="simple">
+<li><p>To remove all versions of a package, you can untag it as above or you
+can administratively block it from being listed in a tag:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji block-pkg <span class="o">[</span>options<span class="o">]</span> tag package <span class="o">[</span>package2 ...<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="spec-file-processing">
+<h2>Spec file processing<a class="headerlink" href="#spec-file-processing" title="Permalink to this headline"></a></h2>
+<div class="section" id="macro-processing">
+<h3>Macro processing<a class="headerlink" href="#macro-processing" title="Permalink to this headline"></a></h3>
+<p>Macros in the spec file are expanded before Requires and BuildRequires
+are processed. If there are any custom macros in the spec file, the
+package that drops those macros into <code class="docutils literal notranslate"><span class="pre">/etc/rpm</span></code> must be tagged under your
+<code class="docutils literal notranslate"><span class="pre">dist-build</span></code> tag</p>
+<div class="section" id="dist-tags">
+<h4>%dist tags<a class="headerlink" href="#dist-tags" title="Permalink to this headline"></a></h4>
+<p>For packages that incorporate the %dist tags in their filename, they
+expect <code class="docutils literal notranslate"><span class="pre">%dist</span></code> to be defined in <code class="docutils literal notranslate"><span class="pre">/etc/rpm/macros.dist</span></code>, which was added in
+Fedora 7. For building on RHEL5/FC6 and earlier, koji needs the
+<a class="reference external" href="https://buildsys.fedoraproject.org/buildgroups/buildsys-macros">https://buildsys.fedoraproject.org/buildgroups/
+buildsys-macros</a>
+package tagged under the dist-build tag.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="winbuild.html" class="btn btn-neutral float-left" title="Building for Windows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../User%20Guide/index.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

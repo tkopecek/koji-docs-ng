@@ -14,7 +14,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Koji Profiles" href="profiles.html" />
+    <link rel="next" title="Writing Koji Code" href="writing_koji_code.html" />
     <link rel="prev" title="Koji Content Generators" href="content_generators.html" /> 
 </head>
 
@@ -42,7 +42,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Koji Content Generator Metadata</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#format">Format</a><ul>
@@ -55,13 +57,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#example-metadata-json">Example Metadata JSON</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html">Release process</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -265,94 +265,94 @@ available media type.</p></li>
 <div class="section" id="example-metadata-json">
 <h2>Example Metadata JSON<a class="headerlink" href="#example-metadata-json" title="Permalink to this headline"></a></h2>
 <p>The below JSON is based loosely on the output of a docker image build.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;metadata_version&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
- <span class="s2">&quot;build&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-server-docker&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;7.1&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;git://git.engineering.redhat.com/users/vpavlin/tdl_templates.git#a14f145244&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-           <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mi">1423148398</span><span class="p">,</span>
-           <span class="s2">&quot;end_time&quot;</span><span class="p">:</span> <span class="mi">1423148828</span><span class="p">,</span>
-           <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;jdoe&quot;</span><span class="p">},</span>
- <span class="s2">&quot;buildroots&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                 <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;os&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-7&quot;</span><span class="p">,</span>
-                          <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;content_generator&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;osbs&quot;</span><span class="p">,</span>
-                                       <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.2&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;container&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;docker&quot;</span><span class="p">,</span>
-                               <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;docker&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.5.0&quot;</span><span class="p">}],</span>
-                 <span class="s2">&quot;components&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;glibc&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2.17&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;75.el7&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
-                                 <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;fd431d51&quot;</span><span class="p">},</span>
-                                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;openssl&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.1e&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;42.el7&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
-                                 <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;d4e5f6...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;fd431d51&quot;</span><span class="p">},</span>
-                                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bind-libs&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;9.9.4&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;18.el7&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
-                                 <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;987abc...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">},</span>
-                                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python-urllib3&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.5&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;8.el7&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
-                                 <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;123hgf...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">},</span>
-                                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;jboss-eap-6.3.3-full-build.zip&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">12345678</span><span class="p">,</span>
-                                 <span class="s2">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;5ec2f29c4e1c2e2aa6552836e236a158&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">}],</span>
-                 <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;osbs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;build_id&quot;</span><span class="p">:</span> <span class="mi">12345</span><span class="p">,</span>
-                                    <span class="s2">&quot;builder_image_id&quot;</span><span class="p">:</span> <span class="mi">67890</span><span class="p">}}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;metadata_version&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="nt">&quot;build&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-server-docker&quot;</span><span class="p">,</span>
+           <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;7.1&quot;</span><span class="p">,</span>
+           <span class="nt">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span>
+           <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;git://git.engineering.redhat.com/users/vpavlin/tdl_templates.git#a14f145244&quot;</span><span class="p">,</span>
+           <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+           <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="mi">1423148398</span><span class="p">,</span>
+           <span class="nt">&quot;end_time&quot;</span><span class="p">:</span> <span class="mi">1423148828</span><span class="p">,</span>
+           <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;jdoe&quot;</span><span class="p">},</span>
+ <span class="nt">&quot;buildroots&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="nt">&quot;host&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;os&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-7&quot;</span><span class="p">,</span>
+                          <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">},</span>
+                 <span class="nt">&quot;content_generator&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;osbs&quot;</span><span class="p">,</span>
+                                       <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.2&quot;</span><span class="p">},</span>
+                 <span class="nt">&quot;container&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;docker&quot;</span><span class="p">,</span>
+                               <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">},</span>
+                 <span class="nt">&quot;tools&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;docker&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.5.0&quot;</span><span class="p">}],</span>
+                 <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;glibc&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2.17&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;75.el7&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;epoch&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                                 <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;fd431d51&quot;</span><span class="p">},</span>
+                                <span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;openssl&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.1e&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;42.el7&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;epoch&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                                 <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;d4e5f6...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;fd431d51&quot;</span><span class="p">},</span>
+                                <span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bind-libs&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;9.9.4&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;18.el7&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;epoch&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+                                 <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;987abc...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">},</span>
+                                <span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python-urllib3&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.5&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;8.el7&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;epoch&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                                 <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;sigmd5&quot;</span><span class="p">:</span> <span class="s2">&quot;123hgf...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">},</span>
+                                <span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;jboss-eap-6.3.3-full-build.zip&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">12345678</span><span class="p">,</span>
+                                 <span class="nt">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;5ec2f29c4e1c2e2aa6552836e236a158&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">}],</span>
+                 <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;osbs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;build_id&quot;</span><span class="p">:</span> <span class="mi">12345</span><span class="p">,</span>
+                                    <span class="nt">&quot;builder_image_id&quot;</span><span class="p">:</span> <span class="mi">67890</span><span class="p">}}</span>
                  <span class="p">}],</span>
- <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-server-docker-7.1-4.x86_64.tar.xz&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">34440656</span><span class="p">,</span>
-            <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;275ae42a45cfedbdb0c0a1acc0b55a1b&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;docker-image&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;components&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;docker&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;987654...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
-                                 <span class="s2">&quot;repositories&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;repository.example.com/username/imagename:7.1-4&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;output&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="nt">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;rhel-server-docker-7.1-4.x86_64.tar.xz&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">34440656</span><span class="p">,</span>
+            <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;275ae42a45cfedbdb0c0a1acc0b55a1b&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;docker-image&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;docker&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;987654...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;parent_id&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
+                                 <span class="nt">&quot;repositories&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;repository.example.com/username/imagename:7.1-4&quot;</span><span class="p">,</span>
                                                   <span class="s2">&quot;repository.example.com/username/imagename@sha256:100000...&quot;</span><span class="p">,</span>
                                                   <span class="s2">&quot;repository.example.com/username/imagename@sha256:200000...&quot;</span><span class="p">],</span>
-                                 <span class="s2">&quot;digests&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;application/vnd.docker.distribution.manifest.v1+json&quot;</span><span class="p">:</span> <span class="s2">&quot;sha256:100000...&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;application/vnd.docker.distribution.manifest.v2+json&quot;</span><span class="p">:</span> <span class="s2">&quot;sha256:200000...&quot;</span><span class="p">}</span>
+                                 <span class="nt">&quot;digests&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;application/vnd.docker.distribution.manifest.v1+json&quot;</span><span class="p">:</span> <span class="s2">&quot;sha256:100000...&quot;</span><span class="p">,</span>
+                                             <span class="nt">&quot;application/vnd.docker.distribution.manifest.v2+json&quot;</span><span class="p">:</span> <span class="s2">&quot;sha256:200000...&quot;</span><span class="p">}</span>
                                  <span class="p">}}},</span>
-           <span class="p">{</span><span class="s2">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;checkout.log&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">85724</span><span class="p">,</span>
-            <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">},</span>
-           <span class="p">{</span><span class="s2">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;os-indirection.log&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">27189</span><span class="p">,</span>
-            <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;d4f5g6...&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">}</span>
+           <span class="p">{</span><span class="nt">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;checkout.log&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">85724</span><span class="p">,</span>
+            <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;a1b2c3...&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">},</span>
+           <span class="p">{</span><span class="nt">&quot;buildroot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;os-indirection.log&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;filesize&quot;</span><span class="p">:</span> <span class="mi">27189</span><span class="p">,</span>
+            <span class="nt">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;noarch&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum_type&quot;</span><span class="p">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;checksum&quot;</span><span class="p">:</span> <span class="s2">&quot;d4f5g6...&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">}</span>
            <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -365,7 +365,7 @@ available media type.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="content_generators.html" class="btn btn-neutral float-left" title="Koji Content Generators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="profiles.html" class="btn btn-neutral float-right" title="Koji Profiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="writing_koji_code.html" class="btn btn-neutral float-right" title="Writing Koji Code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

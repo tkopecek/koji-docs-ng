@@ -161,7 +161,7 @@ Policy is part of config and without it, ``prune`` action will refuse
 to work. Best documentation here would be part of example config with
 comments.
 
-.. code-block::
+.. code-block:: ini
 
   [prune]
   policy =
@@ -314,6 +314,9 @@ General options
 
 Koji Shadow
 -----------
+Script for shadowing builds between koji instances.
 
 Koji DB Sweeper
 ---------------
+Simple cleaning of database entries which are not expected to persist (basically
+old session info). Details are covered at :ref:`db-maintenance`.

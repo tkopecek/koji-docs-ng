@@ -1,6 +1,8 @@
 # koji-docs-ng
 Restructuralization of official koji docs
 
+Compiled version: https://tkopecek.github.io/koji-docs-ng/
+
 Potential sources:
 
  * https://docs.pagure.org/koji/

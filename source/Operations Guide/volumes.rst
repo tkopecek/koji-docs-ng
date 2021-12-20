@@ -31,7 +31,7 @@ Constructing the path
 
 If you are using the Koji python api, things should **just work**.
 
-::
+.. code-block:: python
 
     >>> import koji
     >>> mykoji = koji.get_profile_module('mykoji')
@@ -152,7 +152,7 @@ If the volume policy contains errors, or does not return a result, then the
 DEFAULT volume is used.
 
 For more information about Koji policies see:
-:doc:`Defining hub policies <defining_hub_policies>`
+:doc:`Defining hub policies <../Administration Guide/defining_hub_policies>`
 
 
 CLI commands

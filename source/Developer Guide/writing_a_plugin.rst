@@ -17,7 +17,7 @@ could create a Koji Builder plugin.
 
 Such a plugin would minimally look like this:
 
-::
+.. code-block:: python
 
     from koji.tasks import BaseTaskHandler
 
@@ -52,7 +52,7 @@ Builder plugins folder: ``/usr/lib/koji-builder-plugins/``
 
 Finally, edit the Koji Builder config file, ``/etc/kojid/kojid.conf``:
 
-::
+.. code-block:: python
 
     # A space-separated list of plugins to enable
     plugins = mytask
@@ -76,7 +76,7 @@ request things Koji does not expose right now.
 
 Such a plugin would minimally look like this:
 
-::
+.. code-block:: python
 
     def mymethod(arg1, arg2, kwarg1=None):
         context.session.assertPerm('admin')
@@ -99,7 +99,7 @@ plugins folder: ``/usr/lib/koji-hub-plugins/``
 
 Finally, edit the Koji Hub config file, ``/etc/koji-hub/hub.conf``:
 
-::
+.. code-block:: ini
 
     # A space-separated list of plugins to enable
     Plugins = mymethod
@@ -108,7 +108,7 @@ Restart the Koji Hub service, and your plugin will be enabled.
 
 You can try calling the new XMLRPC API with the Python client library:
 
-::
+.. code-block:: python
 
     >>> import koji
     >>> session = koji.ClientSession("http://koji/example.org/kojihub")
@@ -120,7 +120,7 @@ Ensuring the user has the required permissions
 If you want your new XMLRPC API to require specific permissions from the
 user, all you need to do is add the following to your method:
 
-::
+.. code-block:: python
 
     from koji.context import context
 
@@ -148,7 +148,7 @@ any kind of event.
 This can be achieved with a plugin, which would look minimally as
 follows:
 
-::
+.. code-block:: python
 
     from koji.plugin import callback
 
@@ -172,7 +172,7 @@ Hub plugins folder: ``/usr/lib/koji-hub-plugins``
 
 Finally, edit the Koji Hub config file, ``/etc/koji-hub/hub.conf``:
 
-::
+.. code-block:: ini
 
     # A space-separated list of plugins to enable
     Plugins = mycallback
@@ -229,7 +229,7 @@ things with API, you can benefit from writing a new command for CLI.
 
 Most simple command would look like this:
 
-::
+.. code-block:: python
 
     from koji.plugin import export_cli
 
@@ -279,10 +279,13 @@ than just adding commands - e.g. own authentication methods, etc.) in future.
 Pull requests
 -------------
 
-These plugins have to be written in python 2.6+/3.x compatible way. We are
-using `six` library to support this, so we will also prefer pull requests
-written this way. CLI (and client library) is meant to be fully compatible
-with python 3 from koji 1.13.
+Plugins for CLI  have to be written in python 2.6+/3.x compatible way. We are
+using ``six`` library to support this, so we will also prefer pull requests
+written this way. CLI (and client library) is meant to be fully compatible with
+python 3 from koji 1.13.
+
+Hub is already Python 3 only, so ``six`` is not needed there. For details about
+supported eco-systems see :ref:`supported-platforms`.
 
 Tests are also recommended for PR. For example one see
 ``tests/test_plugins/test_runroot_cli.py``.

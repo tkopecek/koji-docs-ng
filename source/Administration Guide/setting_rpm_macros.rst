@@ -68,7 +68,7 @@ $ koji add-group-pkg f33-build build my-custom-rpm-macros
 Setting rpm.macro values
 ========================
 
-(this feature was added in :doc:`Koji 1.18 <release_notes/release_notes_1.18>`)
+(this feature was added in :doc:`Koji 1.18 <../Operations Guide/release_notes/release_notes_1.18>`)
 
 As a convenience, Koji will honor any ``rpm.macro.NAME`` values in the "tag extra" settings for
 a given build tag.

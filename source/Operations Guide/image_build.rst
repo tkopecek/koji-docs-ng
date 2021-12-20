@@ -15,6 +15,10 @@ For additional questions and information, ask around in ``#koji`` on FreeNode
 IRC and sign up to the right mailing lists as the `Koji project website`_
 dictates.
 
+.. note::
+   Experimental support for building images with `Kiwi`_ is provided via plugin.
+   For setting it up see :doc:`plugins`.
+
 Kickstart First
 ===============
 
@@ -39,7 +43,7 @@ remote Source Control Manager (SCM) such as git or Subversion. To access that,
 you need to pass the ``--ksurl`` parameter, which accepts a wacky string in
 this form:
 
-::
+.. code-block:: none
 
     git://git.fedorahosted.org/git/spin-kickstarts.git?fedora22#68c40eb7
 
@@ -353,7 +357,7 @@ file written in the Python ConfigParser format (like a Windows .ini). The
 options are all named the same with one caveat, see below. Here's what one
 could look like:
 
-::
+.. code-block:: ini
 
     [image-build]
     name = fedora-server-docker
@@ -387,7 +391,7 @@ If you're building OVAs, either for RHEVM or vSphere, you can specify OVA
 options with a special section in the configuration file. It looks something
 like this:
 
-::
+.. code-block:: ini
 
     [ova-options]
     vsphere_product_version=22
@@ -401,7 +405,7 @@ like this:
 
 or this:
 
-::
+.. code-block:: ini
 
     [ova-options]
     vsphere_ova_format = vagrant-virtualbox
@@ -613,17 +617,17 @@ your guest environment. Here's how to do it:
   issue you're trying to fix.
   ::
 
-        # kpartx -av <raw-image>
-        # mount -o loop /dev/mapper/loop0p1 /mnt/my_directory
+        $ kpartx -av <raw-image>
+        $ mount -o loop /dev/mapper/loop0p1 /mnt/my_directory
 
 Hopefully at this point you figure out the issue. To tear down the image you'll
 run commands as root like so:
 
 ::
 
-    # umount /mnt/my_directory
-    # dmsetup remove loop0p1
-    # losetup -d /dev/loop0
+    $ umount /mnt/my_directory
+    $ dmsetup remove loop0p1
+    $ losetup -d /dev/loop0
 
 Again, if you used different loopback devices, substitute those in to the
 dmsetup and losetup commands.
@@ -681,7 +685,7 @@ ImageFactory/Oz Preparation
     code into ``~root/.psphere/config.yaml``. Do not worry about the server,
     username, and password credentials; they are not used anywhere.
 
-    ::
+    .. code-block:: yaml
 
         general:
           server: 10.16.120.224
@@ -699,7 +703,7 @@ whole Koji instance), you can use the code below to emulate that. If you want
 to test the Koji integration with a full Koji instance, proceed to the next
 section instead.
 
-::
+.. code-block:: python
 
     #!/usr/bin/python -tt
 
@@ -797,22 +801,22 @@ Koji Preparation
 
             ::
 
-                koji add-tag fedora22
-                koji add-tag jay-fedora22
-                koji add-tag jay-fedora22-override --parent jay-1-fedora22
-                koji add-tag jay-fedora22-build --arches x86_64 --parent jay-fedora22-override
-                koji add-tag jay-fedora22-candidate --parent jay-fedora22
-                koji add-tag-inheritance --priority 40 jay-fedora22-build fedora22
-                koji add-pkg --owner kojiadmin jay-fedora22 fedora-server-ec2 fedora-server-kvm
-                koji add-external-repo -t fedora::20 fedora22 'https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/'
-                koji add-target jay-fedora22-candidate jay-fedora22-build
-                koji regen-repo jay-fedora22-build
+                $ koji add-tag fedora22
+                $ koji add-tag jay-fedora22
+                $ koji add-tag jay-fedora22-override --parent jay-1-fedora22
+                $ koji add-tag jay-fedora22-build --arches x86_64 --parent jay-fedora22-override
+                $ koji add-tag jay-fedora22-candidate --parent jay-fedora22
+                $ koji add-tag-inheritance --priority 40 jay-fedora22-build fedora22
+                $ koji add-pkg --owner kojiadmin jay-fedora22 fedora-server-ec2 fedora-server-kvm
+                $ koji add-external-repo -t fedora::20 fedora22 'https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/'
+                $ koji add-target jay-fedora22-candidate jay-fedora22-build
+                $ koji regen-repo jay-fedora22-build
         #.  Grab a kickstart file from an image task in Koji that relates to what you want to test.
         #.  Finally, kick off a build!
 
             ::
 
-                koji image-build fedora-server-ec2 22 --distro Fedora-22 jay-fedora22-candidate --kickstart fedora-server-starter-ec2.ks 'https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/'
+                $ koji image-build fedora-server-ec2 22 --distro Fedora-22 jay-fedora22-candidate --kickstart fedora-server-starter-ec2.ks 'https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/'
 
 
 Building Appliances
@@ -913,14 +917,14 @@ to be.
 #.  Add a builder to the appliance channel
         ::
 
-            koji add-host-to-channel <your-host> appliance
+            $ koji add-host-to-channel <your-host> appliance
 
 #.  Grant the permission to build an appliance to a user. This step is optional
     since admins have all permissions.
 
         ::
 
-            koji grant-permission appliance <user>
+            $ koji grant-permission appliance <user>
 
 #.  You will need a tag and target to build the images from. The yum repo
     generated for the build tag of the target is what Koji will use to populate
@@ -931,7 +935,7 @@ to be.
 
         ::
 
-            koji add-group <build-tag> appliance-build``
+            $ koji add-group <build-tag> appliance-build``
 
 #.  Add packages to the appliance-build group. These package lists vary has
     packages and dependencies change. As of October, 2015 for Fedora 24 the
@@ -942,9 +946,9 @@ to be.
 
         ::
 
-            koji add-group-pkg <build-tag> appliance-build <pkg> ...
+            $ koji add-group-pkg <build-tag> appliance-build <pkg> ...
 
-.. _Koji project website: https://fedorahosted.org/koji/wiki
+.. _Koji project website: https://pagure.io/koji/
 .. _kickstart:
     https://github.com/rhinstaller/pykickstart/blob/master/docs/kickstart-docs.rst
 .. _Anaconda Kickstart Guide:
@@ -956,3 +960,4 @@ to be.
 .. _how to use Oz: https://github.com/clalancette/oz/wiki
 .. _how to use ImageFactory: http://imgfac.org/documentation/
 .. _appliance-creator: https://fedoraproject.org/wiki/Features/ApplianceTools
+.. _kiwi: https:/osinside.github.io/kiwi

@@ -19,13 +19,15 @@ with option descriptions installed.
 
 Hub
 ---
+
 On the hub side ``Plugins = runroot_hub`` needs to be added to
 ``/etc/koji-hub/hub.conf``. Note, that by default policy runroot tasks are
 assigned to ``runroot`` channel. As this is a plugin, we don't create it
-automatically. There are three options - create channel when adding first builder
-there via ``koji add-host-to-channel --new hostname runroot`` or by changing the
-default channel policy according to :doc:`defining_hub_policies`. Last option is
-to use ``--channel-override`` option in CLI to drive task to channel of choice.
+automatically. There are three options - create channel when adding first
+builder there via ``koji add-host-to-channel --new hostname runroot`` or by
+changing the default channel policy according to :doc:`../Administration
+Guide/defining_hub_policies`. Last option is to use ``--channel-override``
+option in CLI to drive task to channel of choice.
 
 CLI
 ---
@@ -229,13 +231,15 @@ Admins should consider the balance between the ``batch_size`` and
 plugin could attempt to send during a single call.
 
 
+.. _kiwi-build:
+
 Image builds using Kiwi
 =======================
 
 **This is just a tech-preview. API/usage can drastically change in upcoming
 releases**
 
-Plugin for creating images via `kiwi <http://osinside.github.io/kiwi/>`_
+Plugin for creating images via `kiwi <https://osinside.github.io/kiwi/>`_
 project. Minimal supported version of kiwi is ``kiwi-9.24.2``.
 
 All three parts (cli/hub/builder) needs to be installed. There is currently no

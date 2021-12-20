@@ -1,8 +1,3 @@
-===========================
-Using the koji build system
-===========================
-
-
 Using Koji in Fedora
 ====================
 
@@ -22,7 +17,7 @@ installed in a single step:
 
 ::
 
-    dnf install fedora-packager
+    root@localhost$ dnf install fedora-packager
 
 fedora-packager provides useful scripts to help maintain and setup your
 koji environment. Additionally, it includes dependencies on the Koji
@@ -62,13 +57,13 @@ build system as well as secondary arch build systems.
 The web interface
 -----------------
 
-.. raw:: mediawiki
+.. tip::
 
-   {{admon/tip|Optional|The web interface is optional.  You may skip to the
-   next section if you like.}}
+   The web interface is optional.  You may skip to the
+   next section if you like.
 
 The primary interface for viewing Koji data is a web application. It is
-available at https://koji.fedoraproject.org/koji/ . Most of the interface
+available at https://koji.fedoraproject.org/koji/. Most of the interface
 is read-only, but with sufficient privileges, you can log in and perform
 some additional actions. For example:
 
@@ -87,23 +82,25 @@ need a valid SSL certificate and your web browser will need to be
 configured to trust the SSL cert. Instructions on how to do this are
 printed when running ``fedora-packager-setup --with-browser-cert``.
 
-.. raw:: mediawiki
+.. warning::
 
-   {{admon/warning|Using the certificate directly downloaded from the FAS web
+   Using the certificate directly downloaded from the FAS web
    interface|If you have generated and downloaded the certificate
-   <code>~/.fedora.cert</code> directly from FAS using the form referenced
+   ``~/.fedora.cert`` directly from FAS using the form referenced
    above, you need to convert it into a format that the browser can understand
    using the following command:
-   <code>openssl pkcs12 -export -in ~/.fedora.cert -CAfile ~/.fedora-upload-ca.cert -out ~/fedora-browser-cert.p12</code>,
-   where <code>.fedora-upload-ca.cert</code> can be downloaded from the URL
-   referenced above.}}
+   ``openssl pkcs12 -export -in ~/.fedora.cert -CAfile ~/.fedora-upload-ca.cert -out ~/fedora-browser-cert.p12``,
+   where ``.fedora-upload-ca.cert`` can be downloaded from the URL
+   referenced above.
 
 Installing SSL Certificates in Firefox
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. raw:: mediawiki
+.. note::
 
-   {{admon/note|Optional|You only need to check these instructions if you are intending to authenticate with the web interface with Firefox.  Authenticating with the web interface is optional.}}
+   You only need to check these instructions if you are intending to
+   authenticate with the web interface with Firefox.  Authenticating with the
+   web interface is optional.
 
 Once you have created your FAS account, generated your certificate in
 the form posted in the link above and ran
@@ -137,16 +134,20 @@ koji web interface.
 Installing SSL Certificates in Chromium
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. raw:: mediawiki
+.. note::
 
-   {{admon/note|Optional|You only need to check these instructions if you are intending to authenticate with the web interface with Chromium.  Authenticating with the web interface is optional.}}
+   You only need to check these instructions if you are intending to
+   authenticate with the web interface with Chromium.  Authenticating with the
+   web interface is optional.
 
 Chromium uses the NSS Shared DB, you will need the nss-tools package
 installed.
 
 ::
 
-    pk12util -d sql:$HOME/.pki/nssdb -i fedora-browser-cert.p12
+    $ pk12util -d sql:$HOME/.pki/nssdb -i fedora-browser-cert.p12
+
+.. _notification-basics:
 
 Notifications
 ^^^^^^^^^^^^^
@@ -185,7 +186,7 @@ the package is to run,
 
 ::
 
-    fedpkg build
+    $ fedpkg build
 
 This will trigger a build request for the branch. Easy!
 
@@ -193,7 +194,7 @@ It is also possible to target a specific koji tag as follows:
 
 ::
 
-    fedpkg build --target TARGET
+    $ fedpkg build --target TARGET
 
 for example, if building on rawhide against a special tag created by
 rel-eng for updating API for many packages, e.g. ``dist-f14-python`` you
@@ -201,29 +202,32 @@ would use the following:
 
 ::
 
-    fedpkg build --target 'dist-f14-python'
+    $ fedpkg build --target 'dist-f14-python'
 
 Chained builds
 ^^^^^^^^^^^^^^
 
-.. raw:: mediawiki
+.. warning::
 
-   {{Admon/warning | chain-builds only work when building on the devel/ branch (aka rawhide).  To chain-build packages to update a released OS version, [https://fedoraproject.org/wiki/Bodhi/BuildRootOverrides set up an override using bodhi] requesting packages to be included in the proper buildroot.}}
+   chain-builds only work when building on the devel/ branch (aka rawhide).  To
+   chain-build packages to update a released OS version, `set up an override
+   using bodhi <https://fedoraproject.org/wiki/Bodhi/BuildRootOverrides>`_
+   requesting packages to be included in the proper buildroot.
 
 Sometimes you want to make sure than one build succeeded before
 launching the next one, for example when you want to rebuild a package
 against a just rebuilt dependency. In that case you can use a chain
-build with:
+build with::
 
-``fedpkg chain-build libwidget libgizmo``
+$ fedpkg chain-build libwidget libgizmo
 
 The current package is added to the end of the CHAIN list. Colons (:)
 can be used in the CHAIN parameter to define groups of packages.
 Packages in any single group will be built in parallel and all packages
 in a group must build successfully and populate the repository before
-the next group will begin building. For example:
+the next group will begin building. For example::
 
-``fedpkg chain-build libwidget libaselib : libgizmo :``
+$ fedpkg chain-build libwidget libaselib : libgizmo :
 
 will cause libwidget and libaselib to be built in parallel, followed by
 libgizmo and then the correct directory package. If no groups are
@@ -243,14 +247,14 @@ build from changes you haven't committed, do the following:
 
 ::
 
-    rpmbuild -bs foo.spec
-    koji build --scratch rawhide foo.srpm
+    $ rpmbuild -bs foo.spec
+    $ koji build --scratch rawhide foo.srpm
 
 From the latest git commit:
 
 ::
 
-    koji build --scratch rawhide 'git url'
+    $ koji build --scratch rawhide 'git url'
 
 Warning: Scratch builds will *not* work correctly if your .spec file
 does something different depending on the value of %fedora, %fc9, and so
@@ -265,23 +269,23 @@ command line tool with the appropriate options:
 
 ::
 
-    fedpkg scratch-build
+    $ fedpkg scratch-build
 
 if you want to do a scratch build for a specific architecture, you can
 type:
 
 ::
 
-    fedpkg scratch-build-<archs>
+    $ fedpkg scratch-build-<archs>
 
- can be a comma separated list of several architectures.
+can be a comma separated list of several architectures.
 
 finally is possible to combine the scratch-build command with a specific
 koji tag in the form:
 
 ::
 
-    fedpkg scratch-build --target TARGET
+    $ fedpkg scratch-build --target TARGET
 
 fedpkg scratch-build --help or koji build --help for more information.
 
@@ -290,11 +294,11 @@ Build Failures
 
 If your package fails to build, you will see something like this:
 
-::
+.. code-block:: none
 
-    420066 buildArch kernel-2.6.18-1.2739.10.9.el5.jjf.215394.2.src.rpm,
-    ia64): open (build-1.example.com) -> FAILED: BuildrootError:
-    error building package (arch ia64), mock exited with status 10
+    420066 buildArch kernel-2.6.18-1.2739.10.9.el5.jjf.215394.2.src.rpm, ia64):
+      open (build-1.example.com) -> FAILED: BuildrootError:
+      error building package (arch ia64), mock exited with status 10
 
 You can figure out why the build failed by looking at the log files. If
 there is a build.log, start there. Otherwise, look at init.log.
@@ -302,6 +306,12 @@ there is a build.log, start there. Otherwise, look at init.log.
 Logs can be found via the web interface in the Task pages for the failed
 task. Alternatively the koji client can be used to view the logs via the
 ``watch-logs`` command. See the help output for more details.
+
+.. tip::
+
+   For more hidden issues you can use ``save-failed-tree`` plugin to download
+   content of the buildroot. Check the details with ``koji save-failed-tree
+   --help``. (Note, that you need to have enabled that plugin)
 
 Advanced use of Koji
 --------------------
@@ -342,7 +352,7 @@ koji can be used to replicate a build root for local debugging
 
 ::
 
-    koji mock-config --help
+    $ koji mock-config --help
     Usage: koji mock-config [options] name
     (Specify the --help global option for a list of other help options)
 
@@ -365,7 +375,7 @@ for example to get the latest buildroot for dist-f12-build run
 
 ::
 
-    koji mock-config --tag dist-f12-build --arch=x86_64 --topurl=https://kojipkgs.fedoraproject.org/ dist-f12
+    $ koji mock-config --tag dist-f12-build --arch=x86_64 --topurl=https://kojipkgs.fedoraproject.org/ dist-f12
 
 you will need to pass in --topurl=https://kojipkgs.fedoraproject.org/ to
 any mock-config command to get a working mock-config from fedoras koji.
@@ -383,7 +393,7 @@ environment follows:
 
 ::
 
-    koji edit-tag dnf-fedora-tag -x mock.package_manager=dnf
+    $ koji edit-tag dnf-fedora-tag -x mock.package_manager=dnf
 
 
 * ``mock.package_manager`` - If this is set, it will override mock's default
@@ -448,7 +458,7 @@ do:
 
 ::
 
-    koji edit-tag dnf-fedora-tag -x rpm.env.CC=clang
+    $ koji edit-tag dnf-fedora-tag -x rpm.env.CC=clang
 
 
 Using Koji to control tasks
@@ -458,20 +468,20 @@ List tasks:
 
 ::
 
-    koji list-tasks
+    $ koji list-tasks
 
 List only tasks requested by you:
 
 ::
 
-    koji list-tasks --mine
+    $ koji list-tasks --mine
 
 requeue an already-processed task: general syntax is: koji resubmit
 [options] taskID
 
 ::
 
-    koji resubmit 3
+    $ koji resubmit 3
 
 Building a Package with the command-line tool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -495,13 +505,10 @@ The koji build command creates a build task in Koji. By default the tool
 will wait and print status updates until the build completes. You can
 override this with the --nowait option.
 
-.. raw:: html
+.. note::
 
-   </pre>
-
-NOTE: For fedora koji, the git url MUST be based on
-pkgs.fedoraproject.org. Other arbitrary git repos cannot be used for
-builds.
+    For fedora koji, the git url MUST be based on pkgs.fedoraproject.org. Other
+    arbitrary git repos cannot be used for builds.
 
 Koji tags and packages organization
 -----------------------------------
@@ -514,13 +521,18 @@ general, a specific build of a package, and the various rpm files
 created by a build. When precision is needed, these terms should be
 interpreted as follows:
 
--  Package: The name of a source rpm. This refers to the package in
+Package
+   The name of a source rpm. This refers to the package in
    general and not any particular build or subpackage. For example:
    kernel, glibc, etc.
--  Build: A particular build of a package. This refers to the entire
+
+Build
+   A particular build of a package. This refers to the entire
    build: all arches and subpackages. For example: kernel-2.6.9-34.EL,
    glibc-2.3.4-2.19.
--  RPM: A particular rpm. A specific arch and subpackage of a build. For
+
+RPM
+   A particular rpm. A specific arch and subpackage of a build. For
    example: kernel-2.6.9-34.EL.x86\_64, kernel-devel-2.6.9-34.EL.s390,
    glibc-2.3.4-2.19.i686, glibc-common-2.3.4-2.19.ia64
 
@@ -551,7 +563,7 @@ You can get a full list of build targets with the following command:
 
     $ koji list-targets
 
-You can see just a single target with the --name option:
+You can see just a single target with the ``--name`` option:
 
 ::
 
@@ -561,13 +573,13 @@ You can see just a single target with the --name option:
     ---------------------------------------------------------------------------------------------
     dist-f14                     dist-f14-build                 dist-f14
 
-This tells you a build for target dist-f14 will use a buildroot with
-packages from the tag dist-f14-build and tag the resulting packages as
-dist-f14.
+This tells you a build for target ``dist-f14`` will use a buildroot with
+packages from the tag ``dist-f14-build`` and tag the resulting packages as
+``dist-f14``.
 
 Watch out: You probably don't want to build against dist-rawhide. If
 Fedora N is the latest one out, to build to the next one, choose
-dist-f{N+1}.
+``dist-f{N+1}``.
 
 Tags
 ''''
@@ -582,7 +594,7 @@ Packages
 ''''''''
 
 As mentioned above, each tag has its own list of packages that may be
-placed in the tag. To see that list for a tag, use the list-pkgs
+placed in the tag. To see that list for a tag, use the ``list-pkgs``
 command:
 
 ::
@@ -596,7 +608,7 @@ the owner of the package.
 Latest Builds
 '''''''''''''
 
-To see the latest builds for a tag, use the latest-build command:
+To see the latest builds for a tag, use the ``latest-build`` command:
 
 ::
 
@@ -612,7 +624,7 @@ Koji XMLRPC API
 
 All features supported by command-line client are also accessible by XMLRPC
 API. You can get listing of all available calls, arguments and basic help via
-calling `koji list-api` command. This call will also provide you API
+calling ``koji list-api`` command. This call will also provide you API
 extensions provided by plugins in that particular koji instance.
 
 Because of the data Koji routinely deals with, we use the following extensions
@@ -623,6 +635,6 @@ to the xmlrpc standard:
       different library, you may need to explicitly enable this (e.g. enabling
       allow_none in Python's own xmlrpc library).
     * We represent large integers with the ``i8`` tag. This standard is borrowed
-      from Apache's `ws-xmlrpc <https://ws.apache.org/xmlrpc/types.html>`
+      from Apache's `ws-xmlrpc <https://ws.apache.org/xmlrpc/types.html>`_
       implementation. Python's own xmlrpc library understands this tag, even
       thought it will not emit it.

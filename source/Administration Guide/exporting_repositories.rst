@@ -62,9 +62,9 @@ For more information about hub policies, see :doc:`defining_hub_policies`.
 
 The ``dist-repo`` command takes a tag name and one or more key ids for signing keys.
 
-..
+::
 
-    koji dist-repo [options] <tag> <key_id> [<key_id> ...]
+    $ koji dist-repo [options] <tag> <key_id> [<key_id> ...]
 
 The ``tag`` argument must be a valid tag name.
 The resulting repository will be based on the contents of that tag.

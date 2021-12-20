@@ -17,7 +17,7 @@ work is still ahead of them.
 Koji is written to support a variety of platforms and python versions,
 with some portions of Koji supported over a larger set than others.
 When making changes, please be considerate of those
-:doc:`supported_platforms`.
+:ref:`supported-platforms`.
 
 Task Flow
 =========
@@ -38,7 +38,7 @@ shared storage solution, and marks the task as completed (or failed).
 During this whole time, the webUI can be used to check up on progress.
 So the flow of work is:
 
-::
+.. code-block:: none
 
     Client -> Hub -> Builder -> Hub
 
@@ -103,7 +103,7 @@ should have a ``~/.koji/config`` already, if not just copy from
 argument that matches a section in that config file. So if your config
 file had this:
 
-::
+.. code-block:: ini
 
     [Fedora]
     authtype = ssl
@@ -145,7 +145,7 @@ the hub. This is the case with uploading SRPMs or kickstarts. You can
 easily upload this content with the ``session.uploadWrapper`` method.
 You can create progress bars as necessary with this snippet:
 
-::
+.. code-block:: python
 
     if _running_in_bg() or task_opts.noprogress:
       callback = None
@@ -162,7 +162,7 @@ output to have the options ordered usefully. This output is
 automatically generated, but sometimes it does not capture the more
 important arguments you want displayed.
 
-::
+.. code-block:: none
 
     Created task 10001810
     Watching tasks (this may be safely interrupted)...
@@ -207,7 +207,7 @@ Once created, the object can be used like a session, but calls are stored
 rather than sent immediately.
 The stored calls are executed by calling the ``call_all()`` method.
 
-::
+.. code-block:: python
 
     m = session.multicall()
     for task_id in mylist:
@@ -217,7 +217,7 @@ The stored calls are executed by calling the ``call_all()`` method.
 This object can also be used as a context manager, so the following is
 equivalent:
 
-::
+.. code-block:: python
 
     with session.multicall() as m:
         for task_id in mylist:
@@ -230,7 +230,7 @@ the ``result`` property of the ``VirtualCall`` object.
 Accessing the ``result`` property before the call is executed will result in
 an error.
 
-::
+.. code-block:: python
 
     with session.multicall() as m:
         tags = [m.getTag(tag_id) for tag_id in mylist]
@@ -245,11 +245,13 @@ will spread the calls across multiple multicall batches of at most that number.
 These parameters may be passed when the ``MultiCallSession`` is initialized,
 or they may be passed to the ``call_all`` method.
 
-::
+.. code-block:: python
 
     with session.multicall(strict=True, batch=500) as m:
         builds = [m.getBuild(build_id) for build_id in mylist]
 
+
+.. _multicall:
 
 **Using ClientSession.multiCall**
 
@@ -271,7 +273,7 @@ in the multicall. Each result with either be:
 
 Here is a simple example from the koji-tools package:
 
-::
+.. code-block:: python
 
     session.multicall = True
     for host in hosts:
@@ -286,7 +288,7 @@ Also note the unpacking of the singletons.
 
 The ``multiCall()`` method supports a few options. Here is its signature:
 
-::
+.. code-block:: python
 
     multiCall(strict=False, batch=None):
 
@@ -427,7 +429,7 @@ should kick off child tasks using the session object's subtask method
 
 Here's a stub of what a new build task might look like:
 
-::
+.. code-block:: python
 
     class BuildThingTask(BaseTaskHandler):
       Methods = ['thing']
@@ -462,7 +464,7 @@ the constructor. Here's an example use. The second line is important, it
 makes sure the SCM is in the whitelist of SCMs allowed in
 ``/etc/kojid/kojid.conf`` or in ``build_from_scm`` section of hub policy.
 
-::
+.. code-block:: python
 
     scm = SCM(url)
     scm.assert_allowed(allowed=self.options.allowed_scms,
@@ -492,7 +494,7 @@ the build was executed. In ``builder/kojid`` a BuildRoot class is
 defined, which provides an interface to execute mock commands. Here's an
 example of their use:
 
-::
+.. code-block:: python
 
     broot = BuildRoot(self.session, self.options, build_tag, arch, self.id)
 
@@ -539,7 +541,7 @@ use the ``$printMap`` function to help with that. It is often sensible
 to define a function that easily prints options and values in a
 dictionary. An example of this is in taskinfo.chtml.
 
-::
+.. code-block:: none
 
     #def printOpts($opts)
       #if $opts
@@ -651,26 +653,12 @@ Unit Tests
 ==========
 
 Koji comes with a small test suite, that you should always run when making
-changes to the code. To do so, just run ``make test`` in your terminal.
+changes to the code. To do so, just run ``make test3`` in your terminal.
 
-You will need to install the following packages to actually run the tests.
+You will need to install ``tox`` to actually run the tests.
 
- * ``glibc-langpack-en``
- * ``make``
- * ``python3-cheetah``
- * ``python3-coverage``
- * ``python3-dateutil``
- * ``python3-mock``
- * ``python3-multilib``
- * ``python3-nose``
- * ``python3-psycopg2``
- * ``python3-qpid-proton``
- * ``python3-requests``
- * ``python3-requests-kerberos``
- * ``python3-requests-mock``
-
-Please note that it is currently not supported to use *virtualenv* when hacking
-on Koji.
+Please note that it is currently not supported to use *virtualenv* directly when
+hacking on Koji. Only tests are expected to run there.
 
 Unit tests are run automatically for any commit in master branch. We use
 Fedora's jenkins instance for that. Details are given here: :doc:`Unit tests
@@ -699,164 +687,3 @@ You will need to install the packages below to run the check.
 
  * ``python-flake8``
  * ``python-flake8-import-order``
-
-Release process
-===============
-
-Merging PRs
------------
-
-We're not using pagure's merge button as it doesn't do everything we want.
-Instead `pg script <https://github.com/mikem23/pagure-tool>`__ is used.
-
-::
-
-    pg pr checkout <PR number>
-
-will checkout given PR and it can be reviewed locally. It can be rebased in this
-time or it can be done automatically in the moment of merging:
-
-::
-
-    pg pr merge -r
-
-This will merge the changes, fetch info from pagure, and show you the current
-git changelog. The changelog should be looked over for any issues, and it will
-require special formatting so pagure will close out the release notes pull
-request automatically.
-
-For example, you'll want the 'Merges' and 'Fixes' lines.
-
-The unit tests should be run before pushing if there were any new code changes
-since the last tests. After that, it will be ready to push. Test with ``git push
--n`` first before the push to make sure it's correct.
-
-
-Release Notes
--------------
-
-There should be separate PR with release notes (and version bumps) for every
-release.
-
-Pushing the Code
-----------------
-
-Once Koji is ready to release, double check that the release notes are the only
-open pull request. If that's the case, the release notes are ready to merge.
-
-Once the code is pushed, make sure all the PRs in the release roadmap are
-closed, including the release notes PR.
-
-Now the release should be tagged. All Koji releases have been signed, using this
-command:
-
-::
-
-    git tag -a -s -m 'Koji 1.18.0' koji-1.18.0
-
-Then the tag must be pushed:
-
-::
-
-    git push origin refs/tags/koji-1.18.0
-
-To create the tarball, run ``make tarball`` from the base koji directory. You
-should then copy the tarball to some other directory, just to have a backup. The
-tarball should be uploaded through the pagure interface, though the upload can
-also be done via ssh.
-
-Once it's uploaded, download it and check the shasum against your local tarball.
-If there are no issues, Koji's code release is complete.
-
-Updating the Site
------------------
-
-The next step is to update the Koji site with the new docs and release notes.
-This content is based in a separate repo from the Koji one.
-
-Simple bash script for this repo could be used, ``kdoc``. Using ``kdoc``, run
-these commands in the docs repo:
-
-::
-
-    kdoc release-1.18.0:test
-    kdoc
-
-``kdoc`` checks out the master branch of the koji git repo, constructs docs from
-that, and copies those changes into the doc repo. Once the changes are in place,
-commit them and push them to your fork:
-
-::
-
-    git commit -m 'koji 1.18.0 release'
-    git diff --stat test
-    git push mikem
-
-Check your fork to make sure everything looks good (for example, check against a
-previous release), then push the changes with 'git push.'
-
-::
-
-    #!/bin/bash
-
-    # kdoc shell script
-
-    set -x
-    set -e
-
-    # TODO more sanity checks
-
-    KDIR=~/cvs/koji
-    DOCDIR=~/cvs/koji-docs
-    DBRANCH=master
-    SBRANCH=master
-
-    branches=$1
-    if test -n "$branches"; then
-        dst=${branches#*:}
-        src=${branches%:*}
-        test -n "$src" && SBRANCH=$src
-        test -n "$dst" && DBRANCH=$dst
-    fi
-
-    cd "$KDIR/docs"
-    test -n "$SBRANCH" && git checkout $SBRANCH
-    make dirhtml
-
-    cd "$DOCDIR"
-    test -n "$DBRANCH" && git checkout $DBRANCH
-    rsync -avPH --delete --exclude .git "$KDIR/docs/build/dirhtml/" "$DOCDIR/"
-    git status
-
-    echo "Docdir is: $DOCDIR"
-
-Pushing to PyPi
----------------
-
-All releases should also go to PyPi repository, even if we've not publicly
-announced, that it is the supported delivery channel.
-
-::
-
-    dnf install twine
-    make pypi
-    make pypi-upload
-
-Release Email
--------------
-
-The last step is to send out an email to koji-devel@lists.fedorahosted.org. See
-previous release emails for how to format the message.
-
-Generally the email should include a link to the release notes, list some
-highlights from the release, links to the release roadmap and current roadmap,
-and a link to the download.
-
-Required Permissions
---------------------
-
-* Merge permissions for the koji repo
-* Merge permissions / access to the docs repo
-* Key for signing
-
-

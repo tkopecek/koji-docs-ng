@@ -1,0 +1,29 @@
+name: "Publish to GitHub pages"
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "source/"
+        build-command: "sphinx-build -b html . build"
+    - name: copy to docs
+      run: |
+        rm -rf docs
+        mkdir docs
+        cp -r build/html docs
+        touch docs/.nojekyll
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update documentation" -a || true
+    - uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: docs
+        github_token: ${{ secrets.GITHUB_TOKEN }}

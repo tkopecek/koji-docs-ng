@@ -14,6 +14,7 @@ jobs:
         build-command: "sphinx-build -b html . build"
     - name: copy to docs
       run: |
+        git clone https://github.com/tkopecek/koji-docs-ng.git --branch gh-pages --single-branch gh-pages
         rm -rf docs
         find
         mkdir docs

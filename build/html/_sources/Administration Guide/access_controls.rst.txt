@@ -46,14 +46,14 @@ Such policies return results of ``deny`` or ``allow``.
 
 Examples of access control polices are:
 
-* tag: control which tag operations are allowed
-* package_list: control which package list updates are allowed
-* cg_import: control which content generator imports are allowed
-* vm: control which windows build tasks are allowed
-* dist_repo: control which distRepo tasks are allowed
-* build_from_srpm: control whether builds from srpm are allowed
-* build_from_scm: control whether builds from the SCM are allowed and the behavior of the SCM
-* build_from_repo_id: control whether builds from user-specified repos ids are allowed
+* ``tag``: control which tag operations are allowed
+* ``package_list``: control which package list updates are allowed
+* ``cg_import``: control which content generator imports are allowed
+* ``vm``: control which windows build tasks are allowed
+* ``dist_repo``: control which distRepo tasks are allowed
+* ``build_from_srpm``: control whether builds from srpm are allowed
+* ``build_from_scm``: control whether builds from the SCM are allowed and the behavior of the SCM
+* ``build_from_repo_id``: control whether builds from user-specified repos ids are allowed
 
 Note that not all policies are access control policies.
 The ``channel`` and ``volume`` policies are used to control which channels tasks go to

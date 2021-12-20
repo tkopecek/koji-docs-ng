@@ -188,9 +188,9 @@ options. See:
 * `Bootstrap chroot <https://github.com/rpm-software-management/mock/wiki/Feature-bootstrap>`_
 * `Container for bootstrap <https://github.com/rpm-software-management/mock/wiki/Feature-container-for-bootstrap>`_
 
-For the configuration on koji, please refer to :doc:`../using_the_koji_build_system`.
-The bootstrap buildroot will be pruned automatically by kojid as the same as the
-normal buildroot.
+For the configuration on koji, please refer to :doc:`../../User
+Guide/using_the_koji_build_system`.  The bootstrap buildroot will be pruned
+automatically by kojid as the same as the normal buildroot.
 
 **Pass bootloader append option to livemedia builds**
 
@@ -204,7 +204,8 @@ options to ``livemedia-creator`` tool for livemedia builds.
 | PR: https://pagure.io/koji/pull-request/2064
 
 Now, you can set ``rpm.env.*`` in build tag's ``extra`` to specify environment
-variables in mock's buildroot. See :doc:`../using_the_koji_build_system`.
+variables in mock's buildroot. See :doc:`../../User
+Guide/using_the_koji_build_system`.
 
 **Support specific per-settings for Mock's sign plugin**
 
@@ -214,7 +215,7 @@ variables in mock's buildroot. See :doc:`../using_the_koji_build_system`.
 We are now providing ``mock.plugin_conf.sign_enable``,
 ``mock.plugin_conf.sign_opts.cmd`` and ``mock.plugin_conf.sign_opts.opts`` in
 build tag's ``extra`` for enabling and configuring the sign plugin of mock. For
-more details, see :doc:`../using_the_koji_build_system`.
+more details, see :doc:`../../User Guide/using_the_koji_build_system`.
 
 **Per-tag settings of yum's depsolver policy for Mock**
 
@@ -408,7 +409,7 @@ In particular, the ``buildtag`` policy test should work for such builds.
 Note that some builds (e.g. content generator builds and other imported builds) do not
 have associated tasks.
 
-For more information on hub policies, see :doc:`../defining_hub_policies`.
+For more information on hub policies, see :doc:`../../Administration Guide/defining_hub_policies`.
 
 **Honor volume policy in host.importImage**
 

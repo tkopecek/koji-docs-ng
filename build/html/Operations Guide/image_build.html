@@ -41,10 +41,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Building Images in Koji</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#image-building">Image Building</a></li>
@@ -80,19 +81,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -131,8 +129,13 @@ types of images end up with a Name-Version-Release just like an RPM build.  What
 you need to provide Koji to perform a build varies by category, and the
 specifics will be explained below.</p>
 <p>For additional questions and information, ask around in <code class="docutils literal notranslate"><span class="pre">#koji</span></code> on FreeNode
-IRC and sign up to the right mailing lists as the <a class="reference external" href="https://fedorahosted.org/koji/wiki">Koji project website</a>
+IRC and sign up to the right mailing lists as the <a class="reference external" href="https://pagure.io/koji/">Koji project website</a>
 dictates.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Experimental support for building images with <a class="reference external" href="https:/osinside.github.io/kiwi">Kiwi</a> is provided via plugin.
+For setting it up see <a class="reference internal" href="plugins.html"><span class="doc">Plugins</span></a>.</p>
+</div>
 </div>
 <div class="section" id="kickstart-first">
 <h2>Kickstart First<a class="headerlink" href="#kickstart-first" title="Permalink to this headline"></a></h2>
@@ -153,7 +156,7 @@ on disk. For non-scratch builds though, the kickstart file needs to live in a
 remote Source Control Manager (SCM) such as git or Subversion. To access that,
 you need to pass the <code class="docutils literal notranslate"><span class="pre">--ksurl</span></code> parameter, which accepts a wacky string in
 this form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git://git.fedorahosted.org/git/spin-kickstarts.git?fedora22#68c40eb7
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git://git.fedorahosted.org/git/spin-kickstarts.git?fedora22#68c40eb7
 </pre></div>
 </div>
 <p>Here we pointed to a repository hosted at
@@ -203,12 +206,12 @@ permission or at least policy in place</p></li>
 out to <a class="reference external" href="https://weldr.io/lorax/livemedia-creator.html">livemedia-creator</a> from <a class="reference external" href="https://github.com/weldr/lorax">lorax</a> project in a mock chroot to construct
 the LiveMedia. To run a LiveMedia build, use the <code class="docutils literal notranslate"><span class="pre">spin-livemedia</span></code> command like
 so:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji spin-livemedia --release 20200922.n.0  \
-                      --ksurl &#39;git+https://pagure.io/fedora-kickstarts.git?#b4956c05028a088c641d0ce6e1a31b6d8b20176f&#39; \
-                      --install-tree-url &#39;https://kojipkgs.fedoraproject.org/compose/branched/Fedora-33-20200922.n.0/compose/Everything/$basearch/os&#39; \
-                      --repo &#39;https://kojipkgs.fedoraproject.org/compose/branched/Fedora-33-20200922.n.0/compose/Everything/$basearch/os&#39; \
-                      --can-fail ppc64le,aarch64 \
-                      Fedora-Workstation-Live 33 f33 x86_64,ppc64le,aarch64 fedora-live-workstation.ks
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji spin-livemedia --release <span class="m">20200922</span>.n.0  <span class="se">\</span>
+<span class="go">                      --ksurl &#39;git+https://pagure.io/fedora-kickstarts.git?#b4956c05028a088c641d0ce6e1a31b6d8b20176f&#39; \</span>
+<span class="go">                      --install-tree-url &#39;https://kojipkgs.fedoraproject.org/compose/branched/Fedora-33-20200922.n.0/compose/Everything/$basearch/os&#39; \</span>
+<span class="go">                      --repo &#39;https://kojipkgs.fedoraproject.org/compose/branched/Fedora-33-20200922.n.0/compose/Everything/$basearch/os&#39; \</span>
+<span class="go">                      --can-fail ppc64le,aarch64 \</span>
+<span class="go">                      Fedora-Workstation-Live 33 f33 x86_64,ppc64le,aarch64 fedora-live-workstation.ks</span>
 </pre></div>
 </div>
 <p>In this example (real task is <a class="reference external" href="https://koji.fedoraproject.org/koji/taskinfo?taskID=52013359">here</a>) a LiveMedia will
@@ -391,7 +394,7 @@ packages be installed into the image</p></li>
 <code class="docutils literal notranslate"><span class="pre">image-build</span></code> command uses <a class="reference external" href="http://imgfac.org/">ImageFactory</a> and <a class="reference external" href="https://github.com/clalancette/oz">Oz</a> to start a VM guest and
 perform an automated Anaconda installation. Here is a (lengthy) example for
 building a disk image.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji image-build --repo &#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39; --kickstart fedora-server.ks --scratch --distro Fedora-22 --format qcow2 fedora-server-kvm 22 &#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39; x86_64
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji image-build --repo <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span> --kickstart fedora-server.ks --scratch --distro Fedora-22 --format qcow2 fedora-server-kvm <span class="m">22</span> <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span> x86_64
 </pre></div>
 </div>
 <p>This example builds a scratch qcow2 disk image using packages from an
@@ -442,22 +445,22 @@ as well, using the <code class="docutils literal notranslate"><span class="pre">
 file written in the Python ConfigParser format (like a Windows .ini). The
 options are all named the same with one caveat, see below. Here’s what one
 could look like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[image-build]
-name = fedora-server-docker
-version = 22
-target = f22-candidate
-install_tree = https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/
-arches = x86_64
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[image-build]</span>
+<span class="na">name</span> <span class="o">=</span> <span class="s">fedora-server-docker</span>
+<span class="na">version</span> <span class="o">=</span> <span class="s">22</span>
+<span class="na">target</span> <span class="o">=</span> <span class="s">f22-candidate</span>
+<span class="na">install_tree</span> <span class="o">=</span> <span class="s">https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/</span>
+<span class="na">arches</span> <span class="o">=</span> <span class="s">x86_64</span>
 
-format = qcow2,rhevm-ova,vsphere-ova
-distro = Fedora-22
-repo = https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/
-disk_size = 20
+<span class="na">format</span> <span class="o">=</span> <span class="s">qcow2,rhevm-ova,vsphere-ova</span>
+<span class="na">distro</span> <span class="o">=</span> <span class="s">Fedora-22</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/</span>
+<span class="na">disk_size</span> <span class="o">=</span> <span class="s">20</span>
 
-ksversion = DEVEL
-kickstart = fedora-22-server-docker.ks
-ksurl = git://git.fedorahosted.org/git/spin-kickstarts.git?fedora22#68c40eb7
-specfile = git://git.fedorahosted.org/git/spin-kickstarts.git?spec_templates/fedora22#68c40eb7
+<span class="na">ksversion</span> <span class="o">=</span> <span class="s">DEVEL</span>
+<span class="na">kickstart</span> <span class="o">=</span> <span class="s">fedora-22-server-docker.ks</span>
+<span class="na">ksurl</span> <span class="o">=</span> <span class="s">git://git.fedorahosted.org/git/spin-kickstarts.git?fedora22#68c40eb7</span>
+<span class="na">specfile</span> <span class="o">=</span> <span class="s">git://git.fedorahosted.org/git/spin-kickstarts.git?spec_templates/fedora22#68c40eb7</span>
 </pre></div>
 </div>
 <p>A few notes on the syntax:</p>
@@ -474,22 +477,22 @@ example would be <code class="docutils literal notranslate"><span class="pre">di
 <p>If you’re building OVAs, either for RHEVM or vSphere, you can specify OVA
 options with a special section in the configuration file. It looks something
 like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ova</span><span class="o">-</span><span class="n">options</span><span class="p">]</span>
-<span class="n">vsphere_product_version</span><span class="o">=</span><span class="mi">22</span>
-<span class="n">rhevm_description</span><span class="o">=</span><span class="n">Fedora</span> <span class="n">Cloud</span> <span class="mi">22</span>
-<span class="n">vsphere_product_vendor_name</span><span class="o">=</span><span class="n">Fedora</span> <span class="n">Project</span>
-<span class="n">ovf_memory_mb</span><span class="o">=</span><span class="mi">6144</span>
-<span class="n">rhevm_default_display_type</span><span class="o">=</span><span class="mi">1</span>
-<span class="n">vsphere_product_name</span><span class="o">=</span><span class="n">Fedora</span> <span class="n">Cloud</span> <span class="mi">22</span>
-<span class="n">ovf_cpu_count</span><span class="o">=</span><span class="mi">4</span>
-<span class="n">rhevm_os_descriptor</span><span class="o">=</span><span class="n">Fedora</span><span class="o">-</span><span class="mi">22</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[ova-options]</span>
+<span class="na">vsphere_product_version</span><span class="o">=</span><span class="s">22</span>
+<span class="na">rhevm_description</span><span class="o">=</span><span class="s">Fedora Cloud 22</span>
+<span class="na">vsphere_product_vendor_name</span><span class="o">=</span><span class="s">Fedora Project</span>
+<span class="na">ovf_memory_mb</span><span class="o">=</span><span class="s">6144</span>
+<span class="na">rhevm_default_display_type</span><span class="o">=</span><span class="s">1</span>
+<span class="na">vsphere_product_name</span><span class="o">=</span><span class="s">Fedora Cloud 22</span>
+<span class="na">ovf_cpu_count</span><span class="o">=</span><span class="s">4</span>
+<span class="na">rhevm_os_descriptor</span><span class="o">=</span><span class="s">Fedora-22</span>
 </pre></div>
 </div>
 <p>or this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ova</span><span class="o">-</span><span class="n">options</span><span class="p">]</span>
-<span class="n">vsphere_ova_format</span> <span class="o">=</span> <span class="n">vagrant</span><span class="o">-</span><span class="n">virtualbox</span>
-<span class="n">rhevm_ova_format</span> <span class="o">=</span> <span class="n">vagrant</span><span class="o">-</span><span class="n">libvirt</span>
-<span class="n">vagrant_sync_directory</span> <span class="o">=</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">vagrant</span><span class="o">/</span><span class="n">sync</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[ova-options]</span>
+<span class="na">vsphere_ova_format</span> <span class="o">=</span> <span class="s">vagrant-virtualbox</span>
+<span class="na">rhevm_ova_format</span> <span class="o">=</span> <span class="s">vagrant-libvirt</span>
+<span class="na">vagrant_sync_directory</span> <span class="o">=</span> <span class="s">/home/vagrant/sync</span>
 </pre></div>
 </div>
 <p>The second one is actually the secret sauce for generating an image for use in
@@ -669,7 +672,7 @@ your guest environment. Here’s how to do it:</p>
 <li><p>Download the image from Koji</p></li>
 <li><p>If the image format is not raw, you have to convert it first with qemu-img.
 Something like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ qemu-img convert -O raw &lt;image-file&gt; &lt;output-file&gt;&lt;/pre&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>qemu-img convert -O raw &lt;image-file&gt; &lt;output-file&gt;&lt;/pre&gt;
 </pre></div>
 </div>
 </li>
@@ -677,17 +680,17 @@ Something like:</p>
 partitions in it, you may need to pass in a different mapped loopback device
 like <code class="docutils literal notranslate"><span class="pre">loop0p2</span></code>. Whichever one you think is the root partition or has the
 issue you’re trying to fix.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># kpartx -av &lt;raw-image&gt;</span>
-<span class="c1"># mount -o loop /dev/mapper/loop0p1 /mnt/my_directory</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kpartx -av &lt;raw-image&gt;
+<span class="gp">$ </span>mount -o loop /dev/mapper/loop0p1 /mnt/my_directory
 </pre></div>
 </div>
 </li>
 </ul>
 <p>Hopefully at this point you figure out the issue. To tear down the image you’ll
 run commands as root like so:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># umount /mnt/my_directory</span>
-<span class="c1"># dmsetup remove loop0p1</span>
-<span class="c1"># losetup -d /dev/loop0</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>umount /mnt/my_directory
+<span class="gp">$ </span>dmsetup remove loop0p1
+<span class="gp">$ </span>losetup -d /dev/loop0
 </pre></div>
 </div>
 <p>Again, if you used different loopback devices, substitute those in to the
@@ -743,14 +746,14 @@ section to at least 2048. Set <code class="docutils literal notranslate"><span c
 <li><p>Run: <code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">-p</span> <span class="pre">~root/.psphere/templates</span></code>, and then copy the following
 code into <code class="docutils literal notranslate"><span class="pre">~root/.psphere/config.yaml</span></code>. Do not worry about the server,
 username, and password credentials; they are not used anywhere.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">general</span><span class="p">:</span>
-  <span class="n">server</span><span class="p">:</span> <span class="mf">10.16.120.224</span>
-  <span class="n">username</span><span class="p">:</span> <span class="n">Administrator</span>
-  <span class="n">password</span><span class="p">:</span> <span class="n">whatever</span>
-  <span class="n">template_dir</span><span class="p">:</span> <span class="o">~/.</span><span class="n">psphere</span><span class="o">/</span><span class="n">templates</span><span class="o">/</span>
-<span class="n">logging</span><span class="p">:</span>
-  <span class="n">destination</span><span class="p">:</span> <span class="o">~/.</span><span class="n">psphere</span><span class="o">/</span><span class="n">psphere</span><span class="o">.</span><span class="n">log</span>
-  <span class="n">level</span><span class="p">:</span> <span class="n">DEBUG</span> <span class="c1"># DEBUG, INFO, etc</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">general</span><span class="p">:</span>
+  <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.16.120.224</span>
+  <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Administrator</span>
+  <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">whatever</span>
+  <span class="nt">template_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">~/.psphere/templates/</span>
+<span class="nt">logging</span><span class="p">:</span>
+  <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">~/.psphere/psphere.log</span>
+  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DEBUG</span> <span class="c1"># DEBUG, INFO, etc</span>
 </pre></div>
 </div>
 </li>
@@ -761,7 +764,7 @@ to try calling <a class="reference external" href="http://imgfac.org/">ImageFact
 whole Koji instance), you can use the code below to emulate that. If you want
 to test the Koji integration with a full Koji instance, proceed to the next
 section instead.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python -tt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python -tt</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
@@ -856,22 +859,22 @@ conventions.</p>
 <blockquote>
 <div><ol class="arabic">
 <li><p>Add tags, tag inheritance, new pkg (with pkg owner), new external repo, and regen the repo</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span> <span class="n">fedora22</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">override</span> <span class="o">--</span><span class="n">parent</span> <span class="n">jay</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">fedora22</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">build</span> <span class="o">--</span><span class="n">arches</span> <span class="n">x86_64</span> <span class="o">--</span><span class="n">parent</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">override</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">candidate</span> <span class="o">--</span><span class="n">parent</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">inheritance</span> <span class="o">--</span><span class="n">priority</span> <span class="mi">40</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">build</span> <span class="n">fedora22</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">pkg</span> <span class="o">--</span><span class="n">owner</span> <span class="n">kojiadmin</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span> <span class="n">fedora</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">ec2</span> <span class="n">fedora</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">kvm</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">external</span><span class="o">-</span><span class="n">repo</span> <span class="o">-</span><span class="n">t</span> <span class="n">fedora</span><span class="p">::</span><span class="mi">20</span> <span class="n">fedora22</span> <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span>
-<span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">target</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">candidate</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">build</span>
-<span class="n">koji</span> <span class="n">regen</span><span class="o">-</span><span class="n">repo</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">build</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-tag fedora22
+<span class="gp">$ </span>koji add-tag jay-fedora22
+<span class="gp">$ </span>koji add-tag jay-fedora22-override --parent jay-1-fedora22
+<span class="gp">$ </span>koji add-tag jay-fedora22-build --arches x86_64 --parent jay-fedora22-override
+<span class="gp">$ </span>koji add-tag jay-fedora22-candidate --parent jay-fedora22
+<span class="gp">$ </span>koji add-tag-inheritance --priority <span class="m">40</span> jay-fedora22-build fedora22
+<span class="gp">$ </span>koji add-pkg --owner kojiadmin jay-fedora22 fedora-server-ec2 fedora-server-kvm
+<span class="gp">$ </span>koji add-external-repo -t fedora::20 fedora22 <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span>
+<span class="gp">$ </span>koji add-target jay-fedora22-candidate jay-fedora22-build
+<span class="gp">$ </span>koji regen-repo jay-fedora22-build
 </pre></div>
 </div>
 </li>
 <li><p>Grab a kickstart file from an image task in Koji that relates to what you want to test.</p></li>
 <li><p>Finally, kick off a build!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">image</span><span class="o">-</span><span class="n">build</span> <span class="n">fedora</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">ec2</span> <span class="mi">22</span> <span class="o">--</span><span class="n">distro</span> <span class="n">Fedora</span><span class="o">-</span><span class="mi">22</span> <span class="n">jay</span><span class="o">-</span><span class="n">fedora22</span><span class="o">-</span><span class="n">candidate</span> <span class="o">--</span><span class="n">kickstart</span> <span class="n">fedora</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">ec2</span><span class="o">.</span><span class="n">ks</span> <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji image-build fedora-server-ec2 <span class="m">22</span> --distro Fedora-22 jay-fedora22-candidate --kickstart fedora-server-starter-ec2.ks <span class="s1">&#39;https://alt.fedoraproject.org/pub/alt/releases/22/Cloud/$arch/os/&#39;</span>
 </pre></div>
 </div>
 </li>
@@ -906,7 +909,7 @@ require signed packages be installed into the appliance</p></li>
 <p>The Koji command that creates an Appliance is called <code class="docutils literal notranslate"><span class="pre">spin-appliance</span></code>. It
 calls out to appliance-creator in a mock chroot to construct the Appliance.
 To run an Appliance build, use the spin-appliance command like so:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji spin-appliance --release 4 fedora-workstation 23 f23-build fedora-workstation.ks
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji spin-appliance --release <span class="m">4</span> fedora-workstation <span class="m">23</span> f23-build fedora-workstation.ks
 </pre></div>
 </div>
 <p>In this example an Appliance will be created with the N-V-R of
@@ -965,7 +968,7 @@ works. This section only covers preparation for Appliance builds.</p>
 to be.</p>
 <ol class="arabic">
 <li><dl>
-<dt>Add a builder to the appliance channel</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">channel</span> <span class="o">&lt;</span><span class="n">your</span><span class="o">-</span><span class="n">host</span><span class="o">&gt;</span> <span class="n">appliance</span>
+<dt>Add a builder to the appliance channel</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-host-to-channel &lt;your-host&gt; appliance
 </pre></div>
 </div>
 </dd>
@@ -974,7 +977,7 @@ to be.</p>
 <li><p>Grant the permission to build an appliance to a user. This step is optional
 since admins have all permissions.</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">grant</span><span class="o">-</span><span class="n">permission</span> <span class="n">appliance</span> <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji grant-permission appliance &lt;user&gt;
 </pre></div>
 </div>
 </div></blockquote>
@@ -985,7 +988,7 @@ the Appliances with by default. (the alternative is to use the <code class="docu
 option, more on that later)</p></li>
 <li><p>Add the appliance-build group</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>koji add-group &lt;build-tag&gt; appliance-build``
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-group &lt;build-tag&gt; appliance-build<span class="sb">``</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -998,7 +1001,7 @@ needed packages for appliances:</p>
 <li><p>appliance-tools, bash, coreutils, grub, parted, perl, policycoreutils,
 selinux-policy, shadow-utils, sssd-client</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">add</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">pkg</span> <span class="o">&lt;</span><span class="n">build</span><span class="o">-</span><span class="n">tag</span><span class="o">&gt;</span> <span class="n">appliance</span><span class="o">-</span><span class="n">build</span> <span class="o">&lt;</span><span class="n">pkg</span><span class="o">&gt;</span> <span class="o">...</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-group-pkg &lt;build-tag&gt; appliance-build &lt;pkg&gt; ...
 </pre></div>
 </div>
 </div></blockquote>

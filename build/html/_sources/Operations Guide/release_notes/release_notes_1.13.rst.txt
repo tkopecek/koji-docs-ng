@@ -100,7 +100,7 @@ raise error on non-existing profile
 If the requested client profile is not configured, the library will raise an
 error, rather than proceeding with default values.
 
-See also: :doc:`../profiles`
+See also: :doc:`../../Developer Guide/profiles`
 
 
 Changes to the Web interface

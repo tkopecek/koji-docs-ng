@@ -1,5 +1,5 @@
-kojid.conf Options
-------------------
+Builder Configuration Options
+-----------------------------
 kojid.conf is standard .ini-like configuration file. Its main section is
 called ``[kojid]`` and contains following options. They are split by function
 to section but can occur anywhere in ``[kojid]`` section in config file.

@@ -14,7 +14,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Writing Koji Code" href="writing_koji_code.html" />
+    <link rel="next" title="Koji Content Generators" href="content_generators.html" />
     <link rel="prev" title="Koji Profiles" href="profiles.html" /> 
 </head>
 
@@ -42,9 +42,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_client.html">Basic Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Writing Koji plugins</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#adding-new-task-types">Adding new task types</a></li>
@@ -58,6 +56,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#pull-requests">Pull requests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#getting-started-hacking-on-koji">Getting Started Hacking on Koji</a></li>
 <li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#task-flow">Task Flow</a></li>
@@ -71,13 +71,12 @@
 <li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#unit-tests">Unit Tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#further-testing">Further testing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#code-style">Code Style</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing_koji_code.html#release-process">Release process</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_jenkins.html">Unit tests in Fedora’s Jenkins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_process.html">Release process</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -118,7 +117,7 @@ are types of tasks which Koji knows about.</p>
 <p>If you need to do something which Koji does not know yet how to do, you
 could create a Koji Builder plugin.</p>
 <p>Such a plugin would minimally look like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.tasks</span> <span class="kn">import</span> <span class="n">BaseTaskHandler</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.tasks</span> <span class="kn">import</span> <span class="n">BaseTaskHandler</span>
 
 <span class="k">class</span> <span class="nc">MyTask</span><span class="p">(</span><span class="n">BaseTaskHandler</span><span class="p">):</span>
     <span class="n">Methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mytask&#39;</span><span class="p">]</span>
@@ -150,14 +149,14 @@ you want.</p></li>
 <p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mytask.py</span></code>, then install it in the Koji
 Builder plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-builder-plugins/</span></code></p>
 <p>Finally, edit the Koji Builder config file, <code class="docutils literal notranslate"><span class="pre">/etc/kojid/kojid.conf</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
 <span class="n">plugins</span> <span class="o">=</span> <span class="n">mytask</span>
 </pre></div>
 </div>
 <p>Restart the Koji Builder service, and your plugin will be enabled.</p>
 <p>You can try running a task from your new task type with the
 command-line:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji make-task mytask arg1 arg2 kwarg1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji make-task mytask arg1 arg2 kwarg1
 </pre></div>
 </div>
 </div>
@@ -167,7 +166,7 @@ command-line:</p>
 <p>It is sometimes desirable to add to that API, so that clients can
 request things Koji does not expose right now.</p>
 <p>Such a plugin would minimally look like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">assertPerm</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
     <span class="c1"># Here is where you actually do something</span>
 
@@ -187,13 +186,13 @@ methods can be (in most cases) public, so such line is not needed.</p></li>
 <p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mymethod.py</span></code>, then install it in the Koji Hub
 plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-hub-plugins/</span></code></p>
 <p>Finally, edit the Koji Hub config file, <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
-<span class="n">Plugins</span> <span class="o">=</span> <span class="n">mymethod</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<span class="na">Plugins</span> <span class="o">=</span> <span class="s">mymethod</span>
 </pre></div>
 </div>
 <p>Restart the Koji Hub service, and your plugin will be enabled.</p>
 <p>You can try calling the new XMLRPC API with the Python client library:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">koji</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">koji</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">koji</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="s2">&quot;http://koji/example.org/kojihub&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="s1">&#39;some value&#39;</span><span class="p">)</span>
 </pre></div>
@@ -202,7 +201,7 @@ plugins folder: <code class="docutils literal notranslate"><span class="pre">/us
 <h3>Ensuring the user has the required permissions<a class="headerlink" href="#ensuring-the-user-has-the-required-permissions" title="Permalink to this headline"></a></h3>
 <p>If you want your new XMLRPC API to require specific permissions from the
 user, all you need to do is add the following to your method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.context</span> <span class="kn">import</span> <span class="n">context</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.context</span> <span class="kn">import</span> <span class="n">context</span>
 
 <span class="k">def</span> <span class="nf">mymethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">assertPerm</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">)</span>
@@ -226,7 +225,7 @@ finished. Another would be to send a notification to a message bus after
 any kind of event.</p>
 <p>This can be achieved with a plugin, which would look minimally as
 follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">callback</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">callback</span>
 
 <span class="nd">@callback</span><span class="p">(</span><span class="s1">&#39;preTag&#39;</span><span class="p">,</span> <span class="s1">&#39;postTag&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mycallback</span><span class="p">(</span><span class="n">cbtype</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">build</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -247,15 +246,15 @@ are called in the <code class="docutils literal notranslate"><span class="pre">h
 <p>Save your plugin as e.g <code class="docutils literal notranslate"><span class="pre">mycallback.py</span></code>, then install it in the Koji
 Hub plugins folder: <code class="docutils literal notranslate"><span class="pre">/usr/lib/koji-hub-plugins</span></code></p>
 <p>Finally, edit the Koji Hub config file, <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
-<span class="n">Plugins</span> <span class="o">=</span> <span class="n">mycallback</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># A space-separated list of plugins to enable</span>
+<span class="na">Plugins</span> <span class="o">=</span> <span class="s">mycallback</span>
 </pre></div>
 </div>
 <p>Restart the Koji Hub service, and your plugin will be enabled.</p>
 <p>You can try triggering your callback plugin with the command-line. For
 example, if you registered a callback for the <code class="docutils literal notranslate"><span class="pre">postTag</span></code> event, try
 tagging a build:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji tag-build mytag mypkg-1.0-1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji tag-build mytag mypkg-1.0-1
 </pre></div>
 </div>
 </div>
@@ -295,7 +294,7 @@ tagging a build:</p>
 <p>When you add new XMLRPC call or just wanted to do some more complicated
 things with API, you can benefit from writing a new command for CLI.</p>
 <p>Most simple command would look like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">export_cli</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">koji.plugin</span> <span class="kn">import</span> <span class="n">export_cli</span>
 
 <span class="nd">@export_cli</span>
 <span class="k">def</span> <span class="nf">anon_handle_echo</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
@@ -341,10 +340,12 @@ than just adding commands - e.g. own authentication methods, etc.) in future.</p
 </div>
 <div class="section" id="pull-requests">
 <h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline"></a></h2>
-<p>These plugins have to be written in python 2.6+/3.x compatible way. We are
-using <cite>six</cite> library to support this, so we will also prefer pull requests
-written this way. CLI (and client library) is meant to be fully compatible
-with python 3 from koji 1.13.</p>
+<p>Plugins for CLI  have to be written in python 2.6+/3.x compatible way. We are
+using <code class="docutils literal notranslate"><span class="pre">six</span></code> library to support this, so we will also prefer pull requests
+written this way. CLI (and client library) is meant to be fully compatible with
+python 3 from koji 1.13.</p>
+<p>Hub is already Python 3 only, so <code class="docutils literal notranslate"><span class="pre">six</span></code> is not needed there. For details about
+supported eco-systems see <a class="reference internal" href="../Operations%20Guide/supported_platforms.html#supported-platforms"><span class="std std-ref">Supported Platforms</span></a>.</p>
 <p>Tests are also recommended for PR. For example one see
 <code class="docutils literal notranslate"><span class="pre">tests/test_plugins/test_runroot_cli.py</span></code>.</p>
 </div>
@@ -355,7 +356,7 @@ with python 3 from koji 1.13.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="profiles.html" class="btn btn-neutral float-left" title="Koji Profiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="writing_koji_code.html" class="btn btn-neutral float-right" title="Writing Koji Code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="content_generators.html" class="btn btn-neutral float-right" title="Koji Content Generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

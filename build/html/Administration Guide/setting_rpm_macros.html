@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="RPM Signing with Koji" href="signing.html" />
-    <link rel="prev" title="Permission system" href="permissions.html" /> 
+    <link rel="prev" title="Exporting repositories" href="exporting_repositories.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,9 +41,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Setting RPM Macros for Builds</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-rpm-macros-with-a-build">Setting rpm macros with a build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-rpm-macro-values">Setting rpm.macro values</a></li>
@@ -51,14 +51,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -131,24 +129,24 @@ build requirements.</p>
 <p>Often, you want to make sure these macros affect <em>all</em> builds for a tag.
 This means making your macros build part of the base install for the buildroot.
 This can be done by adding the rpm name to the <code class="docutils literal notranslate"><span class="pre">build</span></code> group for the tag.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji add-group-pkg f33-build build my-custom-rpm-macros
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-group-pkg f33-build build my-custom-rpm-macros
 </pre></div>
 </div>
 <p>If your macro also needs to be available when building source rpms (e.g. <code class="docutils literal notranslate"><span class="pre">%dist</span></code>), then you’ll
 also want to add it to the the <code class="docutils literal notranslate"><span class="pre">srpm-build</span></code> group.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji add-group-pkg f33-build build my-custom-rpm-macros
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji add-group-pkg f33-build build my-custom-rpm-macros
 </pre></div>
 </div>
 </div>
 <div class="section" id="setting-rpm-macro-values">
 <h2>Setting rpm.macro values<a class="headerlink" href="#setting-rpm-macro-values" title="Permalink to this headline"></a></h2>
-<p>(this feature was added in <span class="xref std std-doc">Koji 1.18</span>)</p>
+<p>(this feature was added in <a class="reference internal" href="../Operations%20Guide/release_notes/release_notes_1.18.html"><span class="doc">Koji 1.18</span></a>)</p>
 <p>As a convenience, Koji will honor any <code class="docutils literal notranslate"><span class="pre">rpm.macro.NAME</span></code> values in the “tag extra” settings for
 a given build tag.
 These values can be set by tag administrators with the <code class="docutils literal notranslate"><span class="pre">edit-tag</span></code> command and viewed with
 the <code class="docutils literal notranslate"><span class="pre">taginfo</span></code> command.
 For example, to set the <code class="docutils literal notranslate"><span class="pre">dist</span></code> macro value, you could use a command like the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ koji edit-tag f33-build -x rpm.macro.dist=.fc33
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji edit-tag f33-build -x rpm.macro.dist<span class="o">=</span>.fc33
 </pre></div>
 </div>
 <p>This will cause Koji to pass this value to <code class="docutils literal notranslate"><span class="pre">mock</span></code> when constructing the buildroot.
@@ -177,7 +175,7 @@ inherited value will win.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="permissions.html" class="btn btn-neutral float-left" title="Permission system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exporting_repositories.html" class="btn btn-neutral float-left" title="Exporting repositories" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="signing.html" class="btn btn-neutral float-right" title="RPM Signing with Koji" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

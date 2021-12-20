@@ -109,26 +109,24 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -168,7 +166,7 @@ individually, however, all services may <strong>live</strong> on the same resour
 <p class="admonition-title">Note</p>
 <p>Everything except the builders themselves can run also in containers.
 Builders have to be run in more privileged and separated environment. For
-details look into <span class="xref std std-doc">Running Koji in Containers</span></p>
+details look into <a class="reference internal" href="containers.html"><span class="doc">Running Koji in Containers</span></a></p>
 </div>
 </div>
 <div class="section" id="quick-start">
@@ -755,7 +753,7 @@ there is no password manipulation support exposed through the koji tools.</p>
 <p>The sql commands you need to use vary by authentication mechanism.</p>
 </div>
 <div class="section" id="maintaining-database">
-<h3>Maintaining database<a class="headerlink" href="#maintaining-database" title="Permalink to this headline"></a></h3>
+<span id="db-maintenance"></span><h3>Maintaining database<a class="headerlink" href="#maintaining-database" title="Permalink to this headline"></a></h3>
 <p>For now, there is one table which needs periodical cleanup. As postgres doesn’t
 have any mechanism for this, we need to do it via some other mechanism. Default
 handling is done by cron, but can be substituted by anything else (Ansible
@@ -961,7 +959,7 @@ not installing hub from rpm double-check these permissions.</p>
 directory. These files are read <em>at first</em> and main config is allowed to
 override all these values. So, you can use e.g.
 <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf.d/secret.conf</span></code> for sensitive values. Typical usecase
-for separate config is <span class="xref std std-doc">policy</span> configuration file.</p>
+for separate config is <a class="reference internal" href="../Administration%20Guide/defining_hub_policies.html"><span class="doc">policy</span></a> configuration file.</p>
 <p>All options are covered in detail <a class="reference internal" href="hub_conf.html"><span class="doc">here</span></a> .</p>
 </div>
 </div>
@@ -1351,7 +1349,7 @@ be selected.</p>
 <p class="admonition-title">Note</p>
 <p>We provide <code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code> hub policy as an equivalent in version 1.26.0.</p>
 <p>For more details, please refer to <a class="reference internal" href="../Administration%20Guide/access_controls.html#allowed-scms"><span class="std std-ref">Allowed SCMs</span></a> and
-<span class="xref std std-doc">Defining Hub Policies</span>.</p>
+<a class="reference internal" href="../Administration%20Guide/defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>.</p>
 </div>
 </div>
 </div>

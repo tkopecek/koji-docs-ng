@@ -14,8 +14,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Running Koji in Containers" href="containers.html" />
-    <link rel="prev" title="Koji Utilities" href="utils.html" /> 
+    <link rel="next" title="External Repository Server Bootstrap" href="external_repo_server_bootstrap.html" />
+    <link rel="prev" title="Koji Server Bootstrap" href="server_bootstrap.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,16 +41,6 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Storage Volumes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#constructing-the-path">Constructing the path</a></li>
@@ -63,15 +53,23 @@
 <li class="toctree-l3"><a class="reference internal" href="#api-calls">API calls</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -128,7 +126,7 @@ The expectation is that this directory will map to a different file system.</p>
 <div class="section" id="constructing-the-path">
 <h2>Constructing the path<a class="headerlink" href="#constructing-the-path" title="Permalink to this headline"></a></h2>
 <p>If you are using the Koji python api, things should <strong>just work</strong>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">koji</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">koji</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mykoji</span> <span class="o">=</span> <span class="n">koji</span><span class="o">.</span><span class="n">get_profile_module</span><span class="p">(</span><span class="s1">&#39;mykoji&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="n">mykoji</span><span class="o">.</span><span class="n">grab_session_options</span><span class="p">(</span><span class="n">mykoji</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">mykoji</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">mykoji</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
@@ -160,8 +158,8 @@ top directory (normally /mnt/koji).</p></li>
 <h2>Symlinks on default volume<a class="headerlink" href="#symlinks-on-default-volume" title="Permalink to this headline"></a></h2>
 <p>For backwards compatibility, Koji maintains symlinks on the default volume
 for builds on other volumes.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ file /mnt/koji/packages/fake/1.0/21
-/mnt/koji/packages/fake/1.0/21: symbolic link to ../../../vol/vol3/packages/fake/1.0/21
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>file /mnt/koji/packages/fake/1.0/21
+<span class="go">/mnt/koji/packages/fake/1.0/21: symbolic link to ../../../vol/vol3/packages/fake/1.0/21</span>
 </pre></div>
 </div>
 </div>
@@ -191,18 +189,18 @@ create a relative symlink to the new build directory on the default
 volume. Moving builds across volumes may immediately break repos (until
 the regen occurs), so use caution.</p>
 <p>Consider the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># mypkg-1.1-20 initially on default volume
-$ file /mnt/koji/packages/mypkg/1.1/20
-/mnt/koji/packages/mypkg/1.1/20: directory
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mypkg-1.1-20 initially on default volume
+<span class="gp">$ </span>file /mnt/koji/packages/mypkg/1.1/20
+<span class="go">/mnt/koji/packages/mypkg/1.1/20: directory</span>
 
-# move it to test volume
-$ koji set-build-volume test mypkg-1.1-20
-$ file /mnt/koji/vol/test/packages/mypkg/1.1/20
-/mnt/koji/vol/test/packages/mypkg/1.1/20: directory
+<span class="gp"># </span>move it to <span class="nb">test</span> volume
+<span class="gp">$ </span>koji set-build-volume <span class="nb">test</span> mypkg-1.1-20
+<span class="gp">$ </span>file /mnt/koji/vol/test/packages/mypkg/1.1/20
+<span class="go">/mnt/koji/vol/test/packages/mypkg/1.1/20: directory</span>
 
-# original location is now a symlink
-$ file /mnt/koji/packages/mypkg/1.1/20
-/mnt/koji/packages/mypkg/1.1/20: symbolic link to ../../../vol/test/packages/mypkg/1.1/20
+<span class="gp"># </span>original location is now a symlink
+<span class="gp">$ </span>file /mnt/koji/packages/mypkg/1.1/20
+<span class="go">/mnt/koji/packages/mypkg/1.1/20: symbolic link to ../../../vol/test/packages/mypkg/1.1/20</span>
 </pre></div>
 </div>
 </div>
@@ -232,7 +230,7 @@ to use.</p>
 <p>If the volume policy contains errors, or does not return a result, then the
 DEFAULT volume is used.</p>
 <p>For more information about Koji policies see:
-<span class="xref std std-doc">Defining hub policies</span></p>
+<a class="reference internal" href="../Administration%20Guide/defining_hub_policies.html"><span class="doc">Defining hub policies</span></a></p>
 </div>
 <div class="section" id="cli-commands">
 <h2>CLI commands<a class="headerlink" href="#cli-commands" title="Permalink to this headline"></a></h2>
@@ -268,8 +266,8 @@ DEFAULT volume is used.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="utils.html" class="btn btn-neutral float-left" title="Koji Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="containers.html" class="btn btn-neutral float-right" title="Running Koji in Containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="server_bootstrap.html" class="btn btn-neutral float-left" title="Koji Server Bootstrap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="external_repo_server_bootstrap.html" class="btn btn-neutral float-right" title="External Repository Server Bootstrap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

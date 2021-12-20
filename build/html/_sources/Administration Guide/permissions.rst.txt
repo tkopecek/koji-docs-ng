@@ -95,12 +95,10 @@ The following permissions grant access to trigger specialized tasks.
 Data Import
 -----------
 
-The following import permissions allow a user to directly import build
-artifacts of different types.
-We recommend caution when granting these.
-In general, it is better to use the
-:doc:`content generator interface <content_generators>` rather than the direct
-import calls these govern.
+The following import permissions allow a user to directly import build artifacts
+of different types.  We recommend caution when granting these.  In general, it
+is better to use the :doc:`content generator interface <../Developer
+Guide/content_generators>` rather than the direct import calls these govern.
 
 ``image-import``
   used for importing external maven artifacts

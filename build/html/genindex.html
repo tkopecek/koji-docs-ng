@@ -40,8 +40,6 @@
 <li class="toctree-l1"><a class="reference internal" href="Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -77,6 +75,7 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#K"><strong>K</strong></a>
@@ -129,11 +128,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-admin_emails"><strong>admin_emails=&#39;&#39;</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-allowed_scms-scm.example.com-cvs-example-git.example.org-example-svn.example.org-users-no"><strong>allowed_scms=scm.example.com:/cvs/example git.example.org:/example svn.example.org:/users/*:no</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/plugins.html#term-allowed_suffixes"><strong>allowed_suffixes =</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-AllowedKrbRealms"><strong>AllowedKrbRealms</strong></a>
 </li>
   </ul></td>
 </tr></table>
@@ -161,8 +162,12 @@
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-cert-etc-kojid-client.crt"><strong>cert=/etc/kojid/client.crt</strong></a>
 </li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-CheckClientIP"><strong>CheckClientIP</strong></a>
+</li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-chroot_tmpdir-chroot_tmpdir"><strong>chroot_tmpdir=/chroot_tmpdir</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     command line option
 
@@ -174,8 +179,6 @@
         <li><a href="Operations%20Guide/plugins.html#cmdoption-quiet">--quiet</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-createrepo_skip_stat-True"><strong>createrepo_skip_stat=True</strong></a>
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-createrepo_update-True"><strong>createrepo_update=True</strong></a>
@@ -186,7 +189,41 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBConnectionString"><strong>DBConnectionString</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBHost"><strong>DBHost</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBName"><strong>DBName</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBPass"><strong>DBPass</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBPort"><strong>DBPort</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DBUser"><strong>DBUser</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DisableGSSAPIProxyDNFallback"><strong>DisableGSSAPIProxyDNFallback</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DisableNotifications"><strong>DisableNotifications</strong></a>
+</li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-distribution-Koji"><strong>distribution=Koji</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-DNUsernameComponent"><strong>DNUsernameComponent</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-EmailDomain"><strong>EmailDomain</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-EnableMaven"><strong>EnableMaven</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-EnableWin"><strong>EnableWin</strong></a>
 </li>
   </ul></td>
 </tr></table>
@@ -209,6 +246,10 @@
       <li><a href="Operations%20Guide/kojid_conf.html#term-host_principal_format-compile-s-EXAMPLE.COM"><strong>host_principal_format=compile/%s@EXAMPLE.COM</strong></a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-HostPrincipalFormat"><strong>HostPrincipalFormat</strong></a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="K">K</h2>
@@ -216,9 +257,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-keepalive-True"><strong>keepalive=True</strong></a>
 </li>
+      <li><a href="Operations%20Guide/kojid_conf.html#term-keytab-etc-kojid-kojid.keytab"><strong>keytab=/etc/kojid/kojid.keytab</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-KojiDebug"><strong>KojiDebug</strong></a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Operations%20Guide/kojid_conf.html#term-keytab-etc-kojid-kojid.keytab"><strong>keytab=/etc/kojid/kojid.keytab</strong></a>
+      <li><a href="Operations%20Guide/hub_conf.html#term-KojiDir"><strong>KojiDir</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-KojiTraceback"><strong>KojiTraceback</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-KojiWebURL"><strong>KojiWebURL</strong></a>
 </li>
   </ul></td>
 </tr></table>
@@ -228,11 +277,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-literal_task_arches"><strong>literal_task_arches=&#39;&#39;</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-LockOut"><strong>LockOut</strong></a>
+</li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-log_level-None"><strong>log_level=None</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-log_timestamps-False"><strong>log_timestamps=False</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-LogFormat"><strong>LogFormat</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-LoginCreatesUser"><strong>LoginCreatesUser</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-LogLevel"><strong>LogLevel</strong></a>
 </li>
   </ul></td>
 </tr></table>
@@ -246,9 +303,17 @@
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-maxjobs-10"><strong>maxjobs=10</strong></a>
 </li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-MaxNameLengthInternal"><strong>MaxNameLengthInternal</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-MaxRequestLength"><strong>MaxRequestLength</strong></a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-MemoryWarnThreshold"><strong>MemoryWarnThreshold</strong></a>
+</li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-minspace-8192"><strong>minspace=8192</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-MissingPolicyOk"><strong>MissingPolicyOk</strong></a>
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-mockdir-var-lib-mock"><strong>mockdir=/var/lib/mock</strong></a>
 </li>
@@ -268,6 +333,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-no_ssl_verify-False"><strong>no_ssl_verify=False</strong></a>
 </li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-NotifyOnSuccess"><strong>NotifyOnSuccess</strong></a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -276,9 +343,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-offline_retry-True"><strong>offline_retry=True</strong></a>
 </li>
+      <li><a href="Operations%20Guide/kojid_conf.html#term-offline_retry_interval-120"><strong>offline_retry_interval=120</strong></a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Operations%20Guide/kojid_conf.html#term-offline_retry_interval-120"><strong>offline_retry_interval=120</strong></a>
+      <li><a href="Operations%20Guide/hub_conf.html#term-OfflineMessage"><strong>OfflineMessage</strong></a>
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-oz_install_timeout-7200"><strong>oz_install_timeout=7200</strong></a>
 </li>
@@ -294,13 +363,21 @@
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-pkgurl-None"><strong>pkgurl=None</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-plugin"><strong>plugin=&#39;&#39;</strong></a>
 </li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-PluginPath"><strong>PluginPath</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-pluginpath-usr-lib-koji-builder-plugins"><strong>pluginpath=/usr/lib/koji-builder-plugins</strong></a>
 </li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-Plugins"><strong>Plugins</strong></a>
+</li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-plugins"><strong>plugins=&#39;&#39;</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-ProxyDNs"><strong>ProxyDNs</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-ProxyPrincipals"><strong>ProxyPrincipals</strong></a>
 </li>
   </ul></td>
 </tr></table>
@@ -308,11 +385,37 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RegexNameInternal"><strong>RegexNameInternal</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RegexUserName-A-Za-z0-9-_."><strong>RegexUserName = ^[A-Za-z0-9/_.@-]+$</strong></a>
+</li>
       <li><a href="Operations%20Guide/plugins.html#term-remove_empty-off"><strong>remove_empty = off</strong></a>
+</li>
+      <li><a href="Operations%20Guide/kojid_conf.html#term-retry_interval-60"><strong>retry_interval=60</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_AS"><strong>RLIMIT_AS</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_CORE"><strong>RLIMIT_CORE</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_CPU"><strong>RLIMIT_CPU</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_DATA"><strong>RLIMIT_DATA</strong></a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Operations%20Guide/kojid_conf.html#term-retry_interval-60"><strong>retry_interval=60</strong></a>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_FSIZE"><strong>RLIMIT_FSIZE</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_MEMLOCK"><strong>RLIMIT_MEMLOCK</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_NOFILE"><strong>RLIMIT_NOFILE</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_NPROC"><strong>RLIMIT_NPROC</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_OFILE"><strong>RLIMIT_OFILE</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_RSS"><strong>RLIMIT_RSS</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-RLIMIT_STACK"><strong>RLIMIT_STACK</strong></a>
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-rpmbuild_timeout-86400"><strong>rpmbuild_timeout=86400</strong></a>
 </li>
@@ -325,6 +428,8 @@
       <li><a href="Operations%20Guide/kojid_conf.html#term-server-http-hub.example.com-kojihub"><strong>server=http://hub.example.com/kojihub</strong></a>
 </li>
       <li><a href="Operations%20Guide/kojid_conf.html#term-serverca-etc-kojid-serverca.crt"><strong>serverca=/etc/kojid/serverca.crt</strong></a>
+</li>
+      <li><a href="Operations%20Guide/hub_conf.html#term-ServerOffline"><strong>ServerOffline</strong></a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -371,6 +476,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Operations%20Guide/kojid_conf.html#term-vendor-Koji"><strong>vendor=Koji</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Operations%20Guide/hub_conf.html#term-VerbosePolicy"><strong>VerbosePolicy</strong></a>
 </li>
   </ul></td>
 </tr></table>

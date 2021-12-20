@@ -2,8 +2,6 @@
 Koji Server Bootstrap
 =====================
 
-.. highlight:: console
-
 Bootstrapping a new Koji build environment
 ==========================================
 

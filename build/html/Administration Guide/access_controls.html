@@ -14,7 +14,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Defining Hub Policies" href="defining_hub_policies.html" />
+    <link rel="next" title="Permission system" href="permissions.html" />
     <link rel="prev" title="Administration Guide" href="index.html" /> 
 </head>
 
@@ -47,20 +47,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#user-permissions">User Permissions</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -126,14 +124,14 @@ access control policies.</p>
 Such policies return results of <code class="docutils literal notranslate"><span class="pre">deny</span></code> or <code class="docutils literal notranslate"><span class="pre">allow</span></code>.</p>
 <p>Examples of access control polices are:</p>
 <ul class="simple">
-<li><p>tag: control which tag operations are allowed</p></li>
-<li><p>package_list: control which package list updates are allowed</p></li>
-<li><p>cg_import: control which content generator imports are allowed</p></li>
-<li><p>vm: control which windows build tasks are allowed</p></li>
-<li><p>dist_repo: control which distRepo tasks are allowed</p></li>
-<li><p>build_from_srpm: control whether builds from srpm are allowed</p></li>
-<li><p>build_from_scm: control whether builds from the SCM are allowed and the behavior of the SCM</p></li>
-<li><p>build_from_repo_id: control whether builds from user-specified repos ids are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: control which tag operations are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_list</span></code>: control which package list updates are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cg_import</span></code>: control which content generator imports are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vm</span></code>: control which windows build tasks are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dist_repo</span></code>: control which distRepo tasks are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_srpm</span></code>: control whether builds from srpm are allowed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_scm</span></code>: control whether builds from the SCM are allowed and the behavior of the SCM</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_from_repo_id</span></code>: control whether builds from user-specified repos ids are allowed</p></li>
 </ul>
 <p>Note that not all policies are access control policies.
 The <code class="docutils literal notranslate"><span class="pre">channel</span></code> and <code class="docutils literal notranslate"><span class="pre">volume</span></code> policies are used to control which channels tasks go to
@@ -153,7 +151,7 @@ These permissions may be checked directly by the hub, or they may be referenced 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Administration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="defining_hub_policies.html" class="btn btn-neutral float-right" title="Defining Hub Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="permissions.html" class="btn btn-neutral float-right" title="Permission system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

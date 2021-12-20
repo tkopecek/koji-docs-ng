@@ -41,18 +41,18 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../migrations/migrations.html">Migrations</a></li>
@@ -93,8 +93,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -288,9 +286,8 @@ options. See:</p>
 <li><p><a class="reference external" href="https://github.com/rpm-software-management/mock/wiki/Feature-bootstrap">Bootstrap chroot</a></p></li>
 <li><p><a class="reference external" href="https://github.com/rpm-software-management/mock/wiki/Feature-container-for-bootstrap">Container for bootstrap</a></p></li>
 </ul>
-<p>For the configuration on koji, please refer to <span class="xref std std-doc">../using_the_koji_build_system</span>.
-The bootstrap buildroot will be pruned automatically by kojid as the same as the
-normal buildroot.</p>
+<p>For the configuration on koji, please refer to <a class="reference internal" href="../../User%20Guide/using_the_koji_build_system.html"><span class="doc">Using Koji in Fedora</span></a>.  The bootstrap buildroot will be pruned
+automatically by kojid as the same as the normal buildroot.</p>
 <p><strong>Pass bootloader append option to livemedia builds</strong></p>
 <div class="line-block">
 <div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2262">https://pagure.io/koji/pull-request/2262</a></div>
@@ -302,7 +299,7 @@ options to <code class="docutils literal notranslate"><span class="pre">livemedi
 <div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2064">https://pagure.io/koji/pull-request/2064</a></div>
 </div>
 <p>Now, you can set <code class="docutils literal notranslate"><span class="pre">rpm.env.*</span></code> in build tag’s <code class="docutils literal notranslate"><span class="pre">extra</span></code> to specify environment
-variables in mock’s buildroot. See <span class="xref std std-doc">../using_the_koji_build_system</span>.</p>
+variables in mock’s buildroot. See <a class="reference internal" href="../../User%20Guide/using_the_koji_build_system.html"><span class="doc">Using Koji in Fedora</span></a>.</p>
 <p><strong>Support specific per-settings for Mock’s sign plugin</strong></p>
 <div class="line-block">
 <div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/1932">https://pagure.io/koji/pull-request/1932</a></div>
@@ -311,7 +308,7 @@ variables in mock’s buildroot. See <span class="xref std std-doc">../using_the
 <p>We are now providing <code class="docutils literal notranslate"><span class="pre">mock.plugin_conf.sign_enable</span></code>,
 <code class="docutils literal notranslate"><span class="pre">mock.plugin_conf.sign_opts.cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">mock.plugin_conf.sign_opts.opts</span></code> in
 build tag’s <code class="docutils literal notranslate"><span class="pre">extra</span></code> for enabling and configuring the sign plugin of mock. For
-more details, see <span class="xref std std-doc">../using_the_koji_build_system</span>.</p>
+more details, see <a class="reference internal" href="../../User%20Guide/using_the_koji_build_system.html"><span class="doc">Using Koji in Fedora</span></a>.</p>
 <p><strong>Per-tag settings of yum’s depsolver policy for Mock</strong></p>
 <div class="line-block">
 <div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/1932">https://pagure.io/koji/pull-request/1932</a></div>
@@ -477,7 +474,7 @@ Similar to the above, our example setting was already the default.</p>
 In particular, the <code class="docutils literal notranslate"><span class="pre">buildtag</span></code> policy test should work for such builds.</p>
 <p>Note that some builds (e.g. content generator builds and other imported builds) do not
 have associated tasks.</p>
-<p>For more information on hub policies, see <span class="xref std std-doc">../defining_hub_policies</span>.</p>
+<p>For more information on hub policies, see <a class="reference internal" href="../../Administration%20Guide/defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>.</p>
 <p><strong>Honor volume policy in host.importImage</strong></p>
 <div class="line-block">
 <div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2359">https://pagure.io/koji/pull-request/2359</a></div>

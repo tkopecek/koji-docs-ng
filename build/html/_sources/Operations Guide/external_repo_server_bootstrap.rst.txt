@@ -2,8 +2,6 @@
 External Repository Server Bootstrap
 ====================================
 
-.. highlight:: console
-
 Bootstrapping a new External Repo Koji build environment
 ========================================================
 
@@ -143,7 +141,7 @@ NOTE: this uses $arch **NOT** $basearch
 Fedora 35
 ---------
 
-.. code-block:: plain
+.. code-block:: none
 
     https://download.fedoraproject.org/pub/linux/fedora/linux/releases/35/Everything/\$arch/os/
     https://download.fedoraproject.org/pub/linux/fedora/linux/updates/35/Everything/\$arch/
@@ -151,7 +149,7 @@ Fedora 35
 CentOS 8 and EPEL
 -----------------
 
-.. code-block:: plain
+.. code-block:: none
 
     http://mirror.centos.org/centos/7/os/\$arch/
     http://mirror.centos.org/centos/7/updates/\$arch/

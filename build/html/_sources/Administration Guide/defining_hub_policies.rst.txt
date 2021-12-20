@@ -44,7 +44,7 @@ as part of the whole.
 
 Consider the following simple (and strict) example:
 
-::
+.. code-block:: ini
 
     [policy]
     tag =
@@ -69,7 +69,7 @@ Getting a bit more complicated
 The example above is very simple. The policy syntax also supports compound
 tests, negated tests, and nested tests. Consider the following example:
 
-::
+.. code-block:: ini
 
     [policy]
     tag =
@@ -106,14 +106,14 @@ General format
 ==============
 The general form of a basic policy line is one of the following
 
-::
+.. code-block:: ini
 
     test [params] [&& test [params] ...] :: action-if-true
     test [params] [&& test [params] ...] !! action-if-false
 
 And for nested rules:
 
-::
+.. code-block:: ini
 
     test [params] [&& ...] [::|!!] {
         test [params] [&& ...] [::|!!] action

@@ -10,16 +10,16 @@ Here are some example commands for working with RPM and GPG.
 
 Example of generating a GPG keypair for testing::
 
-    gpg --quick-generate-key security@example.com
+    $ gpg --quick-generate-key security@example.com
     # For testing, simply press "Enter" when prompted for a password.
 
 Exporting your public key::
 
-    gpg --armor --export --output /path/to/my-signing-key.asc
+    $ gpg --armor --export --output /path/to/my-signing-key.asc
 
 Signing all RPMs in the current directory with this key::
 
-    rpmsign --define "_gpg_name security@example.com" --addsign *.rpm
+    $ rpmsign --define "_gpg_name security@example.com" --addsign *.rpm
 
 Inspecting an RPM signature
 ---------------------------
@@ -27,12 +27,12 @@ Inspecting an RPM signature
 In order to install a signed RPM on clients, each client must trust (import)
 the public GPG key into their RPMDB::
 
-    rpm --import /path/to/my-signing-key.asc
+    $ rpm --import /path/to/my-signing-key.asc
 
 *Example: No GPG signature at all (an unsigned RPM)*::
 
-    rpm -Kv python3-cherrypy-18.6.0-1.fc33.noarch.rpm
-    python3-cherrypy-18.6.0-1.fc33.noarch.rpm:
+    $ rpm -Kv python3-cherrypy-18.6.0-1.fc33.noarch.rpm
+    $ python3-cherrypy-18.6.0-1.fc33.noarch.rpm:
       Header SHA256 digest: OK
       Header SHA1 digest: OK
       Payload SHA256 digest: OK
@@ -42,7 +42,7 @@ Note there is no "RSA/SHA256 Signature" header field on the RPM here.
 
 *Example: A GPG signature that rpmdb DOES trust*::
 
-    rpm -Kv python3-cherrypy-18.4.0-4.fc32.noarch.rpm
+    $ rpm -Kv python3-cherrypy-18.4.0-4.fc32.noarch.rpm
     python3-cherrypy-18.4.0-4.fc32.noarch.rpm:
       Header V3 RSA/SHA256 Signature, key ID 12c944d0: OK
       Header SHA256 digest: OK
@@ -53,7 +53,7 @@ Note there is no "RSA/SHA256 Signature" header field on the RPM here.
 
 *Example: A GPG signature that rpmdb does NOT trust*::
 
-    rpm -Kv python-cherrypy-18.6.0-1.el8.src.rpm
+    $ rpm -Kv python-cherrypy-18.6.0-1.el8.src.rpm
     python-cherrypy-18.6.0-1.el8.src.rpm:
       Header V4 RSA/SHA256 Signature, key ID 782096ac: NOKEY
       Header SHA256 digest: OK
@@ -68,10 +68,10 @@ does not trust the GPG key that signed this RPM.
 A lower-level command that shows the signature on an RPM file (the
 ``RSAHEADER`` field piped through RPM's ``pgpsig`` formatter)::
 
-    rpm -q --qf '%{NAME} %{RSAHEADER:pgpsig}\n' -p python-routes-2.5.1-1.el8.src.rpm
+    $ rpm -q --qf '%{NAME} %{RSAHEADER:pgpsig}\n' -p python-routes-2.5.1-1.el8.src.rpm
 
-Uploding signed RPMs to Koji
-----------------------------
+Uploading signed RPMs to Koji
+-----------------------------
 
 Koji does not sign RPMs. Instead, Koji imports RPMs that are signed with a separate key.
 
@@ -83,9 +83,9 @@ inconsistency between the filesystem and the database (hence the copy step).
 In this example, we download an unsigned build from Koji, then sign it, and
 then upload the signed copy with ``koji import-sig``::
 
-    koji download-build --debuginfo bash-5.0.17-2.fc32
-    rpmsign --define "_gpg_name security@example.com" --addsign *.rpm
-    koji import-sig *.rpm
+    $ koji download-build --debuginfo bash-5.0.17-2.fc32
+    $ rpmsign --define "_gpg_name security@example.com" --addsign *.rpm
+    $ koji import-sig *.rpm
 
 The ``koji import-sig`` command uploads the signed RPM headers to the Koji
 Hub, which stores the headers on disk alongside the main unsigned RPM.
@@ -96,7 +96,7 @@ Downloading a signed RPM from Koji
 
 Specify the ``--key`` option to ``koji download-build``::
 
-    koji download-build --key=3AF362BAB bash-5.0.17-2.fc32
+    $ koji download-build --key=3AF362BAB bash-5.0.17-2.fc32
 
 Signing a build with multiple keys
 ----------------------------------

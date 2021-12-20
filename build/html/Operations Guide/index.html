@@ -41,26 +41,24 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Operations Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -90,6 +88,9 @@
              
   <div class="section" id="operations-guide">
 <h1>Operations Guide<a class="headerlink" href="#operations-guide" title="Permalink to this headline"></a></h1>
+<p>This guide mostly covers installation and maintenance of koji instance.
+Nevertheless, in few places it inevitably intersects with <a class="reference internal" href="../Administration%20Guide/index.html"><span class="doc">Administration Guide</span></a> as some tasks involves also configuration of build tags or external
+repositories.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="server_howto.html">Server Installation</a><ul>
@@ -224,6 +225,18 @@
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html#bootstrapping-a-new-koji-build-environment">Bootstrapping a new Koji build environment</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="volumes.html">Storage Volumes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#constructing-the-path">Constructing the path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#symlinks-on-default-volume">Symlinks on default volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#adding-a-new-volume">Adding a new volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#moving-builds-onto-other-volumes">Moving builds onto other volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#using-the-volume-in-policy-checks">Using the volume in policy checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#setting-a-volume-policy">Setting a volume policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#cli-commands">CLI commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#api-calls">API calls</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#bootstrapping-a-new-external-repo-koji-build-environment">Bootstrapping a new External Repo Koji build environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#regenerating-your-repo">Regenerating your repo</a></li>
@@ -243,7 +256,7 @@
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html#general-problems">General problems</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#building">Building</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#rpm-builds">RPM Builds</a></li>
@@ -254,7 +267,23 @@
 <li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#insecure-authentication-options">Insecure Authentication Options</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#file-locations">File locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#file-permissions">File permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#basic-options">Basic options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#general-authentication-options">General authentication options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#gssapi-authentication-options">GSSAPI authentication options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#ssl-client-certificate-auth-configuration">SSL client certificate auth configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#notification-options">Notification options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#resource-limits">Resource limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#extended-features">Extended features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#koji-hub-plugins">Koji hub plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#koji-debugging">Koji debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#hub-policy">Hub Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#koji-outages-options">Koji outages options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html#name-verification">Name verification</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="database_howto.html">Database Performance Howto</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html#partitioning">Partitioning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html#using-ssl-with-postgresql">Using SSL with PostgreSQL</a><ul>
@@ -339,18 +368,6 @@
 <li class="toctree-l2"><a class="reference internal" href="plugins.html#image-builds-using-kiwi">Image builds using Kiwi</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#appliance-children-createappliance">appliance (children: createAppliance)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildmaven">buildMaven</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildnotification">buildNotification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainbuild-children-build-waitrepo">chainbuild (children: build, waitrepo)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainmaven-children-maven">chainmaven (children: maven)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#image-children-createimage">image (children: createImage)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#newrepo-children-createrepo">newRepo (children: createrepo)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html#build-children-rebuildsrpm-buildsrpmfromscm-buildarch-tagbuild">build (children: rebuildSRPM, buildSRPMFromSCM, buildArch, tagBuild)</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Koji Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#kojira">Kojira</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#garbage-collector">Garbage Collector</a><ul>
@@ -365,19 +382,34 @@
 <li class="toctree-l2"><a class="reference internal" href="utils.html#koji-db-sweeper">Koji DB Sweeper</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="volumes.html">Storage Volumes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#constructing-the-path">Constructing the path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#symlinks-on-default-volume">Symlinks on default volume</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#adding-a-new-volume">Adding a new volume</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#moving-builds-onto-other-volumes">Moving builds onto other volumes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#using-the-volume-in-policy-checks">Using the volume in policy checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#setting-a-volume-policy">Setting a volume policy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#cli-commands">CLI commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html#api-calls">API calls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks Description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#appliance-children-createappliance">appliance (children: createAppliance)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildmaven">buildMaven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildnotification">buildNotification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainbuild-children-build-waitrepo">chainbuild (children: build, waitrepo)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainmaven-children-maven">chainmaven (children: maven)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#image-children-createimage">image (children: createImage)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#newrepo-children-createrepo">newRepo (children: createrepo)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#build-children-rebuildsrpm-buildsrpmfromscm-buildarch-tagbuild">build (children: rebuildSRPM, buildSRPMFromSCM, buildArch, tagBuild)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#distrepo">distRepo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#image">image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#indirectionimage">indirectionimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#livecd">livecd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#livemedia">livemedia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#runroot">runroot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#savefailedtree">saveFailedTree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#tagbuild">tagBuild</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#tagnotification">tagNotification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#vmexec">vmExec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#waitrepo">waitrepo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#winbuild">winbuild</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#wrapperrpm">wrapperRPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#createkiwiimage">createKiwiImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#kiwibuild">kiwiBuild</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="CVEs/CVEs.html">Koji CVEs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2020-15856.html">CVE-2020-15856</a><ul>

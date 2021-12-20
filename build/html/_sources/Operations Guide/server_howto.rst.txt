@@ -14,7 +14,7 @@ individually, however, all services may **live** on the same resource.
 .. note::
     Everything except the builders themselves can run also in containers.
     Builders have to be run in more privileged and separated environment. For
-    details look into :doc:`Running Koji in Containers`
+    details look into :doc:`containers`
 
 Quick Start
 ===========
@@ -144,7 +144,7 @@ way. For manual setup follow the next sections. Note, that if you're using
 `koji-playbooks`_ this script is used internally to generate required
 certificates.
 
-.. code-block:: console
+::
 
    $ dnf -y install python3-cryptography
    $ curl -O https://pagure.io/koji-tools/raw/master/f/src/bin/koji-ssl-admin
@@ -276,7 +276,7 @@ a database of the certificates generated and can be used to view the
 information for any of the certificates simply by viewing the contents of
 ``index.txt``.
 
-.. code-block:: console
+::
 
     root@localhost$ cd /etc/pki/koji/
     root@localhost$ mkdir {certs,private,confs}
@@ -297,7 +297,7 @@ certificate is to use the FQDN of the server.
 If you are trying to automate this process via a configuration management
 tool, you can create the cert in one command with a line like this:
 
-.. code-block:: console
+::
 
     root@localhost$ openssl req -config ssl.cnf -new -x509 \
                     -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=koji.example.com" \
@@ -361,7 +361,7 @@ Generate a PKCS12 user certificate (for web browser)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This is only required for user certificates.
 
-.. code-block:: console
+::
 
     $ openssl pkcs12 -export -inkey private/${user}.key -in certs/${user}.crt \
         -CAfile ${caname}_ca_cert.crt -out certs/${user}_browser_cert.p12
@@ -382,7 +382,7 @@ to do so, you'll need to use the newly created certificates to authenticate
 with the hub. Create the kojiadmin user then copy the certificates for the koji
 CA and the kojiadmin user to ``~/.koji``:
 
-.. code-block:: console
+::
 
     kojiadmin@localhost$ mkdir ~/.koji
     kojiadmin@localhost$ cp /etc/pki/koji/kojiadmin.pem ~/.koji/client.crt   # NOTE: It is IMPORTANT you use the PEM and NOT the CRT
@@ -483,7 +483,7 @@ Setup User Accounts:
 
 The following commands will setup the ``koji`` account and assign it a password
 
-.. code-block:: console
+::
 
     root@localhost$ useradd koji
     root@localhost$ passwd koji
@@ -499,7 +499,7 @@ The following commands will:
 * create the koji schema using the provided
   ``/usr/share/doc/koji*/docs/schema.sql`` file from the ``koji`` package.
 
-.. code-block:: console
+::
 
     root@localhost$ su - postgres
     postgres@localhost$ createuser --no-superuser --no-createrole --no-createdb koji
@@ -623,6 +623,8 @@ there is no password manipulation support exposed through the koji tools.
 
 The sql commands you need to use vary by authentication mechanism.
 
+.. _db-maintenance:
+
 Maintaining database
 --------------------
 
@@ -635,7 +637,7 @@ Script is by default installed on hub as ``/usr/sbin/koji-sweep-db``.  It has
 also corresponding ``koji-sweep-db`` service and timer. Note, that timer is not
 enabled by default, so you need to run usual ``systemctl`` commands:
 
-.. code-block:: console
+::
 
    root@localhost$ systemctl enable --now koji-sweep-db.timer
 
@@ -660,7 +662,7 @@ content generators), you would want to run also reservation cleanup:
 Set User/Password Authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: console
+::
 
     root@localhost$ su - koji
     koji@localhost$ psql
@@ -672,7 +674,7 @@ Kerberos authentication
 The process is very similar to user/pass except you would replace the first
 insert above with this:
 
-.. code-block:: console
+::
 
     root@localhost$ su - koji
     koji@localhost$ psql <<EOF
@@ -691,7 +693,7 @@ SSL Certificate authentication
 There is no need for either a password or a Kerberos principal, so this will
 suffice:
 
-.. code-block:: console
+::
 
     root@localhost$ su - koji
     koji@localhost$ psql
@@ -860,7 +862,8 @@ Furthermore, you can install any config file in ``/etc/koji-hub/hub.conf.d``
 directory. These files are read *at first* and main config is allowed to
 override all these values. So, you can use e.g.
 ``/etc/koji-hub/hub.conf.d/secret.conf`` for sensitive values. Typical usecase
-for separate config is :doc:`policy <defining_hub_policies>` configuration file.
+for separate config is :doc:`policy <../Administration
+Guide/defining_hub_policies>` configuration file.
 
 All options are covered in detail :doc:`here <hub_conf>` .
 
@@ -976,7 +979,7 @@ For a simple test, all we need is the ``server`` and authentication sections.
 
 The following command will test your login to the hub:
 
-.. code-block:: console
+::
 
     root@localhost$ koji moshimoshi
     Hello, kojiadmin!
@@ -1317,7 +1320,7 @@ be selected.
     We provide ``build_from_scm`` hub policy as an equivalent in version 1.26.0.
 
     For more details, please refer to :ref:`allowed-scms` and
-    :doc:`Defining Hub Policies <defining_hub_policies>`.
+    :doc:`Defining Hub Policies <../Administration Guide/defining_hub_policies>`.
 
 Add the host to the createrepo channel
 --------------------------------------

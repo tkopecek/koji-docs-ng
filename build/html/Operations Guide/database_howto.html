@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Building Images in Koji" href="image_build.html" />
-    <link rel="prev" title="hub.conf options" href="hub_conf.html" /> 
+    <link rel="prev" title="Hub Configuration Options" href="hub_conf.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,10 +41,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Database Performance Howto</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#partitioning">Partitioning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#using-ssl-with-postgresql">Using SSL with PostgreSQL</a><ul>
@@ -56,19 +57,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -249,12 +247,12 @@ It should include the full chain (including the CA and any intermediates).</p></
 </ul>
 </div></blockquote>
 <p>Set the ownership appropriately:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chown</span> <span class="n">postgres</span><span class="p">:</span><span class="n">postgres</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="p">{</span><span class="n">crt</span><span class="p">,</span><span class="n">key</span><span class="p">}</span>
-<span class="n">chmod</span> <span class="mi">0600</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">key</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root@localhost$ </span>chown postgres:postgres /var/lib/pgsql/data/server.<span class="o">{</span>crt,key<span class="o">}</span>
+<span class="gp">root@localhost$ </span>chmod <span class="m">0600</span> /var/lib/pgsql/data/server.key
 </pre></div>
 </div>
 <p>Restart postgresql for the new settings to take effect:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">postgresql</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root@localhost$ </span>systemctl restart postgresql
 </pre></div>
 </div>
 </div>
@@ -262,18 +260,18 @@ It should include the full chain (including the CA and any intermediates).</p></
 <h3>Configuring the Koji hub to use SSL to Postgres<a class="headerlink" href="#configuring-the-koji-hub-to-use-ssl-to-postgres" title="Permalink to this headline"></a></h3>
 <p>Once you’ve enabled SSL on the PostgreSQL server, you can test it with the
 CLI:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="s1">&#39;postgresql://koji:example_password@db.example.com/koji?sslmode=verify-full&amp;sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>psql <span class="s1">&#39;postgresql://koji:example_password@db.example.com/koji?sslmode=verify-full&amp;sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt&#39;</span>
 </pre></div>
 </div>
 <p>You should be able to list tables, run queries, etc.</p>
 <p>Edit <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code> to use this connection string:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DBConnectionString = postgresql://koji:example_password@kojidev.example.com/koji?sslmode=verify-full&amp;sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">DBConnectionString = postgresql://koji:example_password@kojidev.example.com/koji?sslmode=verify-full&amp;sslrootcert=/etc/pki/tls/certs/ca-bundle.trust.crt</span>
 </pre></div>
 </div>
 <p>Restart the hub and verify the new <code class="docutils literal notranslate"><span class="pre">DBConnectionString</span></code> is working:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">httpd</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root@localhost$ </span>systemctl restart httpd
 
-<span class="n">koji</span> <span class="n">hello</span>
+<span class="gp">$ </span>koji hello
 </pre></div>
 </div>
 </div>
@@ -284,7 +282,7 @@ CLI:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="hub_conf.html" class="btn btn-neutral float-left" title="hub.conf options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hub_conf.html" class="btn btn-neutral float-left" title="Hub Configuration Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="image_build.html" class="btn btn-neutral float-right" title="Building Images in Koji" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

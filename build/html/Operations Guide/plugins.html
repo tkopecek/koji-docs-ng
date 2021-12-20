@@ -14,7 +14,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Supported Platforms" href="supported_platforms.html" />
+    <link rel="next" title="Koji Utilities" href="utils.html" />
     <link rel="prev" title="Building Images in Koji" href="image_build.html" /> 
 </head>
 
@@ -41,10 +41,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">Builder Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">Hub Configuration Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plugins</a><ul>
@@ -68,19 +69,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#image-builds-using-kiwi">Image builds using Kiwi</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -128,10 +126,10 @@ with option descriptions installed.</p>
 <p>On the hub side <code class="docutils literal notranslate"><span class="pre">Plugins</span> <span class="pre">=</span> <span class="pre">runroot_hub</span></code> needs to be added to
 <code class="docutils literal notranslate"><span class="pre">/etc/koji-hub/hub.conf</span></code>. Note, that by default policy runroot tasks are
 assigned to <code class="docutils literal notranslate"><span class="pre">runroot</span></code> channel. As this is a plugin, we don’t create it
-automatically. There are three options - create channel when adding first builder
-there via <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">add-host-to-channel</span> <span class="pre">--new</span> <span class="pre">hostname</span> <span class="pre">runroot</span></code> or by changing the
-default channel policy according to <span class="xref std std-doc">defining_hub_policies</span>. Last option is
-to use <code class="docutils literal notranslate"><span class="pre">--channel-override</span></code> option in CLI to drive task to channel of choice.</p>
+automatically. There are three options - create channel when adding first
+builder there via <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">add-host-to-channel</span> <span class="pre">--new</span> <span class="pre">hostname</span> <span class="pre">runroot</span></code> or by
+changing the default channel policy according to <a class="reference internal" href="../Administration%20Guide/defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>. Last option is to use <code class="docutils literal notranslate"><span class="pre">--channel-override</span></code>
+option in CLI to drive task to channel of choice.</p>
 </div>
 <div class="section" id="cli">
 <h3>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h3>
@@ -324,10 +322,10 @@ sent on the bus (e.g. if the amqps server is offline).</p>
 plugin could attempt to send during a single call.</p>
 </div>
 <div class="section" id="image-builds-using-kiwi">
-<h2>Image builds using Kiwi<a class="headerlink" href="#image-builds-using-kiwi" title="Permalink to this headline"></a></h2>
+<span id="kiwi-build"></span><h2>Image builds using Kiwi<a class="headerlink" href="#image-builds-using-kiwi" title="Permalink to this headline"></a></h2>
 <p><strong>This is just a tech-preview. API/usage can drastically change in upcoming
 releases</strong></p>
-<p>Plugin for creating images via <a class="reference external" href="http://osinside.github.io/kiwi/">kiwi</a>
+<p>Plugin for creating images via <a class="reference external" href="https://osinside.github.io/kiwi/">kiwi</a>
 project. Minimal supported version of kiwi is <code class="docutils literal notranslate"><span class="pre">kiwi-9.24.2</span></code>.</p>
 <p>All three parts (cli/hub/builder) needs to be installed. There is currently no
 configuration except allowing the plugins (name is ‘kiwi’ for all components).</p>
@@ -362,7 +360,7 @@ limit build tag architectures.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="image_build.html" class="btn btn-neutral float-left" title="Building Images in Koji" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="supported_platforms.html" class="btn btn-neutral float-right" title="Supported Platforms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="Koji Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

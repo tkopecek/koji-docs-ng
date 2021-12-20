@@ -41,14 +41,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">RPM Signing with Koji</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-a-gpg-keypair">What is a GPG keypair?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inspecting-an-rpm-signature">Inspecting an RPM signature</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#uploding-signed-rpms-to-koji">Uploding signed RPMs to Koji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uploading-signed-rpms-to-koji">Uploading signed RPMs to Koji</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#downloading-a-signed-rpm-from-koji">Downloading a signed RPM from Koji</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#signing-a-build-with-multiple-keys">Signing a build with multiple keys</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#creating-repos-of-signed-rpms">Creating repos of signed RPMs</a></li>
@@ -58,14 +58,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Notes and miscellaneous details about Koji</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
 </ul>
 
@@ -101,16 +99,16 @@
 <p>A GPG keypair has a public key that you can share with the world and a private key that you keep secret.</p>
 <p>Here are some example commands for working with RPM and GPG.</p>
 <p>Example of generating a GPG keypair for testing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gpg</span> <span class="o">--</span><span class="n">quick</span><span class="o">-</span><span class="n">generate</span><span class="o">-</span><span class="n">key</span> <span class="n">security</span><span class="nd">@example</span><span class="o">.</span><span class="n">com</span>
-<span class="c1"># For testing, simply press &quot;Enter&quot; when prompted for a password.</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gpg --quick-generate-key security@example.com
+<span class="gp"># </span>For testing, simply press <span class="s2">&quot;Enter&quot;</span> when prompted <span class="k">for</span> a password.
 </pre></div>
 </div>
 <p>Exporting your public key:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gpg</span> <span class="o">--</span><span class="n">armor</span> <span class="o">--</span><span class="n">export</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">signing</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">asc</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gpg --armor --export --output /path/to/my-signing-key.asc
 </pre></div>
 </div>
 <p>Signing all RPMs in the current directory with this key:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpmsign</span> <span class="o">--</span><span class="n">define</span> <span class="s2">&quot;_gpg_name security@example.com&quot;</span> <span class="o">--</span><span class="n">addsign</span> <span class="o">*.</span><span class="n">rpm</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpmsign --define <span class="s2">&quot;_gpg_name security@example.com&quot;</span> --addsign *.rpm
 </pre></div>
 </div>
 </div>
@@ -118,51 +116,51 @@
 <h2>Inspecting an RPM signature<a class="headerlink" href="#inspecting-an-rpm-signature" title="Permalink to this headline"></a></h2>
 <p>In order to install a signed RPM on clients, each client must trust (import)
 the public GPG key into their RPMDB:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">--</span><span class="kn">import</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">signing</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">asc</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm --import /path/to/my-signing-key.asc
 </pre></div>
 </div>
 <p><em>Example: No GPG signature at all (an unsigned RPM)</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">Kv</span> <span class="n">python3</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.6.0</span><span class="o">-</span><span class="mf">1.</span><span class="n">fc33</span><span class="o">.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
-<span class="n">python3</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.6.0</span><span class="o">-</span><span class="mf">1.</span><span class="n">fc33</span><span class="o">.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span><span class="p">:</span>
-  <span class="n">Header</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Header</span> <span class="n">SHA1</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Payload</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">MD5</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm -Kv python3-cherrypy-18.6.0-1.fc33.noarch.rpm
+<span class="gp">$ </span>python3-cherrypy-18.6.0-1.fc33.noarch.rpm:
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  MD5 digest: OK</span>
 </pre></div>
 </div>
 <p>Note there is no “RSA/SHA256 Signature” header field on the RPM here.</p>
 <p><em>Example: A GPG signature that rpmdb DOES trust</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">Kv</span> <span class="n">python3</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.4.0</span><span class="o">-</span><span class="mf">4.</span><span class="n">fc32</span><span class="o">.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
-<span class="n">python3</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.4.0</span><span class="o">-</span><span class="mf">4.</span><span class="n">fc32</span><span class="o">.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span><span class="p">:</span>
-  <span class="n">Header</span> <span class="n">V3</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="p">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">12</span><span class="n">c944d0</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Header</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Header</span> <span class="n">SHA1</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Payload</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">V3</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="p">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">12</span><span class="n">c944d0</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">MD5</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm -Kv python3-cherrypy-18.4.0-4.fc32.noarch.rpm
+<span class="go">python3-cherrypy-18.4.0-4.fc32.noarch.rpm:</span>
+<span class="go">  Header V3 RSA/SHA256 Signature, key ID 12c944d0: OK</span>
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  V3 RSA/SHA256 Signature, key ID 12c944d0: OK</span>
+<span class="go">  MD5 digest: OK</span>
 </pre></div>
 </div>
 <p><em>Example: A GPG signature that rpmdb does NOT trust</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">Kv</span> <span class="n">python</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.6.0</span><span class="o">-</span><span class="mf">1.</span><span class="n">el8</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">rpm</span>
-<span class="n">python</span><span class="o">-</span><span class="n">cherrypy</span><span class="o">-</span><span class="mf">18.6.0</span><span class="o">-</span><span class="mf">1.</span><span class="n">el8</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">rpm</span><span class="p">:</span>
-  <span class="n">Header</span> <span class="n">V4</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="p">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">782096</span><span class="n">ac</span><span class="p">:</span> <span class="n">NOKEY</span>
-  <span class="n">Header</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Header</span> <span class="n">SHA1</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">Payload</span> <span class="n">SHA256</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
-  <span class="n">V4</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="p">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">782096</span><span class="n">ac</span><span class="p">:</span> <span class="n">NOKEY</span>
-  <span class="n">MD5</span> <span class="n">digest</span><span class="p">:</span> <span class="n">OK</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm -Kv python-cherrypy-18.6.0-1.el8.src.rpm
+<span class="go">python-cherrypy-18.6.0-1.el8.src.rpm:</span>
+<span class="go">  Header V4 RSA/SHA256 Signature, key ID 782096ac: NOKEY</span>
+<span class="go">  Header SHA256 digest: OK</span>
+<span class="go">  Header SHA1 digest: OK</span>
+<span class="go">  Payload SHA256 digest: OK</span>
+<span class="go">  V4 RSA/SHA256 Signature, key ID 782096ac: NOKEY</span>
+<span class="go">  MD5 digest: OK</span>
 </pre></div>
 </div>
 <p>Note the signature is syntatically valid here, but “NOKEY” here means RPMDB
 does not trust the GPG key that signed this RPM.</p>
 <p>A lower-level command that shows the signature on an RPM file (the
 <code class="docutils literal notranslate"><span class="pre">RSAHEADER</span></code> field piped through RPM’s <code class="docutils literal notranslate"><span class="pre">pgpsig</span></code> formatter):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">q</span> <span class="o">--</span><span class="n">qf</span> <span class="s1">&#39;%</span><span class="si">{NAME}</span><span class="s1"> %{RSAHEADER:pgpsig}</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">-</span><span class="n">p</span> <span class="n">python</span><span class="o">-</span><span class="n">routes</span><span class="o">-</span><span class="mf">2.5.1</span><span class="o">-</span><span class="mf">1.</span><span class="n">el8</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">rpm</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm -q --qf <span class="s1">&#39;%{NAME} %{RSAHEADER:pgpsig}\n&#39;</span> -p python-routes-2.5.1-1.el8.src.rpm
 </pre></div>
 </div>
 </div>
-<div class="section" id="uploding-signed-rpms-to-koji">
-<h2>Uploding signed RPMs to Koji<a class="headerlink" href="#uploding-signed-rpms-to-koji" title="Permalink to this headline"></a></h2>
+<div class="section" id="uploading-signed-rpms-to-koji">
+<h2>Uploading signed RPMs to Koji<a class="headerlink" href="#uploading-signed-rpms-to-koji" title="Permalink to this headline"></a></h2>
 <p>Koji does not sign RPMs. Instead, Koji imports RPMs that are signed with a separate key.</p>
 <p>To sign an RPM from Koji, you should make a copy of the file, sign it
 with the appropriate rpm command, and import the signature. Note that you
@@ -170,9 +168,9 @@ should not simply sign the file directly under /mnt/koji, as this causes an
 inconsistency between the filesystem and the database (hence the copy step).</p>
 <p>In this example, we download an unsigned build from Koji, then sign it, and
 then upload the signed copy with <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">download</span><span class="o">-</span><span class="n">build</span> <span class="o">--</span><span class="n">debuginfo</span> <span class="n">bash</span><span class="o">-</span><span class="mf">5.0.17</span><span class="o">-</span><span class="mf">2.</span><span class="n">fc32</span>
-<span class="n">rpmsign</span> <span class="o">--</span><span class="n">define</span> <span class="s2">&quot;_gpg_name security@example.com&quot;</span> <span class="o">--</span><span class="n">addsign</span> <span class="o">*.</span><span class="n">rpm</span>
-<span class="n">koji</span> <span class="n">import</span><span class="o">-</span><span class="n">sig</span> <span class="o">*.</span><span class="n">rpm</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji download-build --debuginfo bash-5.0.17-2.fc32
+<span class="gp">$ </span>rpmsign --define <span class="s2">&quot;_gpg_name security@example.com&quot;</span> --addsign *.rpm
+<span class="gp">$ </span>koji import-sig *.rpm
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code> command uploads the signed RPM headers to the Koji
@@ -182,7 +180,7 @@ It also writes out a full signed RPM.</p>
 <div class="section" id="downloading-a-signed-rpm-from-koji">
 <h2>Downloading a signed RPM from Koji<a class="headerlink" href="#downloading-a-signed-rpm-from-koji" title="Permalink to this headline"></a></h2>
 <p>Specify the <code class="docutils literal notranslate"><span class="pre">--key</span></code> option to <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">download-build</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">koji</span> <span class="n">download</span><span class="o">-</span><span class="n">build</span> <span class="o">--</span><span class="n">key</span><span class="o">=</span><span class="mi">3</span><span class="n">AF362BAB</span> <span class="n">bash</span><span class="o">-</span><span class="mf">5.0.17</span><span class="o">-</span><span class="mf">2.</span><span class="n">fc32</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji download-build --key<span class="o">=</span>3AF362BAB bash-5.0.17-2.fc32
 </pre></div>
 </div>
 </div>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji 1.23.0 Release notes &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Koji 1.22.1 Release notes" href="release_notes_1.22.1.html" />
+    <link rel="prev" title="Koji 1.23.1 Release notes" href="release_notes_1.23.1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">kojid.conf Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migrations/migrations.html">Migrations</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.27.html">Koji 1.27.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.1.html">Koji 1.26.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.html">Koji 1.26.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.1.html">Koji 1.25.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.html">Koji 1.25.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.24.1.html">Koji 1.24.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.24.html">Koji 1.24.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.23.1.html">Koji 1.23.1 Release notes</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Koji 1.23.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.1.html">Koji 1.22.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.html">Koji 1.22.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.1.html">Koji 1.21.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.html">Koji 1.21.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.1.html">Koji 1.20.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.html">Koji 1.20.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.1.html">Koji 1.19.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.html">Koji 1.19.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.1.html">Koji 1.18.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.html">Koji 1.18.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.17.html">Koji 1.17.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.2.html">Koji 1.16.2 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.1.html">Koji 1.16.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.html">Koji 1.16.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.1.html">Koji 1.15.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.html">Koji 1.15 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.14.html">Koji 1.14 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.13.html">Koji 1.13 Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="release_notes.html">Release Notes</a> &raquo;</li>
+      <li>Koji 1.23.0 Release notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/release_notes/release_notes_1.23.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-1-23-0-release-notes">
+<h1>Koji 1.23.0 Release notes<a class="headerlink" href="#koji-1-23-0-release-notes" title="Permalink to this headline"></a></h1>
+<p>All changes can be found at <a class="reference external" href="https://pagure.io/koji/roadmap/1.23/">pagure</a>.
+Most important changes are listed here.</p>
+<div class="section" id="migrating-from-koji-1-22-1-22-1">
+<h2>Migrating from Koji 1.22/1.22.1<a class="headerlink" href="#migrating-from-koji-1-22-1-22-1" title="Permalink to this headline"></a></h2>
+<p>For details on migrating see <a class="reference internal" href="../migrations/migrating_to_1.23.html"><span class="doc">Migrating to Koji 1.23</span></a></p>
+</div>
+<div class="section" id="security-fixes">
+<h2>Security Fixes<a class="headerlink" href="#security-fixes" title="Permalink to this headline"></a></h2>
+<p>None</p>
+</div>
+<div class="section" id="client-changes">
+<h2>Client Changes<a class="headerlink" href="#client-changes" title="Permalink to this headline"></a></h2>
+<p><strong>cli: clone-tag fails on failed multicalls</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2464">https://pagure.io/koji/pull-request/2464</a></div>
+</div>
+<p>Previously some errors could have been hidden which could have led to missing
+content in target tag. Now we are failing on any error.</p>
+<p><strong>improved download_file</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2395">https://pagure.io/koji/pull-request/2395</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2461">https://pagure.io/koji/pull-request/2461</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2471">https://pagure.io/koji/pull-request/2471</a></div>
+</div>
+<p>In the previous version we introduced unified <code class="docutils literal notranslate"><span class="pre">download_file</span></code> method which also
+checks downloaded content. There are minor updates improving this function
+especially in reaction to errors.</p>
+<p><strong>cli: add –task and –source options to list-builds command</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2458">https://pagure.io/koji/pull-request/2458</a></div>
+</div>
+<p>Builds now can be queried via <code class="docutils literal notranslate"><span class="pre">task</span></code> or <code class="docutils literal notranslate"><span class="pre">source</span></code> fields.</p>
+<p><strong>show log urls for failed tasks</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2505">https://pagure.io/koji/pull-request/2505</a></div>
+</div>
+<p>When watching for task progress, failed tasks will also display links to
+relevant logs.</p>
+<p><strong>load plugins also from /usr/lib64</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2525">https://pagure.io/koji/pull-request/2525</a></div>
+</div>
+<p>Fix of the bug which missed plugins in /usr/lib64 prefix.</p>
+<p><strong>clone-tag –config also clones extra info</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2472">https://pagure.io/koji/pull-request/2472</a></div>
+</div>
+<p>Formerly cloning skipped extra values. Nevertheless, extra values are becoming
+an important part of config, so from now we are cloning them.</p>
+</div>
+<div class="section" id="library-changes">
+<h2>Library Changes<a class="headerlink" href="#library-changes" title="Permalink to this headline"></a></h2>
+<p><strong>getRPMHeaders now fetch all headers by default</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2388">https://pagure.io/koji/pull-request/2388</a></div>
+</div>
+<p>Simple change of library function default behaviour.</p>
+</div>
+<div class="section" id="api-changes">
+<h2>API Changes<a class="headerlink" href="#api-changes" title="Permalink to this headline"></a></h2>
+<p><strong>lowercase sigkeys during import/query where needed</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2459">https://pagure.io/koji/pull-request/2459</a></div>
+</div>
+<p>Case of signature hashes is properly ignored.</p>
+<p><strong>tagChangedSince reacts on changes in extra</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2439">https://pagure.io/koji/pull-request/2439</a></div>
+</div>
+<p>It is probably mostly used by kojira, but it can be of some interest to
+automation scripts.</p>
+<p>Because of this, kojira will now correctly regenerate repos when tag extra
+values change.</p>
+<p><strong>getAverageBuildDuration sliding window</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2421">https://pagure.io/koji/pull-request/2421</a></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">getAverageBuildDuration</span></code> hub call returned an average for all builds for
+the given package.
+However, old data could be irrelevant to new versions of packages.
+Now the call offers an <code class="docutils literal notranslate"><span class="pre">age</span></code> option to limit the query (specified as number
+of months).</p>
+<p>The koji builder daemon now uses this option with a value of 6 months when
+adjusting the weight of <code class="docutils literal notranslate"><span class="pre">buildArch</span></code> tasks.</p>
+<p><strong>getBuildConfig returns inheritance history</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2493">https://pagure.io/koji/pull-request/2493</a></div>
+</div>
+<p>Additional option return inheritance chain for extra values and architectures.
+This behaviour is meant to be used with next change.</p>
+<p><strong>blocking inherited extra</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2495">https://pagure.io/koji/pull-request/2495</a></div>
+</div>
+<p>Inherited tag extra fields could have been overridden but not removed. Now it can
+be done via CLIs <code class="docutils literal notranslate"><span class="pre">edit-tag</span></code> or <code class="docutils literal notranslate"><span class="pre">editTag2</span></code> respectively which has a new
+<code class="docutils literal notranslate"><span class="pre">block_extra</span></code> option.</p>
+<p><strong>deprecate getGlobalInheritance</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2407">https://pagure.io/koji/pull-request/2407</a></div>
+</div>
+<p>This call was never used in Koji.
+Clients should instead use the <code class="docutils literal notranslate"><span class="pre">readFullInheritance</span></code> call.
+The <code class="docutils literal notranslate"><span class="pre">getGlobalInheritance</span></code> call will be completely removed in Koji 1.25.</p>
+<p><strong>remove deprecated list-tag-history / tagHistory</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2405">https://pagure.io/koji/pull-request/2405</a></div>
+</div>
+<p>Final removal.</p>
+<p><strong>Remove deprecated host.getTask call</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2406">https://pagure.io/koji/pull-request/2406</a></div>
+</div>
+<p>Final removal.</p>
+</div>
+<div class="section" id="builder-changes">
+<h2>Builder Changes<a class="headerlink" href="#builder-changes" title="Permalink to this headline"></a></h2>
+<p><strong>builder: configurable TTL for buildroots</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2485">https://pagure.io/koji/pull-request/2485</a></div>
+</div>
+<p>Previously these times were hard coded.
+The <code class="docutils literal notranslate"><span class="pre">buildroot_basic_cleanup_delay</span></code> setting controls how long the builder will
+wait before basic cleanup of the buildroot (removing most content but leaving
+the directory). The default value is two minutes.
+The <code class="docutils literal notranslate"><span class="pre">buildroot_final_cleanup_delay</span></code> setting controls how long the build will
+wait before final cleanup of the buildroot (removing the rest).
+The default value is one day.
+Both values are specified in seconds.</p>
+<p>For historical context on why there are two separate delays, see
+<cite>this bug &lt;https://bugzilla.redhat.com/show_bug.cgi?id=192153&gt;</cite>.</p>
+<p><strong>livemedia-creator: pass –nomacboot on non-x86_64</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2373">https://pagure.io/koji/pull-request/2373</a></div>
+</div>
+<p>Additional option was needed for booting on non-x86_64 archs.</p>
+<p><strong>builder: handle btrfs subvolumes in ApplianceTask</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2365">https://pagure.io/koji/pull-request/2365</a></div>
+</div>
+<p>BTRFS needed special handling in <code class="docutils literal notranslate"><span class="pre">ApplianceTask</span></code> to work.</p>
+<p><strong>kojid: fix extra-boot-args option</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2452">https://pagure.io/koji/pull-request/2452</a></div>
+</div>
+<p>Bug which prevented proper usage of <code class="docutils literal notranslate"><span class="pre">bootloader</span> <span class="pre">--append</span></code> in kickstarts.</p>
+<p><strong>kojid: waitrepo on deleted tag</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2417">https://pagure.io/koji/pull-request/2417</a></div>
+</div>
+<p>Previously, if a tag was deleted while a <code class="docutils literal notranslate"><span class="pre">waitrepo</span></code> task was watching it, the
+task would not notice and wait until the timeout expired.
+Now it will fail when it detects that the tag has been deleted.</p>
+</div>
+<div class="section" id="system-changes">
+<h2>System Changes<a class="headerlink" href="#system-changes" title="Permalink to this headline"></a></h2>
+<p><strong>dropping python 2.6 / RHEL6 / yum support</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2490">https://pagure.io/koji/pull-request/2490</a></div>
+</div>
+<p>One of the most significant changes in this release is dropping support for
+older python versions.
+Koji no longer supports python 2.6, and only supports python 2.7 for the
+builder and cli.</p>
+<p>This effectively means ending support for RHEL/CentOS 6 builders.
+We are dropping yum support (it was used only with dist-repos) as RHEL7 and
+newer have full dnf stack.</p>
+<p><strong>report versions of components</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2438">https://pagure.io/koji/pull-request/2438</a></div>
+</div>
+<p>There is a new hub API call named <code class="docutils literal notranslate"><span class="pre">getVersion</span></code> (don’t confuse with
+<code class="docutils literal notranslate"><span class="pre">getAPIVersion</span></code>) which returns the version of Koji that the hub is running.
+Similarly, the <code class="docutils literal notranslate"><span class="pre">koji</span></code> library provides its version in <code class="docutils literal notranslate"><span class="pre">koji.__version__</span></code>.</p>
+</div>
+<div class="section" id="plugins">
+<h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline"></a></h2>
+<p><strong>proton: persistent message queue</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2441">https://pagure.io/koji/pull-request/2441</a></div>
+</div>
+<p>As qpid (or other amqps broker) can be unreachable for long periods of time
+we’ve implemented a fallback queue in the database to avoid lost messages.
+This behaviour needs to be enabled - see
+<a class="reference internal" href="../plugins.html#protonmsg-config"><span class="std std-ref">the documentation</span></a>.</p>
+</div>
+<div class="section" id="utilities-changes">
+<h2>Utilities Changes<a class="headerlink" href="#utilities-changes" title="Permalink to this headline"></a></h2>
+<div class="section" id="kojira">
+<h3>Kojira<a class="headerlink" href="#kojira" title="Permalink to this headline"></a></h3>
+<p><strong>parallel rmtree</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2443">https://pagure.io/koji/pull-request/2443</a></div>
+</div>
+<p>Deleting old repos is now done in parallel.</p>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<p><strong>PostgreSQL requirements for partitioning</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2508">https://pagure.io/koji/pull-request/2508</a></div>
+</div>
+<p><strong>release process</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2462">https://pagure.io/koji/pull-request/2462</a></div>
+</div>
+<p><strong>more info about permission system</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2415">https://pagure.io/koji/pull-request/2415</a></div>
+</div>
+<p><strong>setting rpm macros for build tags</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2410">https://pagure.io/koji/pull-request/2410</a></div>
+</div>
+<p><strong>livecd/livemedia updates</strong></p>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/2500">https://pagure.io/koji/pull-request/2500</a></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="release_notes_1.23.1.html" class="btn btn-neutral float-left" title="Koji 1.23.1 Release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="release_notes_1.22.1.html" class="btn btn-neutral float-right" title="Koji 1.22.1 Release notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

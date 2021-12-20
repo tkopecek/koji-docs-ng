@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Permission system &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Setting RPM Macros for Builds" href="setting_rpm_macros.html" />
+    <link rel="prev" title="Exporting repositories" href="exporting_repositories.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting_repositories.html">Exporting repositories</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Permission system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#permission-management">Permission management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#built-in-permissions">Built-in permissions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#administration">Administration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tasks">Tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-import">Data Import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other">Other</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Permission system</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/permissions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="permission-system">
+<h1>Permission system<a class="headerlink" href="#permission-system" title="Permalink to this headline"></a></h1>
+<p>Permissions are used by Koji to control access in a number of ways.
+Some permissions are built-in (e.g. <code class="docutils literal notranslate"><span class="pre">admin</span></code>, <code class="docutils literal notranslate"><span class="pre">repo</span></code>), but new ones can be
+created by administrators.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">admin</span></code> permission is special.
+It grants superuser access and can stand in for any other permission.</p>
+<p>Most of the built-in permissions control access to various hub calls.
+For example, the <code class="docutils literal notranslate"><span class="pre">dist-repo</span></code> permission allows access to create dist repos.</p>
+<p>Custom permissions can used as the required permission for a tag, or they can be
+referenced in <a class="reference internal" href="defining_hub_policies.html"><span class="doc">hub policies</span></a>. Note, that you need
+to first understand the policy mechanism as most permissions are reflected in
+policy rules.</p>
+<div class="section" id="permission-management">
+<h2>Permission management<a class="headerlink" href="#permission-management" title="Permalink to this headline"></a></h2>
+<p>Granting or removing permissions requires the <code class="docutils literal notranslate"><span class="pre">admin</span></code> permission.
+A user with sufficient access can use the following koji CLI commands:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">grant-permission</span> <span class="pre">[--new]</span> <span class="pre">&lt;permission&gt;</span> <span class="pre">&lt;user&gt;</span> <span class="pre">[&lt;user&gt;</span> <span class="pre">...]</span></code></dt><dd><p>Grants permission to one or more users. It can be also used to create
+a new permission with the <code class="docutils literal notranslate"><span class="pre">--new</span></code> option.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">revoke-permission</span> <span class="pre">&lt;permission&gt;</span> <span class="pre">&lt;user&gt;</span> <span class="pre">[&lt;user&gt;</span> <span class="pre">...]</span></code></dt><dd><p>Removes the named permission from users.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">list-permissions</span> <span class="pre">[--user</span> <span class="pre">&lt;user&gt;]</span> <span class="pre">[--mine]</span></code></dt><dd><p>Lists permissions in the system.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="built-in-permissions">
+<h2>Built-in permissions<a class="headerlink" href="#built-in-permissions" title="Permalink to this headline"></a></h2>
+<div class="section" id="administration">
+<h3>Administration<a class="headerlink" href="#administration" title="Permalink to this headline"></a></h3>
+<p>The following permissions govern access to key administrative actions.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">admin</span></code></dt><dd><p>This is a superuser access without any limitations, so grant with caution.
+Users with admin effectively have every other permission.
+We recommend granting the smallest effective permission.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">host</span></code></dt><dd><p>Restricted admin permission for handling host-related management tasks.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tag</span></code></dt><dd><p>Permission for adding/deleting/editing tags.  Allows use of the
+<code class="docutils literal notranslate"><span class="pre">tagBuildBypass</span></code> and <code class="docutils literal notranslate"><span class="pre">untagBuildBypass</span></code> API calls also. Note, that this
+name could be confusing as it is not related to tagging builds but to editing
+tags themselves. Tagging builds (and adding/removing packages from package
+lists for given tags) is handled by <code class="docutils literal notranslate"><span class="pre">tag</span></code> and <code class="docutils literal notranslate"><span class="pre">package_list</span></code> policies
+respectively.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><p>Permission for adding/deleting/editing targets</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="tasks">
+<h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline"></a></h3>
+<p>The following permissions grant access to trigger specialized tasks.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">appliance</span></code></dt><dd><p>appliance tasks (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">spin-appliance</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dist-repo</span></code></dt><dd><p>distRepo tasks (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">dist-repo</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">image</span></code></dt><dd><p>image tasks (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">image-build</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">livecd</span></code></dt><dd><p>livecd tasks (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">spin-livecd</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">livemedia</span></code></dt><dd><p>livemedia tasks (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">spin-livemedia</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">regen-repo</span></code></dt><dd><p>This permission grants access to regenerate repos (i.e. to trigger
+<code class="docutils literal notranslate"><span class="pre">newRepo</span></code> tasks).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">win-admin</span></code></dt><dd><p>The default <code class="docutils literal notranslate"><span class="pre">vm</span></code> policy requires this permission to trigger Windows builds.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="data-import">
+<h3>Data Import<a class="headerlink" href="#data-import" title="Permalink to this headline"></a></h3>
+<p>The following import permissions allow a user to directly import build
+artifacts of different types.
+We recommend caution when granting these.
+In general, it is better to use the
+<span class="xref std std-doc">content generator interface</span> rather than the direct
+import calls these govern.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">image-import</span></code></dt><dd><p>used for importing external maven artifacts
+(<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-archive</span> <span class="pre">--type</span> <span class="pre">maven</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">maven-import</span></code></dt><dd><p>used for importing external maven artifacts
+(<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-archive</span> <span class="pre">--type</span> <span class="pre">maven</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">win-import</span></code></dt><dd><p>used for importing external maven artifacts
+(<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-archive</span> <span class="pre">--type</span> <span class="pre">win</span></code>)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this headline"></a></h3>
+<p>These remaining permissions don’t fit into other categories.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">build</span></code></dt><dd><p>Defined in the database but currently unused</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">repo</span></code></dt><dd><p>This special permission is only intended to be granted to the user that
+<code class="docutils literal notranslate"><span class="pre">kojira</span></code> runs as.
+It grants access to regenerate and expire repos, as well as flag them as
+deleted or broken.
+Do not grant this permission to normal users.
+The <code class="docutils literal notranslate"><span class="pre">regen-repo</span></code> permission can be used to grant access for regeneration
+only.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>This permission grants access to add signatures to rpms and to write out
+signed copies (<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">import-sig</span></code> and <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">write-signed-rpm</span></code>).</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="exporting_repositories.html" class="btn btn-neutral float-left" title="Exporting repositories" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="setting_rpm_macros.html" class="btn btn-neutral float-right" title="Setting RPM Macros for Builds" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

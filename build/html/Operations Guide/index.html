@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operations Guide &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Server Installation" href="server_howto.html" />
+    <link rel="prev" title="Introduction" href="../introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Operations Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Operations Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Operations Guide/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="operations-guide">
+<h1>Operations Guide<a class="headerlink" href="#operations-guide" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server_howto.html">Server Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#setting-up-a-koji-build-system">Setting Up a Koji Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#knowledge-prerequisites">Knowledge Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#package-prerequisites">Package Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-server-koji-hub">On the server (koji-hub)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-database-server-koji-hub-or-separate-machine">On the database server (koji-hub or separate machine)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-web-server-koji-web">On the web server (koji-web)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-builder-koji-builder">On the builder (koji-builder)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-utility-server-kojira">On the utility server (kojira)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#on-the-windows-builder-koji-vm">On the windows builder (koji-vm)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#a-note-on-filesystem-space">A note on filesystem space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#koji-authentication-selection">Koji Authentication Selection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#setting-up-ssl-certificates-for-authentication">Setting up SSL Certificates for authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#certificate-generation">Certificate generation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#generate-ca">Generate CA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#generate-the-koji-component-certificates-and-the-admin-certificate">Generate the koji component certificates and the admin certificate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#generate-a-pkcs12-user-certificate-for-web-browser">Generate a PKCS12 user certificate (for web browser)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#copy-certificates-into-koji-for-kojiadmin">Copy certificates into ~/.koji for kojiadmin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#setting-up-kerberos-for-authentication">Setting up Kerberos for authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#dns">DNS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#principals-and-keytabs">Principals and Keytabs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#postgresql-server">PostgreSQL Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#configuration-files">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#install-postgresql">Install PostgreSQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#initialize-postgresql-db">Initialize PostgreSQL DB:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#setup-user-accounts">Setup User Accounts:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#setup-postgresql-and-populate-schema">Setup PostgreSQL and populate schema:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#authorize-koji-hub-to-postgresql">Authorize Koji-hub to PostgreSQL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#example-everything-on-localhost">Example: Everything on localhost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#example-separate-postgresql-and-apache-servers">Example: Separate PostgreSQL and Apache servers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#activating-changes">Activating changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#bootstrapping-the-initial-koji-admin-user-into-the-postgresql-database">Bootstrapping the initial koji admin user into the PostgreSQL database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#maintaining-database">Maintaining database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#set-user-password-authentication">Set User/Password Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#kerberos-authentication">Kerberos authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#ssl-certificate-authentication">SSL Certificate authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#give-yourself-admin-permissions">Give yourself admin permissions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#koji-hub">Koji Hub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id1">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#install-koji-hub">Install koji-hub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#required-configuration">Required Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-httpd-conf-httpd-conf">/etc/httpd/conf/httpd.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-httpd-conf-d-kojihub-conf">/etc/httpd/conf.d/kojihub.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-httpd-conf-d-ssl-conf">/etc/httpd/conf.d/ssl.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-koji-hub-hub-conf">/etc/koji-hub/hub.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#authentication-configuration">Authentication Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#id2">/etc/koji-hub/hub.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#koji-filesystem-skeleton">Koji filesystem skeleton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#selinux-configuration">SELinux Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#check-your-configuration">Check Your Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#koji-cli-the-standard-client">Koji cli - The standard client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#koji-web-interface-for-the-masses">Koji Web - Interface for the Masses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id3">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#install-koji-web">Install Koji-Web</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id4">Required Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-httpd-conf-d-kojiweb-conf">/etc/httpd/conf.d/kojiweb.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#id5">/etc/httpd/conf.d/ssl.conf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-kojiweb-web-conf">/etc/kojiweb/web.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#filesystem-configuration">Filesystem Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#web-interface-now-operational">Web interface now operational</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#koji-daemon-builder">Koji Daemon - Builder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id6">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#install-kojid">Install kojid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id7">Required Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#add-the-host-entry-for-the-koji-builder-to-the-database">Add the host entry for the koji builder to the database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-kojid-kojid-conf">/etc/kojid/kojid.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#authentication-configuration-ssl-certificates">Authentication Configuration (SSL certificates)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#id8">/etc/kojid/kojid.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#authentication-configuration-kerberos">Authentication Configuration (Kerberos)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#id9">/etc/kojid/kojid.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#source-control-configuration">Source Control Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#id10">/etc/kojid/kojid.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#add-the-host-to-the-createrepo-channel">Add the host to the createrepo channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#a-note-on-capacity">A note on capacity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#start-kojid">Start Kojid</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#kojira-dnf-repository-creation-and-maintenance">Kojira - Dnf repository creation and maintenance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id11">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#install-kojira">Install kojira</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#id12">Required Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#add-the-user-entry-for-the-kojira-user">Add the user entry for the kojira user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#additional-notes">Additional Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#auth-config">Authentication Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="server_howto.html#etc-kojira-kojira-conf">/etc/kojira/kojira.conf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="server_howto.html#start-kojira">Start Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html#bootstrapping-the-koji-build-environment">Bootstrapping the Koji build environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html#bootstrapping-a-new-koji-build-environment">Bootstrapping a new Koji build environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#bootstrapping-a-new-external-repo-koji-build-environment">Bootstrapping a new External Repo Koji build environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#regenerating-your-repo">Regenerating your repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#examples-of-urls-to-use-for-external-repositories">Examples of urls to use for external Repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="external_repo_server_bootstrap.html#fedora-35">Fedora 35</a></li>
+<li class="toctree-l3"><a class="reference internal" href="external_repo_server_bootstrap.html#centos-8-and-epel">CentOS 8 and EPEL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html#example-tags-and-targets">Example tags and targets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="external_repo_server_bootstrap.html#tags">Tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="external_repo_server_bootstrap.html#targets">Targets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html#general-problems">General problems</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#rpm-builds">RPM Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#mock">Mock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#notifications">Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#kerberos-authentication">Kerberos Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#ssl-authentication">SSL Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html#insecure-authentication-options">Insecure Authentication Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database_howto.html">Database Performance Howto</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html#partitioning">Partitioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html#using-ssl-with-postgresql">Using SSL with PostgreSQL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database_howto.html#enabling-ssl-on-the-postgresql-server">Enabling SSL on the PostgreSQL server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database_howto.html#configuring-the-koji-hub-to-use-ssl-to-postgres">Configuring the Koji hub to use SSL to Postgres</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="image_build.html">Building Images in Koji</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html#image-building">Image Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html#kickstart-first">Kickstart First</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#kickstart-reference">Kickstart Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#getting-your-kickstart-to-koji">Getting your Kickstart to Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html#building-livemedias">Building LiveMedias</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#getting-started">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#mechanics">Mechanics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#caveats-for-livemedias">Caveats for LiveMedias</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#include-macros-in-the-kickstart">%include macros in the kickstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#package-groups-in-the-kickstart-file">Package Groups in the Kickstart File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#only-include-rpms-built-in-koji">Only Include RPMs Built in Koji</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#no-signed-or-debuginfo-rpms-in-koji-s-build-tags">No Signed or Debuginfo RPMs in Koji’s Build Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#post-section-in-kickstart">%post Section in Kickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#build-system-preparation">Build System Preparation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html#building-disk-images">Building Disk Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id2">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#ova-features">OVA Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#kickstart-preparation">Kickstart Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#required-kickstart-arguments">Required Kickstart Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#recommended-kickstart-arguments">Recommended Kickstart Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id3">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#is-it-a-problem-with-guest-creation">Is it a problem with guest creation?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#did-the-installation-fail">Did the installation fail?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#did-the-guest-boot">Did the guest boot?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#other-guest-misconfigurations">Other Guest Misconfigurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id4">Build System Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#imagefactory-oz-preparation">ImageFactory/Oz Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_build.html#koji-preparation">Koji Preparation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html#building-appliances">Building Appliances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id5">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id6">Mechanics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#caveats-for-appliances">Caveats for Appliances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id7">Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image_build.html#id8">Build System Preparation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#runroot">Runroot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#builder">Builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#hub">Hub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#save-failed-tree">Save Failed Tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#todo">TODO</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#sidetag">Sidetag</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#id1">Hub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#id2">CLI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#proton-messaging">Proton messaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#image-builds-using-kiwi">Image builds using Kiwi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#appliance-children-createappliance">appliance (children: createAppliance)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildmaven">buildMaven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#buildnotification">buildNotification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainbuild-children-build-waitrepo">chainbuild (children: build, waitrepo)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#chainmaven-children-maven">chainmaven (children: maven)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#image-children-createimage">image (children: createImage)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#newrepo-children-createrepo">newRepo (children: createrepo)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html#build-children-rebuildsrpm-buildsrpmfromscm-buildarch-tagbuild">build (children: rebuildSRPM, buildSRPMFromSCM, buildArch, tagBuild)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Koji Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#kojira">Kojira</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#garbage-collector">Garbage Collector</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#prune-policy">Prune Policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#gc-options-config-commmand-line">GC Options (config/commmand-line)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#notification-related-options">Notification related options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#server-connection-options">Server connection options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#general-options">General options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#koji-shadow">Koji Shadow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#koji-db-sweeper">Koji DB Sweeper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volumes.html">Storage Volumes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#constructing-the-path">Constructing the path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#symlinks-on-default-volume">Symlinks on default volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#adding-a-new-volume">Adding a new volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#moving-builds-onto-other-volumes">Moving builds onto other volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#using-the-volume-in-policy-checks">Using the volume in policy checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#setting-a-volume-policy">Setting a volume policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#cli-commands">CLI commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html#api-calls">API calls</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CVEs/CVEs.html">Koji CVEs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2020-15856.html">CVE-2020-15856</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2020-15856.html#summary">Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2020-15856.html#bug-fix">Bug fix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2020-15856.html#links">Links</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2019-17109.html">CVE-2019-17109</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2019-17109.html#summary">Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2019-17109.html#bug-fix">Bug fix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2019-17109.html#links">Links</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2018-1002161.html">CVE-2018-1002161</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002161.html#summary">Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002161.html#bug-fix">Bug fix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002161.html#links">Links</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2018-1002150.html">CVE-2018-1002150</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002150.html#summary">Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002150.html#workaround">Workaround</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002150.html#bug-fix">Bug fix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2018-1002150.html#links">Links</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="CVEs/CVE-2017-1002153.html">CVE-2017-1002153</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2017-1002153.html#summary">Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2017-1002153.html#bug-fix">Bug fix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CVEs/CVE-2017-1002153.html#links">Links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrations/migrations.html">Migrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.27.html">Migrating to Koji 1.27</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.27.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.27.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.26.html">Migrating to Koji 1.26</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.26.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.26.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.25.html">Migrating to Koji 1.25</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.25.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.25.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.24.html">Migrating to Koji 1.24</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.24.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.24.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.23.html">Migrating to Koji 1.23</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.23.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.23.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.22.html">Migrating to Koji 1.22</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.22.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.22.html#dropped-python2-support-of-hub-and-web">Dropped python2 support of hub and web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.22.html#dropped-krbv-authentication-support">Dropped krbV authentication support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.22.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.21.html">Migrating to Koji 1.21</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.21.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.21.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.20.html">Migrating to Koji 1.20</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.20.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.20.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.19.html">Migrating to Koji 1.19</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.19.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.19.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.18.html">Migrating to Koji 1.18</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.18.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.18.html#more-granular-permissions">More granular permissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.18.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.17.html">Migrating to Koji 1.17</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.17.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.17.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.16.html">Migrating to Koji 1.16</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.16.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.16.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.15.html">Migrating to Koji 1.15</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.15.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.15.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.14.html">Migrating to Koji 1.14</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.14.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.14.html#dropped-mod-python-support">Dropped mod_python support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.14.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.13.html">Migrating to Koji 1.13</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.13.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.13.html#packaging-changes">Packaging changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.13.html#other-changes">Other changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.12.html">Migrating to Koji 1.12</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.12.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.12.html#command-line-changes">Command line changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.12.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.12.html#rpc-api-changes">RPC API Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.11.html">Migrating to Koji 1.11</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.11.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.11.html#command-line-changes">Command line changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.11.html#client-configuration-options">Client configuration options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.11.html#other-configuration-changes">Other Configuration changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.11.html#rpc-api-changes">RPC API Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.10.html">Migrating to Koji 1.10</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.10.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.10.html#command-line-changes">Command line changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.10.html#other-configuration-changes">Other Configuration changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.10.html#rpc-api-changes">RPC API Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.9.html">Migrating to Koji 1.9</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.9.html#db-updates">DB Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.9.html#command-line-changes">Command line changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.9.html#other-configuration-changes">Other Configuration changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.9.html#rpc-api-changes">RPC API Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.8.html">Migrating to Koji 1.8</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.8.html#db-schema-updates">DB Schema Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.8.html#migrating-your-old-images">Migrating your old images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.8.html#cleaning-up">Cleaning up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.8.html#command-line-changes">Command line changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.8.html#new-kojira-options">New kojira options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="migrations/migrating_to_1.7.html">Migrating to Koji 1.7</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.7.html#db-schema-updates">DB Schema Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.7.html#mod-python-and-mod-wsgi">mod_python and mod_wsgi</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="migrations/migrating_to_1.7.html#migrating-to-mod-wsgi">Migrating to mod_wsgi</a></li>
+<li class="toctree-l5"><a class="reference internal" href="migrations/migrating_to_1.7.html#staying-on-mod-python">Staying on mod_python</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.7.html#web-configuration">Web Configuration</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="migrations/migrating_to_1.7.html#custom-config-file-location">Custom Config File Location</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.7.html#changes-to-url-options">Changes to url options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrations/migrating_to_1.7.html#additional-notes">Additional Notes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="migrations/migrating_to_1.7.html#split-storage">Split Storage</a></li>
+<li class="toctree-l5"><a class="reference internal" href="migrations/migrating_to_1.7.html#web-themes">Web Themes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes/release_notes.html">Release Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.27.html">Koji 1.27.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#migrating-from-koji-1-26-1-26-1">Migrating from Koji 1.26/1.26.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#web">Web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#utilities">Utilities</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.27.html#kojira">Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.27.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.26.1.html">Koji 1.26.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#migrating-from-koji-1-26">Migrating from Koji 1.26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#client-changes">Client changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#builder-changes">Builder changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#kojivmd">Kojivmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.1.html#documentation-devtools-changes">Documentation/DevTools Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.26.html">Koji 1.26.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#migrating-from-koji-1-25-1-25-1">Migrating from Koji 1.25/1.25.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#vm">VM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#web">Web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#plugins">Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#utilities">Utilities</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.26.html#kojira">Kojira</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.26.html#sweep-db">Sweep DB</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.26.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.25.1.html">Koji 1.25.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#migrating-from-koji-1-25">Migrating from Koji 1.25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#library-changes">Library changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#web-changes">Web Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.1.html#documentation-devtools-changes">Documentation/DevTools Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.25.html">Koji 1.25.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#migrating-from-koji-1-24-1-24-1">Migrating from Koji 1.24/1.24.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#web">Web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#plugins">Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#utilities">Utilities</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.25.html#kojira">Kojira</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.25.html#garbage-collector">Garbage Collector</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.25.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.24.1.html">Koji 1.24.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#migrating-from-koji-1-24">Migrating from Koji 1.24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#library-changes">Library changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#cli-changes">CLI changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#web-changes">Web Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#utilities-changes">Utilities Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.1.html#documentation-devtools-changes">Documentation/DevTools Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.24.html">Koji 1.24.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#migrating-from-koji-1-23-1-23-1">Migrating from Koji 1.23/1.23.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#web">Web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#plugins">Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#utilities">Utilities</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.24.html#kojira">Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.24.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.23.1.html">Koji 1.23.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#migrating-from-koji-1-23">Migrating from Koji 1.23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#web-changes">Web Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#utilities-changes">Utilities Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.1.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.23.html">Koji 1.23.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#migrating-from-koji-1-22-1-22-1">Migrating from Koji 1.22/1.22.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#plugins">Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.23.html#kojira">Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.23.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.22.1.html">Koji 1.22.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#migrating-from-koji-1-22">Migrating from Koji 1.22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#library-changes">Library changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.1.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.22.html">Koji 1.22.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#migrating-from-koji-1-21-1-21-1">Migrating from Koji 1.21/1.21.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#win-builder-changes">Win Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#plugins">Plugins</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.22.html#sidetag">sidetag</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.22.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.22.html#garbage-collector">Garbage Collector</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.22.html#kojira">Kojira</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.22.html#koji-sidetag-cleanup">koji-sidetag-cleanup</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.22.html#koji-sweep-db">koji-sweep-db</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.21.1.html">Koji 1.21.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#migrating-from-koji-1-21">Migrating from Koji 1.21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#library-changes">Library changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#hub-changes">Hub Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#garbage-collector">Garbage Collector</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#kojira">Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.1.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.21.html">Koji 1.21.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#migrating-from-koji-1-20">Migrating from Koji 1.20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#plugins">Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.21.html#garbage-collector">Garbage Collector</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.21.html#kojira">Kojira</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.21.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.20.1.html">Koji 1.20.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#migrating-from-koji-1-20">Migrating from Koji 1.20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#garbage-collector">Garbage Collector</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#db-sweeper">DB Sweeper</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#kojikamid">Kojikamid</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.1.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.20.html">Koji 1.20.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#migrating-from-koji-1-19">Migrating from Koji 1.19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#api-changes">API Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#system-changes">System Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#utilities-changes">Utilities Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.html#garbage-collector">Garbage Collector</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.html#db-sweeper">DB Sweeper</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.20.html#kojikamid">Kojikamid</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.20.html#documentation-changes">Documentation Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.19.1.html">Koji 1.19.1 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.1.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.1.html#system-changes">System Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.19.html">Koji 1.19.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#migrating-from-koji-1-18">Migrating from Koji 1.18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.19.html#system-changes">System Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.18.1.html">Koji 1.18.1 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.1.html#issues-fixed-in-1-18-1">Issues fixed in 1.18.1</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.18.html">Koji 1.18.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#migrating-from-koji-1-17">Migrating from Koji 1.17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.18.html#system-changes">System Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.17.html">Koji 1.17.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#migrating-from-koji-1-16">Migrating from Koji 1.16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#library-changes">Library Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#web-ui-changes">Web UI Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.17.html#system-changes">System Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.16.2.html">Koji 1.16.2 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.2.html#issues-fixed-in-1-16-2">Issues fixed in 1.16.2</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.16.1.html">Koji 1.16.1 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.1.html#issues-fixed-in-1-16-1">Issues fixed in 1.16.1</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.16.html">Koji 1.16.0 Release notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.html#migrating-from-koji-1-15">Migrating from Koji 1.15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.html#security-fixes">Security Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.html#client-changes">Client Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.html#builder-changes">Builder Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.16.html#system-changes">System Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.15.1.html">Koji 1.15.1 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.1.html#issues-fixed-in-1-15-1">Issues fixed in 1.15.1</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.15.html">Koji 1.15 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#updates">Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#migrating-from-the-previous-release">Migrating from the previous release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#client-changes">Client Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#display-license-info">Display license Info</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#keytabs-for-gssapi-authentication">Keytabs for GSSAPI authentication</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#add-krb-canon-host-option">Add krb_canon_host option</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#watch-task-return-code">Watch-task return code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#new-runroot-options">New runroot options</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#new-watch-logs-options">New watch-logs options</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#web-ui-changes">Web UI changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#archive-component-display">Archive component display</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#id1">Display license Info</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#show-suid-bit">Show suid bit</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#builder-changes">Builder changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#alternate-tmpdir-for-mock-chroots">Alternate tmpdir for mock chroots</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#store-git-commit-hash">Store git commit hash</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.15.html#system-changes">System changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#volume-policy-support">Volume policy support</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#messagebus-plugin-changes">Messagebus plugin changes</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="release_notes/release_notes_1.15.html#deferred-sending">Deferred sending</a></li>
+<li class="toctree-l6"><a class="reference internal" href="release_notes/release_notes_1.15.html#test-mode">Test mode</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#protonmsg-plugin-changes">Protonmsg plugin changes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#no-notifications-for-disabled-users-or-hosts">No notifications for disabled users or hosts</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#replace-pycurl-with-requests">Replace pycurl with requests</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.15.html#drop-importbuildinplace-call">Drop importBuildInPlace call</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.14.html">Koji 1.14 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.14.html#migrating-from-koji-1-13">Migrating from Koji 1.13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.14.html#client-changes">Client Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#fail-fast-option-for-builds">Fail fast option for builds</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#custom-lorax-templates">Custom Lorax templates</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#allow-profiles-to-request-a-specific-python-version">Allow profiles to request a specific python version</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#new-list-builds-command">New list-builds command</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#new-block-group-command">New block-group command</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#exit-codes-for-some-commands">Exit codes for some commands</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#easier-for-scripts-to-use-activate-session">Easier for scripts to use activate_session</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.14.html#builder-changes">Builder changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#normalize-paths-for-scms">Normalize paths for scms</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#graceful-reload">Graceful reload</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#friendlier-runroot-configuration">Friendlier runroot configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.14.html#system-changes">System changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#deprecations">Deprecations</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#removed-calls">Removed calls</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#dropped-mod-python-support">Dropped mod_python support</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#large-integer-support">Large integer support</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#test-mode-for-protonmsg-plugin">Test mode for protonmsg plugin</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#handling-of-debugsource-rpms">Handling of debugsource rpms</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.14.html#added-kojifile-component-type-for-content-generators">Added kojifile component type for content generators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release_notes/release_notes_1.13.html">Koji 1.13 Release Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.13.html#migrating-from-koji-1-12">Migrating from Koji 1.12</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.13.html#client-changes">Client Changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#python-3-client-support">Python 3 client support</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#cli-plugins">CLI Plugins</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#list-channels-cli-command">list-channels CLI command</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#hostinfo-cli-command">hostinfo CLI command</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#enhancements-to-restart-hosts">Enhancements to restart-hosts</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#user-agent-header">User-Agent header</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#raise-error-on-non-existing-profile">raise error on non-existing profile</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.13.html#changes-to-the-web-interface">Changes to the Web interface</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#build-log-display">Build Log Display</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.13.html#builder-changes">Builder changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#configuring-mock-chroot-behavior">Configuring mock chroot behavior</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#pre-postscmcheckout-callbacks">pre/postSCMCheckout callbacks</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#extended-allowed-scms-format">Extended allowed_scms format</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes/release_notes_1.13.html#system-changes">System changes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#mod-auth-gssapi-required">mod_auth_gssapi required</a></li>
+<li class="toctree-l5"><a class="reference internal" href="release_notes/release_notes_1.13.html#longer-tag-names">Longer tag names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="server_howto.html" class="btn btn-neutral float-right" title="Server Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

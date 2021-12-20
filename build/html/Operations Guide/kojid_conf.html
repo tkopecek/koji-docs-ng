@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kojid.conf Options &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hub.conf options" href="hub_conf.html" />
+    <link rel="prev" title="Koji Kerberos/GSSAPI debugging" href="kerberos_gssapi_debug.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">kojid.conf Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building">Building</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rpm-builds">RPM Builds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mock">Mock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notifications">Notifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kerberos-authentication">Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssl-authentication">SSL Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insecure-authentication-options">Insecure Authentication Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Operations Guide</a> &raquo;</li>
+      <li>kojid.conf Options</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Operations Guide/kojid_conf.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="kojid-conf-options">
+<h1>kojid.conf Options<a class="headerlink" href="#kojid-conf-options" title="Permalink to this headline"></a></h1>
+<p>kojid.conf is standard .ini-like configuration file. Its main section is
+called <code class="docutils literal notranslate"><span class="pre">[kojid]</span></code> and contains following options. They are split by function
+to section but can occur anywhere in <code class="docutils literal notranslate"><span class="pre">[kojid]</span></code> section in config file.</p>
+<div class="section" id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-chroot_tmpdir-chroot_tmpdir">chroot_tmpdir=/chroot_tmpdir<a class="headerlink" href="#term-chroot_tmpdir-chroot_tmpdir" title="Permalink to this term"></a></dt><dd><p>The temporary directory in buildroot. It is advised to not use <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>
+as it is bound in mock and its content would change in random moments
+during the build process.</p>
+</dd>
+<dt id="term-keepalive-True">keepalive=True<a class="headerlink" href="#term-keepalive-True" title="Permalink to this term"></a></dt><dd><p>noop - it is still allowed in config file for backward compatibility.</p>
+</dd>
+<dt id="term-log_level-None">log_level=None<a class="headerlink" href="#term-log_level-None" title="Permalink to this term"></a></dt><dd><p>Set logging level to one of the standard level names in Python’s logging
+module. Valid values are: CRITICAL, ERROR, WARNING, INFO, and DEBUG.
+The default log level is WARNING.</p>
+</dd>
+<dt id="term-maxjobs-10">maxjobs=10<a class="headerlink" href="#term-maxjobs-10" title="Permalink to this term"></a></dt><dd><p>The maximum number of jobs that kojid will handle at a time. This
+serves as a backup to the capacity check and prevents a tremendous
+number of low weight jobs from piling up.</p>
+</dd>
+<dt id="term-buildroot_basic_cleanup_delay-120">buildroot_basic_cleanup_delay=120<a class="headerlink" href="#term-buildroot_basic_cleanup_delay-120" title="Permalink to this term"></a></dt><dd><p>Time after which successfully finished task’s buildroot is deleted (2
+minutes in seconds). Some logs and directories are left in place until
+buildroot_final_cleanup_delay</p>
+</dd>
+<dt id="term-buildroot_final_cleanup_delay-86400">buildroot_final_cleanup_delay=86400<a class="headerlink" href="#term-buildroot_final_cleanup_delay-86400" title="Permalink to this term"></a></dt><dd><p>Time after which buildroot (pre-cleand after
+<code class="docutils literal notranslate"><span class="pre">buildroot_basic_cleanup_delay</span></code>) is deleted completely. (1 day in
+seconds)</p>
+</dd>
+<dt id="term-max_retries-120">max_retries=120<a class="headerlink" href="#term-max_retries-120" title="Permalink to this term"></a></dt><dd><p>Set the maximum number of times that an individual hub call can be
+retried.</p>
+</dd>
+<dt id="term-minspace-8192">minspace=8192<a class="headerlink" href="#term-minspace-8192" title="Permalink to this term"></a></dt><dd><p>The minimum amount of free space (in MBs) required for each build root.
+If this amount of space is not available, no new jobs will be taken.</p>
+</dd>
+<dt id="term-no_ssl_verify-False">no_ssl_verify=False<a class="headerlink" href="#term-no_ssl_verify-False" title="Permalink to this term"></a></dt><dd><p>Turn off SSL verification for https calls. It is strongly advised to
+not turn off this verification.</p>
+</dd>
+<dt id="term-offline_retry-True">offline_retry=True<a class="headerlink" href="#term-offline_retry-True" title="Permalink to this term"></a></dt><dd><p>The hub returns a special error code when it is placed in offline
+mode or when the database is unavailable. This setting controls
+whether calls should be retried in these cases.</p>
+</dd>
+<dt id="term-offline_retry_interval-120">offline_retry_interval=120<a class="headerlink" href="#term-offline_retry_interval-120" title="Permalink to this term"></a></dt><dd><p>Controls the wait time for retrying hub calls when the hub reports
+as offline. Such calls are only retried if the offline_retry setting
+is set to True. The value is in seconds.</p>
+</dd>
+<dt id="term-pkgurl-None">pkgurl=None<a class="headerlink" href="#term-pkgurl-None" title="Permalink to this term"></a></dt><dd><p>Obsoleted, use <code class="docutils literal notranslate"><span class="pre">topurl</span></code> instead.</p>
+</dd>
+<dt id="term-plugin">plugin=’’<a class="headerlink" href="#term-plugin" title="Permalink to this term"></a></dt><dt id="term-plugins">plugins=’’<a class="headerlink" href="#term-plugins" title="Permalink to this term"></a></dt><dd><p>Space-separated list of builder plugins which should be enabled. By
+default no plugins are used. For list of available plugins check
+<a class="reference internal" href="plugins.html"><span class="doc">this page</span></a>. Both spellings plugin/plugins are allowed
+in config, but don’t mix them as order is not binding.</p>
+</dd>
+<dt id="term-pluginpath-usr-lib-koji-builder-plugins">pluginpath=/usr/lib/koji-builder-plugins<a class="headerlink" href="#term-pluginpath-usr-lib-koji-builder-plugins" title="Permalink to this term"></a></dt><dd><p>Colon-separated list of directories to check for builder plugins.
+They are not used by default, use <code class="docutils literal notranslate"><span class="pre">plugins</span></code> to enable them.</p>
+</dd>
+<dt id="term-retry_interval-60">retry_interval=60<a class="headerlink" href="#term-retry_interval-60" title="Permalink to this term"></a></dt><dd><p>If there is an unsuccessful call to hub, this is how many seconds to
+wait before trying new call.</p>
+</dd>
+<dt id="term-server-http-hub.example.com-kojihub">server=http://hub.example.com/kojihub<a class="headerlink" href="#term-server-http-hub.example.com-kojihub" title="Permalink to this term"></a></dt><dd><p>The URL for the koji xmlrpc server.</p>
+</dd>
+<dt id="term-sleeptime-15">sleeptime=15<a class="headerlink" href="#term-sleeptime-15" title="Permalink to this term"></a></dt><dd><p>The number of seconds to sleep between checking for new tasks.</p>
+</dd>
+<dt id="term-topurl-http-hub.example.com-kojifiles">topurl=http://hub.example.com/kojifiles<a class="headerlink" href="#term-topurl-http-hub.example.com-kojifiles" title="Permalink to this term"></a></dt><dd><p>The URL where the main Koji volume can be accessed. The builder uses
+this url for most file access.</p>
+</dd>
+<dt id="term-topdir-mnt-koji">topdir=/mnt/koji<a class="headerlink" href="#term-topdir-mnt-koji" title="Permalink to this term"></a></dt><dd><p>The location where the main Koji volume is mounted. This mount is
+mainly used during createrepo tasks, and should be read-only.</p>
+</dd>
+<dt id="term-use_fast_upload-True">use_fast_upload=True<a class="headerlink" href="#term-use_fast_upload-True" title="Permalink to this term"></a></dt><dd><p>Enables faster uploading (bypassing XMLRPC overhead). Changing it makes
+sense only in weird combination of very old hub and newer builders.</p>
+</dd>
+<dt id="term-workdir-tmp-koji">workdir=/tmp/koji<a class="headerlink" href="#term-workdir-tmp-koji" title="Permalink to this term"></a></dt><dd><p>The directory root for temporary storage on builder.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline"></a></h2>
+<dl class="glossary">
+<dt id="term-allowed_scms-scm.example.com-cvs-example-git.example.org-example-svn.example.org-users-no">allowed_scms=scm.example.com:/cvs/example git.example.org:/example svn.example.org:/users/*:no<a class="headerlink" href="#term-allowed_scms-scm.example.com-cvs-example-git.example.org-example-svn.example.org-users-no" title="Permalink to this term"></a></dt><dd><p>Controls which source control systems the builder will accept. It is a
+space-separated list of entries in one of the following forms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>hostname:path[:use_common[:source_cmd]]
+!hostname:path
+</pre></div>
+</div>
+<p>Incorrectly-formatted tuples will be ignored.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">use_common</span></code> is not present, kojid will attempt to checkout a <code class="docutils literal notranslate"><span class="pre">common/</span></code>
+directory from the repository.  If <code class="docutils literal notranslate"><span class="pre">use_common</span></code> is set to <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code>, or <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+it will not attempt to checkout a <code class="docutils literal notranslate"><span class="pre">common/</span></code> directory.</p>
+<p><code class="docutils literal notranslate"><span class="pre">source_cmd</span></code> is a shell command (args separated with commas instead of spaces)
+to run before building the srpm. It is generally used to retrieve source
+files from a remote location.  If no <code class="docutils literal notranslate"><span class="pre">source_cmd</span></code> is specified, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">sources</span></code>
+is run by default.</p>
+<p>The second form (<code class="docutils literal notranslate"><span class="pre">!hostname:path</span></code>) is used to explicitly block a host:path
+pattern. In particular, it provides the option to block specific subtrees of
+a host, but allow from it otherwise. This explicit block syntax was added in
+version 1.13.0.</p>
+</dd>
+<dt id="term-build_arch_can_fail-False">build_arch_can_fail=False<a class="headerlink" href="#term-build_arch_can_fail-False" title="Permalink to this term"></a></dt><dd><p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, failing subtask will not automatically cancel other siblings.</p>
+</dd>
+<dt id="term-createrepo_skip_stat-True">createrepo_skip_stat=True<a class="headerlink" href="#term-createrepo_skip_stat-True" title="Permalink to this term"></a></dt><dd><p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, append <code class="docutils literal notranslate"><span class="pre">--skip-stat</span></code> to all createrepo commands.</p>
+</dd>
+<dt id="term-createrepo_update-True">createrepo_update=True<a class="headerlink" href="#term-createrepo_update-True" title="Permalink to this term"></a></dt><dd><p>Recycle old repodata (if they exist) in createrepo.</p>
+</dd>
+<dt id="term-failed_buildroot_lifetime-14400">failed_buildroot_lifetime=14400<a class="headerlink" href="#term-failed_buildroot_lifetime-14400" title="Permalink to this term"></a></dt><dd><p>Failed tasks leave buildroot content on disk for debugging purposes.
+They are removed after 4 hours by default. This value is specified
+in seconds.</p>
+</dd>
+<dt id="term-literal_task_arches">literal_task_arches=’’<a class="headerlink" href="#term-literal_task_arches" title="Permalink to this term"></a></dt><dd><p>Space-separated list of globs (<code class="docutils literal notranslate"><span class="pre">fnmatch</span></code>) for architectures which
+will not be converted to canonical archs when choosing builder.</p>
+</dd>
+<dt id="term-log_timestamps-False">log_timestamps=False<a class="headerlink" href="#term-log_timestamps-False" title="Permalink to this term"></a></dt><dd><p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> additional logs with timestamps will get created and
+uploaded to hub. It could be useful for debugging purposes, but creates
+twice as many log files.</p>
+</dd>
+<dt id="term-maven_repo_ignore-.md5-.sha1-maven-metadata-.xml-_maven.repositories-resolver-status.properties-.lastUpdated">maven_repo_ignore=’*.md5 *.sha1 maven-metadata*.xml _maven.repositories resolver-status.properties *.lastUpdated’<a class="headerlink" href="#term-maven_repo_ignore-.md5-.sha1-maven-metadata-.xml-_maven.repositories-resolver-status.properties-.lastUpdated" title="Permalink to this term"></a></dt><dd><p>Space-separated globs of repo files which should be ignored when
+gathering maven result artifacts.</p>
+</dd>
+<dt id="term-oz_install_timeout-7200">oz_install_timeout=7200<a class="headerlink" href="#term-oz_install_timeout-7200" title="Permalink to this term"></a></dt><dd><p>Install timeout in seconds for image build. Default value is 0, which
+means using the number in <code class="docutils literal notranslate"><span class="pre">/etc/oz/oz.cfg</span></code>. Supported since oz-0.16.0.</p>
+</dd>
+<dt id="term-use_createrepo_c-False">use_createrepo_c=False<a class="headerlink" href="#term-use_createrepo_c-False" title="Permalink to this term"></a></dt><dd><p>Use <code class="docutils literal notranslate"><span class="pre">createrepo_c</span></code> rather than <code class="docutils literal notranslate"><span class="pre">createrepo</span></code> command. There is
+generally no reason to not use createrepo_c in modern depolyments. It
+is disabled by default only to be backward-compatible. This default
+would change in future.</p>
+</dd>
+<dt id="term-task_avail_delay-300">task_avail_delay=300<a class="headerlink" href="#term-task_avail_delay-300" title="Permalink to this term"></a></dt><dd><p>[Added in 1.17.0]</p>
+<p>This delay works around a deficiency in task scheduling. The default
+delay is 300 seconds. It is unlikely that admins will need to adjust
+this setting.</p>
+<p>Despite the name, this does not introduce any new delay compared to the
+old behavior. The setting controls how long a host will wait before
+taking a task in a given channel-arch “bin” when that host has an
+available capacity lower than the median for that bin. Previously, such
+hosts could wait forever.</p>
+</dd>
+<dt id="term-timeout-None">timeout=None<a class="headerlink" href="#term-timeout-None" title="Permalink to this term"></a></dt><dd><p>This value is used for waiting on all xmlrpc calls to hub. By default
+there is no timeout set.</p>
+</dd>
+<dt id="term-xz_options-z6T0">xz_options=-z6T0<a class="headerlink" href="#term-xz_options-z6T0" title="Permalink to this term"></a></dt><dd><p>Image builds with <code class="docutils literal notranslate"><span class="pre">raw-xz</span></code> type will use this setting when compressing
+the image. Default value is compromise between speed and resource usage.
+Only one option (not space-separated) is allowed here for now.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="rpm-builds">
+<h2>RPM Builds<a class="headerlink" href="#rpm-builds" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-distribution-Koji">distribution=Koji<a class="headerlink" href="#term-distribution-Koji" title="Permalink to this term"></a></dt><dd><p>The distribution to use in rpm headers. Value is propagated via macros
+to rpmbuild.</p>
+</dd>
+<dt id="term-packager-Koji">packager=Koji<a class="headerlink" href="#term-packager-Koji" title="Permalink to this term"></a></dt><dd><p>The packager to use in rpm headers. Value is propagated via macros to
+rpmbuild.</p>
+</dd>
+<dt id="term-support_rpm_source_layout-True">support_rpm_source_layout=True<a class="headerlink" href="#term-support_rpm_source_layout-True" title="Permalink to this term"></a></dt><dd><p>Originally, when building an SRPM from source control, Koji expected
+the contents to be flattened (e.g. the spec and sources files directly
+in the checkout directory). When this option is enabled (the default),
+Koji will also accept these contents in separate <code class="docutils literal notranslate"><span class="pre">SPECS</span></code> and
+<code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> directories.</p>
+</dd>
+<dt id="term-vendor-Koji">vendor=Koji<a class="headerlink" href="#term-vendor-Koji" title="Permalink to this term"></a></dt><dd><p>The vendor to use in rpm headers. Value is propagated via macros to
+rpmbuild.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="mock">
+<h2>Mock<a class="headerlink" href="#mock" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-mockdir-var-lib-mock">mockdir=/var/lib/mock<a class="headerlink" href="#term-mockdir-var-lib-mock" title="Permalink to this term"></a></dt><dd><p>The directory root for mock.</p>
+</dd>
+<dt id="term-mockhost-koji-linux-gnu">mockhost=koji-linux-gnu<a class="headerlink" href="#term-mockhost-koji-linux-gnu" title="Permalink to this term"></a></dt><dd><p>The _host string to use in mock.</p>
+</dd>
+<dt id="term-mockuser-kojibuilder">mockuser=kojibuilder<a class="headerlink" href="#term-mockuser-kojibuilder" title="Permalink to this term"></a></dt><dd><p>The user to run as when performing builds. Note, that user must exist on
+the build host and must have permission to use mock.</p>
+</dd>
+<dt id="term-rpmbuild_timeout-86400">rpmbuild_timeout=86400<a class="headerlink" href="#term-rpmbuild_timeout-86400" title="Permalink to this term"></a></dt><dd><p>Timeout for build duration (24 hours). Propagated to mock, not
+controlled by koji directly.</p>
+</dd>
+<dt id="term-yum_proxy-None">yum_proxy=None<a class="headerlink" href="#term-yum_proxy-None" title="Permalink to this term"></a></dt><dd><p>Address of proxy server which will be passed via mock to yum.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="notifications">
+<h2>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-admin_emails">admin_emails=’’<a class="headerlink" href="#term-admin_emails" title="Permalink to this term"></a></dt><dd><p>Space-separated list of addresses for sending logs.</p>
+</dd>
+<dt id="term-from_addr-Koji-Build-System-buildsys-example.com">from_addr=Koji Build System &lt;<a class="reference external" href="mailto:buildsys&#37;&#52;&#48;example&#46;com">buildsys<span>&#64;</span>example<span>&#46;</span>com</a>&gt;<a class="headerlink" href="#term-from_addr-Koji-Build-System-buildsys-example.com" title="Permalink to this term"></a></dt><dd><p>The From address used when sending email notifications.</p>
+</dd>
+<dt id="term-smtphost-example.com">smtphost=example.com<a class="headerlink" href="#term-smtphost-example.com" title="Permalink to this term"></a></dt><dd><p>The mail host to use for sending email notifications.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="kerberos-authentication">
+<h2>Kerberos Authentication<a class="headerlink" href="#kerberos-authentication" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-ccache-var-tmp-kojid.ccache">ccache=/var/tmp/kojid.ccache<a class="headerlink" href="#term-ccache-var-tmp-kojid.ccache" title="Permalink to this term"></a></dt><dd><p>Credentials cache used for krbV login.</p>
+</dd>
+<dt id="term-host_principal_format-compile-s-EXAMPLE.COM">host_principal_format=compile/%s&#64;EXAMPLE.COM<a class="headerlink" href="#term-host_principal_format-compile-s-EXAMPLE.COM" title="Permalink to this term"></a></dt><dd><p>The format of the principal used by the build hosts.
+The %s will be replaced by the FQDN of the host.</p>
+</dd>
+<dt id="term-keytab-etc-kojid-kojid.keytab">keytab=/etc/kojid/kojid.keytab<a class="headerlink" href="#term-keytab-etc-kojid-kojid.keytab" title="Permalink to this term"></a></dt><dd><p>Location of the keytab.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="ssl-authentication">
+<h2>SSL Authentication<a class="headerlink" href="#ssl-authentication" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-ca">ca=’’<a class="headerlink" href="#term-ca" title="Permalink to this term"></a></dt><dd><p>noop, obsoleted, will be removed soon.</p>
+</dd>
+<dt id="term-cert-etc-kojid-client.crt">cert=/etc/kojid/client.crt<a class="headerlink" href="#term-cert-etc-kojid-client.crt" title="Permalink to this term"></a></dt><dd><p>Client certificate.</p>
+</dd>
+<dt id="term-serverca-etc-kojid-serverca.crt">serverca=/etc/kojid/serverca.crt<a class="headerlink" href="#term-serverca-etc-kojid-serverca.crt" title="Permalink to this term"></a></dt><dd><p>This specifies the CA (or CA bundle) that the builder should use to
+verify the ssl connection to the hub. If the default value of
+<code class="docutils literal notranslate"><span class="pre">/etc/kojid/serverca.crt</span></code> exists, then that file is used.
+Otherwise the default system bundle is used.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="insecure-authentication-options">
+<h2>Insecure Authentication Options<a class="headerlink" href="#insecure-authentication-options" title="Permalink to this headline"></a></h2>
+<p>These options are only intended for simple development environments
+and should never be used in production.
+Please use Kerberos or SSL authentication instead.</p>
+<dl class="glossary simple">
+<dt id="term-user-None">user=None<a class="headerlink" href="#term-user-None" title="Permalink to this term"></a></dt><dd><p>Username for authentication</p>
+</dd>
+<dt id="term-password-None">password=None<a class="headerlink" href="#term-password-None" title="Permalink to this term"></a></dt><dd><p>Clear-text password (I’ve told you.)</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="kerberos_gssapi_debug.html" class="btn btn-neutral float-left" title="Koji Kerberos/GSSAPI debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hub_conf.html" class="btn btn-neutral float-right" title="hub.conf options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

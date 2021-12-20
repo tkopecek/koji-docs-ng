@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji Kerberos/GSSAPI debugging &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kojid.conf Options" href="kojid_conf.html" />
+    <link rel="prev" title="External Repository Server Bootstrap" href="external_repo_server_bootstrap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Koji Kerberos/GSSAPI debugging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-problems">General problems</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kojid_conf.html">kojid.conf Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Operations Guide</a> &raquo;</li>
+      <li>Koji Kerberos/GSSAPI debugging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Operations Guide/kerberos_gssapi_debug.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-kerberos-gssapi-debugging">
+<h1>Koji Kerberos/GSSAPI debugging<a class="headerlink" href="#koji-kerberos-gssapi-debugging" title="Permalink to this headline"></a></h1>
+<p>Run basic command Koji with debug option isn’t help to debug Kerberos/GSSAPI issue.
+In successful call you’ll see what authentication method was used and was is the
+koji server connected to:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kinit my_account@FEDORAPROJECT.ORG
+<span class="go">Password for my_account@FEDORAPROJECT.ORG:</span>
+
+<span class="gp">$ </span>koji hello
+<span class="go">successfully connected to hub</span>
+<span class="go">dobrý den, my_account!</span>
+
+<span class="go">You are using the hub at https://koji.fedoraproject.org/kojihub</span>
+<span class="go">Authenticated via GSSAPI</span>
+</pre></div>
+</div>
+<p>…or you can get some error:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>koji hello
+<span class="go">2021-04-23 09:45:22,732 [ERROR] koji: (gssapi auth failed: requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://koji.fedoraproject.org/kojihub/ssllogin)</span>
+<span class="go">Use following documentation to debug kerberos/gssapi auth issues. https://docs.pagure.org/koji/kerberos_gssapi_debug/</span>
+<span class="go">2021-04-23 09:45:22,734 [ERROR] koji: GSSAPIAuthError: unable to obtain a session (gssapi auth failed: requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://koji.fedoraproject.org/kojihub/ssllogin)</span>
+<span class="go">Use following documentation to debug kerberos/gssapi auth issues. https://docs.pagure.org/koji/kerberos_gssapi_debug/</span>
+</pre></div>
+</div>
+<p>In this case we see not one but two errors while trying to authenticate. Let’s
+see what more info we can get:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">KRB5_TRACE</span><span class="o">=</span>/dev/stdout python koji -d hello
+<span class="go">2021-04-23 09:47:58,730 [DEBUG] koji: Opening new requests session</span>
+<span class="go">2021-04-23 09:47:58,731 [DEBUG] koji: Opening new requests session</span>
+<span class="go">2021-04-23 09:47:59,446 [DEBUG] koji: Opening new requests session</span>
+<span class="go">2021-04-23 09:47:59,446 [ERROR] koji: (gssapi auth failed: requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://koji.fedoraproject.org/kojihub/ssllogin)</span>
+<span class="go">Use following documentation to debug kerberos/gssapi auth issues. https://docs.pagure.org/koji/kerberos_gssapi_debug/</span>
+<span class="go">Traceback (most recent call last):</span>
+<span class="go">  File &quot;/usr/bin/koji&quot;, line 335, in &lt;module&gt;</span>
+<span class="go">    rv = locals()[command].__call__(options, session, args)</span>
+<span class="go">  File &quot;/home/tkopecek/cvs/koji/cli/koji_cli/commands.py&quot;, line 7496, in handle_moshimoshi</span>
+<span class="go">    activate_session(session, options)</span>
+<span class="go">  File &quot;/home/tkopecek/cvs/koji/cli/koji_cli/lib.py&quot;, line 749, in activate_session</span>
+<span class="go">    session.gssapi_login(proxyuser=runas)</span>
+<span class="go">  File &quot;/home/tkopecek/cvs/koji/koji/__init__.py&quot;, line 2513, in gssapi_login</span>
+<span class="go">    raise GSSAPIAuthError(err)</span>
+<span class="go">koji.GSSAPIAuthError: unable to obtain a session (gssapi auth failed: requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://koji.fedoraproject.org/kojihub/ssllogin)</span>
+<span class="go">Use following documentation to debug kerberos/gssapi auth issues. https://docs.pagure.org/koji/kerberos_gssapi_debug/</span>
+</pre></div>
+</div>
+<p>We see no output from krbV library. It indicates that there was no significant
+interaction with the library. Main reason would be missing <code class="docutils literal notranslate"><span class="pre">kinit</span></code>. Fixing
+this problem is pretty easy. What about other problems?</p>
+<p>You can see wrong URL for the hub. Check if it is coming from system-wide config
+<code class="docutils literal notranslate"><span class="pre">/etc/koji.conf</span></code> or anything in <code class="docutils literal notranslate"><span class="pre">/etc/koji.conf.d</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.koji/config</span></code>.
+Maybe URL for your instance has changed or some old config was forgotten in
+place.</p>
+<p>Compare with successful output when krbV library does its work:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">KRB5_TRACE</span><span class="o">=</span>/dev/stdout koji -d hello
+<span class="go">2021-04-23 09:50:34,442 [DEBUG] koji: Opening new requests session</span>
+<span class="go">2021-04-23 09:50:34,442 [DEBUG] koji: Opening new requests session</span>
+<span class="go">[36315] 1619164236.523876: TXT record _kerberos.koji.fedoraproject.org. not found</span>
+<span class="go">[36315] 1619164236.523877: TXT record _kerberos.fedoraproject.org. found: FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164236.523878: ccselect module realm chose cache FILE:/tmp/krb5cc_1000 with client principal my_account@FEDORAPROJECT.ORG for server principal HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164236.523879: Getting credentials my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@ using ccache FILE:/tmp/krb5cc_1000</span>
+<span class="go">[36315] 1619164236.523880: Retrieving my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@ from FILE:/tmp/krb5cc_1000 with result: -1765328243/Matching credential not found (filename: /tmp/krb5cc_1000)</span>
+<span class="go">[36315] 1619164236.523881: Retrying my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG with result: -1765328243/Matching credential not found (filename: /tmp/krb5cc_1000)</span>
+<span class="go">[36315] 1619164236.523882: Server has referral realm; starting with HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164236.523883: Retrieving my_account@FEDORAPROJECT.ORG -&gt; krbtgt/FEDORAPROJECT.ORG@FEDORAPROJECT.ORG from FILE:/tmp/krb5cc_1000 with result: 0/Success</span>
+<span class="go">[36315] 1619164236.523884: Starting with TGT for client realm: my_account@FEDORAPROJECT.ORG -&gt; krbtgt/FEDORAPROJECT.ORG@FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164236.523885: Requesting tickets for HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG, referrals on</span>
+<span class="go">[36315] 1619164236.523886: Generated subkey for TGS request: aes256-cts/A108</span>
+<span class="go">[36315] 1619164236.523887: etypes requested in TGS request: aes256-cts, aes128-cts, aes256-sha2, aes128-sha2, rc4-hmac, camellia128-cts, camellia256-cts</span>
+<span class="go">[36315] 1619164236.523889: Encoding request body and padata into FAST request</span>
+<span class="go">[36315] 1619164236.523890: Sending request (977 bytes) to FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164236.523891: Sending DNS URI query for _kerberos.FEDORAPROJECT.ORG.</span>
+<span class="go">[36315] 1619164236.523892: URI answer: 10 1 &quot;krb5srv:m:kkdcp:https://id.fedoraproject.org/KdcProxy/&quot;</span>
+<span class="go">[36315] 1619164236.523893: Resolving hostname id.fedoraproject.org</span>
+<span class="go">[36315] 1619164236.523894: TLS certificate name matched &quot;id.fedoraproject.org&quot;</span>
+<span class="go">[36315] 1619164236.523895: Sending HTTPS request to https 152.19.134.142:443</span>
+<span class="go">[36315] 1619164237.522076: Received answer (929 bytes) from https 152.19.134.142:443</span>
+<span class="go">[36315] 1619164237.522077: Terminating TCP connection to https 152.19.134.142:443</span>
+<span class="go">[36315] 1619164237.522078: Response was from master KDC</span>
+<span class="go">[36315] 1619164237.522079: Decoding FAST response</span>
+<span class="go">[36315] 1619164237.522080: FAST reply key: aes256-cts/F6DC</span>
+<span class="go">[36315] 1619164237.522081: TGS reply is for my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG with session key aes256-cts/A3FF</span>
+<span class="go">[36315] 1619164237.522082: TGS request result: 0/Success</span>
+<span class="go">[36315] 1619164237.522083: Received creds for desired service HTTP/koji.fedoraproject.org@FEDORAPROJECT.ORG</span>
+<span class="go">[36315] 1619164237.522084: Storing my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@ in FILE:/tmp/krb5cc_1000</span>
+<span class="go">[36315] 1619164237.522086: Creating authenticator for my_account@FEDORAPROJECT.ORG -&gt; HTTP/koji.fedoraproject.org@, seqnum 742219461, subkey aes256-cts/1CC1, session key aes256-cts/A3FF</span>
+<span class="go">successfully connected to hub</span>
+<span class="go">dobrý den, my_account!</span>
+
+<span class="go">You are using the hub at https://koji.fedoraproject.org/kojihub</span>
+<span class="go">Authenticated via GSSAPI</span>
+</pre></div>
+</div>
+<p>Most problems could be tracked down by this command plus kinit/klist tools. for
+list of these consult next section.</p>
+<div class="section" id="general-problems">
+<h2>General problems<a class="headerlink" href="#general-problems" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><em>No KRB5_TRACE output</em> - You’ve not run <code class="docutils literal notranslate"><span class="pre">kinit</span></code> in first place, run <code class="docutils literal notranslate"><span class="pre">kinit</span></code>.</p></li>
+<li><p>If yes, maybe ticket is no longer valid - check <code class="docutils literal notranslate"><span class="pre">klist</span></code> + run <code class="docutils literal notranslate"><span class="pre">kinit</span></code></p></li>
+<li><p><em>Hub URL is wrong</em> - check configs, find out right URL for your environment,
+update related packages (e.g. <code class="docutils literal notranslate"><span class="pre">fedora-packager</span></code>)</p></li>
+<li><p><em>Wrong service ticket</em> E.g because your instance is hidden behing
+the proxy. In such case you’ll see in output wrong principal. Right one would
+look like <code class="docutils literal notranslate"><span class="pre">HTTP/koji.fedoraproject.org&#64;FEDORAPROJECT.ORG</span></code> in our example.
+(You can also check output of <code class="docutils literal notranslate"><span class="pre">klist</span></code> which will list it as “Ticket
+Server”).  Wrong one would be e.g.
+<code class="docutils literal notranslate"><span class="pre">HTTP/proxy10.fedoraproject.org&#64;FEDORAPROJECT.ORG</span></code>.  Kerberos authentication
+will fail in such case becase krbV library will not be able to get right
+ticket. It could be caused by wrong <code class="docutils literal notranslate"><span class="pre">/etc/krb5.conf</span></code> settings.  Typical
+error in this case would be that line <code class="docutils literal notranslate"><span class="pre">dns_canonicalize_hostname</span> <span class="pre">=</span> <span class="pre">true</span></code> is
+missing. <code class="docutils literal notranslate"><span class="pre">krbV</span></code> will try to fetch service ticket for PTR instead of A DNS
+record effectively asking for wrong service.</p></li>
+<li><p><em>You can’t get service ticket at all</em>. You’ve not set up the <code class="docutils literal notranslate"><span class="pre">/etc/krb5.conf</span></code>
+for relevant KDC/REALM. It shouldn’t happen if you were able to <code class="docutils literal notranslate"><span class="pre">kinit</span></code> with
+the correct credentials (It means that you’ve already set up something).
+Anyway, you’ll see following in the debug output</p></li>
+<li><p><em>Your user account was disabled</em> This error is not krbV specific. But you can
+hit it. In such case you will see simple message <code class="docutils literal notranslate"><span class="pre">koji:</span> <span class="pre">AuthError:</span> <span class="pre">unable</span> <span class="pre">to</span>
+<span class="pre">obtain</span> <span class="pre">a</span> <span class="pre">session</span></code>. From security reasons we don’t display it differently from
+non-existent account. If you’ve suspicion that it could be the reason you need
+to check with your koji instance admin.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="external_repo_server_bootstrap.html" class="btn btn-neutral float-left" title="External Repository Server Bootstrap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="kojid_conf.html" class="btn btn-neutral float-right" title="kojid.conf Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit tests in Fedora’s Jenkins &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Koji Content Generators" href="content_generators.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Unit tests in Fedora’s Jenkins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content_generators.html">Koji Content Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_generator_metadata.html">Koji Content Generator Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiles.html">Koji Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_a_plugin.html">Writing Koji plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_koji_code.html">Writing Koji Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+      <li>Unit tests in Fedora’s Jenkins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developer Guide/configuring_jenkins.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="unit-tests-in-fedora-s-jenkins">
+<h1>Unit tests in Fedora’s Jenkins<a class="headerlink" href="#unit-tests-in-fedora-s-jenkins" title="Permalink to this headline"></a></h1>
+<p>We’re using CentOS’s <a class="reference external" href="https://jenkins-fedora-infra.apps.ocp.ci.centos.org/job/koji">Jenkins</a> infrastructure
+for automatically running unit tests for new commits in master branch.</p>
+<p>Pagure triggers tests for any new pull request. It can be also triggered
+manually by pressing “Rerun CI” button in PR.</p>
+<p>Currently we run tests on Fedora 33/34/rawhide and CentOS 7/8 platforms.</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<p>If you need any change in jenkins setup, please file a pagure issue. As part
+of solving issue, this documentation must be updated to reflect current state
+in jenkins.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>Public access is for everyone with no need to log in to jenkins.</p></li>
+<li><dl class="simple">
+<dt>Admin access is via same interface and currently tkopecek have</dt><dd><p>access there. If you need access for yourself (you’re probably part of
+brew/koji team) create ticket in <a class="reference external" href="https://pagure.io/centos-infra">https://pagure.io/centos-infra</a> requesting this.
+Prerequisite for this is CentOS account.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Setup - Following items are set-up via</dt><dd><p><a class="reference external" href="https://jenkins-fedora-infra.apps.ocp.ci.centos.org/job/koji/configure">https://jenkins-fedora-infra.apps.ocp.ci.centos.org/job/koji/configure</a></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><em>Job notifications</em> - when jenkins job finishes, it will send some info to</dt><dd><p>pagure. Such call will add a comment to PR. For this REST hook needs to
+be configured:</p>
+<ul class="simple">
+<li><p>Format: JSON</p></li>
+<li><p>Protocol: HTTP</p></li>
+<li><p>Event: Job Finalized</p></li>
+<li><p>URL: &lt;url taken from koji pagure settings which will look similar to <a class="reference external" href="https://pagure.io/api/0/ci/jenkins//koji">https://pagure.io/api/0/ci/jenkins//koji</a>/&lt;hash&gt;/build-finished</p></li>
+<li><p>Timeout: 30000</p></li>
+<li><p>Log: 0</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><em>This build is parametrized</em> (checkbox set to true) - it allows jenkins</dt><dd><p>to use other branches than master (especially for PRs). Three parameters
+are defined there:</p>
+<ul class="simple">
+<li><p>REPO - The repository for the pull request.</p></li>
+<li><p>BRANCH - The branch for the pull request.</p></li>
+<li><p>BRANCH_TO - A branch into which the pull request should be merged.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><em>Discard Old Builds</em></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Strategy: Rotation</p></li>
+<li><p>Days to keep build: 20</p></li>
+<li><p>Max # of builds to keep: empty</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt><em>Disable build</em> - it could be used if a lot of failing build happens with</dt><dd><p>no vision of early recovery - temporarily suspend jenkins jobs</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><em>Restrict where this project can be run</em> - F33 is the only used agent now.</dt><dd><p>Basically we need an agent which supports podman as all the tests are run in
+docker images managed by podman.</p>
+</dd>
+</dl>
+</li>
+<li><p><em>Source Code Management</em></p>
+<ul class="simple">
+<li><p>Git</p></li>
+<li><p>Repositories</p>
+<ul>
+<li><p>Repository URL: <a class="reference external" href="https://pagure.io/koji.git">https://pagure.io/koji.git</a></p></li>
+<li><p>Credentials: none</p></li>
+<li><p>Branches to build: origin/master</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Build triggers</em></p>
+<ul class="simple">
+<li><p><em>Trigger builds remotely</em>: true</p>
+<ul>
+<li><p>Authentication tokens: &lt;token from koji pagure settings&gt;</p></li>
+</ul>
+</li>
+<li><p><em>Poll SCM</em>:</p>
+<ul>
+<li><p>Schedule: H/5 * * * *</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Build</em> - most important part - script which runs tests itself. Basically we
+run tests in containers, last one also run flake8 and is used for coverage
+report.</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># merge PR into main repository</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$REPO</span><span class="s2">&quot;</span> -a -n <span class="s2">&quot;</span><span class="nv">$BRANCH</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    git config --global user.email <span class="s2">&quot;test@example.com&quot;</span>
+    git config --global user.name <span class="s2">&quot;Tester&quot;</span>
+    git remote rm proposed <span class="o">||</span> <span class="nb">true</span>
+    git remote add proposed <span class="s2">&quot;</span><span class="nv">$REPO</span><span class="s2">&quot;</span>
+    git fetch proposed
+    git checkout <span class="s2">&quot;origin/</span><span class="si">${</span><span class="nv">BRANCH_TO</span><span class="k">:-</span><span class="nv">master</span><span class="si">}</span><span class="s2">&quot;</span>
+    git merge --no-ff <span class="s2">&quot;proposed/</span><span class="nv">$BRANCH</span><span class="s2">&quot;</span> -m <span class="s2">&quot;Merge PR&quot;</span>
+<span class="k">fi</span>
+
+<span class="c1"># centos:7</span>
+rm -rf .tox
+podman run --rm --pull<span class="o">=</span>always -v <span class="nv">$PWD</span>:/koji --security-opt <span class="nv">label</span><span class="o">=</span>disable --name koji-centos-test-7 quay.io/tkopecek/koji-centos-test:7 bash -c <span class="s2">&quot;cd /koji &amp;&amp; tox -e py2&quot;</span>
+podman rmi quay.io/tkopecek/koji-centos-test:7
+
+<span class="c1"># centos:8</span>
+rm -rf .tox
+podman run --rm --pull<span class="o">=</span>always -v <span class="nv">$PWD</span>:/koji --security-opt <span class="nv">label</span><span class="o">=</span>disable --name koji-centos-test-8 quay.io/tkopecek/koji-centos-test:8 bash -c <span class="s2">&quot;cd /koji &amp;&amp; tox -e py3&quot;</span>
+podman rmi quay.io/tkopecek/koji-centos-test:8
+
+<span class="c1"># fedora:32</span>
+rm -rf .tox
+podman run --rm --pull<span class="o">=</span>always -v <span class="nv">$PWD</span>:/koji --security-opt <span class="nv">label</span><span class="o">=</span>disable --name koji-fedora-test-32 quay.io/tkopecek/koji-fedora-test:32 bash -c <span class="s2">&quot;cd /koji &amp;&amp; tox -e py3&quot;</span>
+podman rmi quay.io/tkopecek/koji-fedora-test:32
+
+<span class="c1"># fedora:33</span>
+rm -rf .tox
+podman run --rm --pull<span class="o">=</span>always -v <span class="nv">$PWD</span>:/koji --security-opt <span class="nv">label</span><span class="o">=</span>disable --name koji-fedora-test-33 quay.io/tkopecek/koji-fedora-test:33 bash -c <span class="s2">&quot;cd /koji &amp;&amp; tox -e py3&quot;</span>
+podman rmi quay.io/tkopecek/koji-fedora-test:33
+
+<span class="c1"># fedora:rawhide</span>
+rm -rf .tox
+podman run --rm --pull<span class="o">=</span>always -v <span class="nv">$PWD</span>:/koji --security-opt <span class="nv">label</span><span class="o">=</span>disable --name koji-fedora-test-rawhide quay.io/tkopecek/koji-fedora-test:rawhide bash -c <span class="s2">&quot;cd /koji &amp;&amp; tox -e flake8,py3&quot;</span>
+podman rmi quay.io/tkopecek/koji-fedora-test:rawhide
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><em>Post-build actions</em></p>
+<ul>
+<li><p><em>Publish Cobertura Coverage report</em>: coverage.xml - this will create coverage report accessible via jenkins web ui</p></li>
+<li><p><em>Report Violations</em> - <em>pep8</em>: flake8_report.txt</p></li>
+<li><p><em>E-mail notification</em>:</p>
+<ul>
+<li><p>Recipients: <a class="reference external" href="mailto:tkopecek&#37;&#52;&#48;redhat&#46;com">tkopecek<span>&#64;</span>redhat<span>&#46;</span>com</a> <a class="reference external" href="mailto:exd-sp-rhel-build-alerts&#37;&#52;&#48;redhat&#46;com">exd-sp-rhel-build-alerts<span>&#64;</span>redhat<span>&#46;</span>com</a></p></li>
+<li><p>Send separate e-mails to individuals who broke the build</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Send messages to fedmsg</em></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Developer Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_generators.html" class="btn btn-neutral float-right" title="Koji Content Generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

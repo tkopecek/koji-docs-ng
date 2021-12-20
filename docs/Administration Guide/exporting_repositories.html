@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exporting repositories &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Permission system" href="permissions.html" />
+    <link rel="prev" title="Defining Hub Policies" href="defining_hub_policies.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Operations%20Guide/index.html">Operations Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="access_controls.html">Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining_hub_policies.html">Defining Hub Policies</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exporting repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#koji-s-internal-repositories">Koji’s internal repositories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dist-repos">Dist-repos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#beyond-koji">Beyond Koji</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="permissions.html">Permission system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_rpm_macros.html">Setting RPM Macros for Builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">RPM Signing with Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tag_inheritance.html">How tag inheritance works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="win_spec_example.html">Example Windows Spec File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winbuild.html">Building for Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Administration Guide</a> &raquo;</li>
+      <li>Exporting repositories</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Administration Guide/exporting_repositories.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="exporting-repositories">
+<h1>Exporting repositories<a class="headerlink" href="#exporting-repositories" title="Permalink to this headline"></a></h1>
+<p>Koji provides some <em>limited</em> features for exporting repositories of RPMs.
+Please note that Koji is a build system, not a repository manager, and these
+features are secondary.
+If you need more robust repository generation than Koji provides, then you may
+want to look into using <a class="reference external" href="https://pagure.io/pungi/">pungi</a>.</p>
+<div class="section" id="koji-s-internal-repositories">
+<h2>Koji’s internal repositories<a class="headerlink" href="#koji-s-internal-repositories" title="Permalink to this headline"></a></h2>
+<p>Koji uses yum repositories as part of its build process for RPMs.
+These repositories are used by the builders to generate buildroots.
+Their generation is focused on that purpose, and they are not really suitable
+for export.
+However, they can be useful for simple cases.</p>
+<p>Koji’s internal repositories can be accessed at
+<code class="docutils literal notranslate"><span class="pre">&lt;topdir&gt;/repos/&lt;tag_name&gt;/&lt;repo_id&gt;</span></code>
+For a given tag name, there will be multiple repo ids over time as tag content
+changes.
+The current repo for a given tag can be determined with a call to <code class="docutils literal notranslate"><span class="pre">getRepo</span></code>.</p>
+<p>For convenience, Koji also maintains a “latest” symlink for each tag:
+<code class="docutils literal notranslate"><span class="pre">&lt;topdir&gt;/repos/&lt;tag_name&gt;/latest</span></code>.
+Please note that this symlink changes over time, which could break a yum transaction.</p>
+</div>
+<div class="section" id="dist-repos">
+<h2>Dist-repos<a class="headerlink" href="#dist-repos" title="Permalink to this headline"></a></h2>
+<p>The simplest way to create a distribution-ready repo is to use the <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">dist-repo</span></code>
+command.
+It allows users with access to generate a more robust yum repository from the
+contents of a given tag.
+These repos differ from the internal ones in several key ways:</p>
+<ul class="simple">
+<li><p>generation is user-controlled via the <code class="docutils literal notranslate"><span class="pre">dist-repo</span></code> command</p></li>
+<li><p>supports using signed rpms</p></li>
+<li><p>supports multilib</p></li>
+<li><p>allows for more customized comps data</p></li>
+<li><p>supports deltarpm generation</p></li>
+<li><p>can split debuginfo into separate repos</p></li>
+<li><p>can generate zchunk files</p></li>
+</ul>
+<p><strong>Access control</strong></p>
+<p>In order to use the <code class="docutils literal notranslate"><span class="pre">dist-repo</span></code> command, a user must satisfy one of the
+following:</p>
+<ul class="simple">
+<li><p>have the <code class="docutils literal notranslate"><span class="pre">dist-repo</span></code> permission</p></li>
+<li><p>have the <code class="docutils literal notranslate"><span class="pre">admin</span></code> permission</p></li>
+<li><p>satisfy the requirements of the <code class="docutils literal notranslate"><span class="pre">dist_repo</span></code> policy</p></li>
+</ul>
+<p>For more information about hub policies, see <a class="reference internal" href="defining_hub_policies.html"><span class="doc">Defining Hub Policies</span></a>.</p>
+<p><strong>Usage</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dist-repo</span></code> command takes a tag name and one or more key ids for signing keys.</p>
+<blockquote>
+<div><p>koji dist-repo [options] &lt;tag&gt; &lt;key_id&gt; [&lt;key_id&gt; …]</p>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">tag</span></code> argument must be a valid tag name.
+The resulting repository will be based on the contents of that tag.
+Any valid tag will work, whether or not it has an associated target.</p>
+<p>Koji will attempt to find a signed copy for each rpm matching one
+of the given <code class="docutils literal notranslate"><span class="pre">key_id</span></code> arguments (searching in the order given).
+Normally, Koji will error if there is no matching signed copy for any of the
+rpms.
+This behavior can be modified with the <code class="docutils literal notranslate"><span class="pre">--allow-missing-signatures</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--skip-missing-signatures</span></code> options.
+The <code class="docutils literal notranslate"><span class="pre">key_id</span></code> argument may be omitted entirely if the
+<code class="docutils literal notranslate"><span class="pre">--allow-missing-signatures</span></code> option is specified.</p>
+<p>Koji will export the repository to <code class="docutils literal notranslate"><span class="pre">&lt;topdir&gt;/repos-dist/&lt;tag_name&gt;/&lt;repo_id&gt;</span></code>
+The current dist repo for a given tag can be determined with a call to
+<code class="docutils literal notranslate"><span class="pre">getRepo(dist=True)</span></code>. Similar to internal build repos, Koji also maintains a
+“latest” symlink for each tag: <code class="docutils literal notranslate"><span class="pre">&lt;topdir&gt;/repos-dist/&lt;tag_name&gt;/latest</span></code>.</p>
+<p>Various features of repo generation (e.g. multilib support, delta rpms, or
+zchunk files) are controlled via command options.
+For a full list of options, see <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">dist-repo</span> <span class="pre">--help</span></code>.</p>
+<p><strong>Koji Hub plugin</strong></p>
+<p>Fedora release engineering uses a hub plugin <a class="reference external" href="https://pagure.io/releng/tag2distrepo">tag2distrepo</a> to automatically export dist-repos
+for certain tags.</p>
+</div>
+<div class="section" id="beyond-koji">
+<h2>Beyond Koji<a class="headerlink" href="#beyond-koji" title="Permalink to this headline"></a></h2>
+<p>If you’re aiming to have more control about repositories, varieties of
+distribution flavours, etc. use <a class="reference external" href="https://pagure.io/pungi/">pungi</a> which can
+create whole composes and which uses Koji for some of the subtasks.
+Pungi + koji is what Fedora currently uses for composes.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="defining_hub_policies.html" class="btn btn-neutral float-left" title="Defining Hub Policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="permissions.html" class="btn btn-neutral float-right" title="Permission system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -185,6 +185,5 @@ pseudoxml:
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
 
 gh-pages: html
-	cd build/html
-	tar -cvf ../../docs/artifact.tar *
+	cp -a build/html/. ../docs
 

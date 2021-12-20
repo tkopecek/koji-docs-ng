@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koji 1.14 Release Notes &mdash; Koji alpha documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Koji 1.13 Release Notes" href="release_notes_1.13.html" />
+    <link rel="prev" title="Koji 1.15 Release Notes" href="release_notes_1.15.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Koji
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Operations Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../server_howto.html">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_bootstrap.html">Koji Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external_repo_server_bootstrap.html">External Repository Server Bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerberos_gssapi_debug.html">Koji Kerberos/GSSAPI debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kojid_conf.html">kojid.conf Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hub_conf.html">hub.conf options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_howto.html">Database Performance Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image_build.html">Building Images in Koji</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_platforms.html">Supported Platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tasks.html">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Koji Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../volumes.html">Storage Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers.html">Running Koji in Containers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../CVEs/CVEs.html">Koji CVEs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migrations/migrations.html">Migrations</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.27.html">Koji 1.27.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.1.html">Koji 1.26.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.26.html">Koji 1.26.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.1.html">Koji 1.25.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.25.html">Koji 1.25.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.24.1.html">Koji 1.24.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.24.html">Koji 1.24.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.23.1.html">Koji 1.23.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.23.html">Koji 1.23.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.1.html">Koji 1.22.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.22.html">Koji 1.22.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.1.html">Koji 1.21.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.21.html">Koji 1.21.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.1.html">Koji 1.20.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.20.html">Koji 1.20.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.1.html">Koji 1.19.1 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.19.html">Koji 1.19.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.1.html">Koji 1.18.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.18.html">Koji 1.18.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.17.html">Koji 1.17.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.2.html">Koji 1.16.2 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.1.html">Koji 1.16.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.16.html">Koji 1.16.0 Release notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.1.html">Koji 1.15.1 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.15.html">Koji 1.15 Release Notes</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Koji 1.14 Release Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release_notes_1.13.html">Koji 1.13 Release Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Administration%20Guide/index.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../User%20Guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer%20Guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../HOWTO.html">Koji HOWTO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc.html">Koji Miscellaneous Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runs_here.html">Runs Here</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Koji</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Operations Guide</a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+          <li><a href="release_notes.html">Release Notes</a> &raquo;</li>
+      <li>Koji 1.14 Release Notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Operations Guide/release_notes/release_notes_1.14.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="koji-1-14-release-notes">
+<h1>Koji 1.14 Release Notes<a class="headerlink" href="#koji-1-14-release-notes" title="Permalink to this headline"></a></h1>
+<div class="section" id="migrating-from-koji-1-13">
+<h2>Migrating from Koji 1.13<a class="headerlink" href="#migrating-from-koji-1-13" title="Permalink to this headline"></a></h2>
+<p>For details on migrating see <a class="reference internal" href="../migrations/migrating_to_1.14.html"><span class="doc">Migrating to Koji 1.14</span></a></p>
+</div>
+<div class="section" id="client-changes">
+<h2>Client Changes<a class="headerlink" href="#client-changes" title="Permalink to this headline"></a></h2>
+<div class="section" id="fail-fast-option-for-builds">
+<h3>Fail fast option for builds<a class="headerlink" href="#fail-fast-option-for-builds" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/432">https://pagure.io/koji/pull-request/432</a></div>
+</div>
+<p>When builders are configured with <code class="docutils literal notranslate"><span class="pre">build_arch_can_fail</span> <span class="pre">=</span> <span class="pre">True</span></code> then the
+failure of a single buildArch task does not immediately cause the build
+to fail. Instead, the remaining buildArch tasks are allowed to complete,
+at which point the build will still fail.</p>
+<p>Sometimes developers would rather a build fail immediately, so we have added
+the <code class="docutils literal notranslate"><span class="pre">--fail-fast</span></code> option to the build command, which overrides this setting.
+The option only has an effect if the builders are configured to fail slow.</p>
+</div>
+<div class="section" id="custom-lorax-templates">
+<h3>Custom Lorax templates<a class="headerlink" href="#custom-lorax-templates" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/419">https://pagure.io/koji/pull-request/419</a></div>
+</div>
+<p>Koji now supports custom Lorax templates for the <code class="docutils literal notranslate"><span class="pre">spin-livemedia</span></code> command.
+The command accepts two new options:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--lorax_url=URL       The URL to the SCM containing any custom lorax
+                      templates that are to be used to override the default
+                      templates.
+--lorax_dir=DIR       The relative path to the lorax templates directory
+                      within the checkout of &quot;lorax_url&quot;.
+</pre></div>
+</div>
+<p>The Lorax templates must come from an SCM, and the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> rules
+apply.</p>
+<p>When these options are used, the templates will be fetched and an appropriate
+<code class="docutils literal notranslate"><span class="pre">--lorax-templates</span></code> option will be passed to the underlying livemedia-creator
+command.</p>
+</div>
+<div class="section" id="allow-profiles-to-request-a-specific-python-version">
+<h3>Allow profiles to request a specific python version<a class="headerlink" href="#allow-profiles-to-request-a-specific-python-version" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/566">https://pagure.io/koji/pull-request/566</a></div>
+</div>
+<p>On platforms with python3 available, the Koji client is built to execute
+with the python3 binary. However, there are a few client features that do not
+work under python3, notably old-style (non-gssapi) Kerberos authentication.</p>
+<p>If this issue is affecting you, you can set <code class="docutils literal notranslate"><span class="pre">pyver=2</span></code> in your Koji
+configuration. This can be done per profile. When Koji sees this setting
+at startup, it will re-execute itself under the requested python binary.</p>
+</div>
+<div class="section" id="new-list-builds-command">
+<h3>New list-builds command<a class="headerlink" href="#new-list-builds-command" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/526">https://pagure.io/koji/pull-request/526</a></div>
+</div>
+<p>The command line now has a <code class="docutils literal notranslate"><span class="pre">list-builds</span></code> command that has similar
+functionality to the builds tab of the web interface.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Usage: koji list-builds [options]
+(Specify the --help global option for a list of other help options)
+
+Options:
+  -h, --help            show this help message and exit
+  --package=PACKAGE     List builds for this package
+  --buildid=BUILDID     List specific build from ID or nvr
+  --before=BEFORE       List builds built before this time
+  --after=AFTER         List builds built after this time
+  --state=STATE         List builds in this state
+  --type=TYPE           List builds of this type.
+  --prefix=PREFIX       Only list packages starting with this prefix
+  --owner=OWNER         List builds built by this owner
+  --volume=VOLUME       List builds by volume ID
+  -k FIELD, --sort-key=FIELD
+                        Sort the list by the named field
+  -r, --reverse         Print the list in reverse order
+  --quiet               Do not print the header information
+</pre></div>
+</div>
+</div>
+<div class="section" id="new-block-group-command">
+<h3>New block-group command<a class="headerlink" href="#new-block-group-command" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/509">https://pagure.io/koji/pull-request/509</a></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">block-group</span></code> command allows admins to block package group entries
+without having to resort to the <code class="docutils literal notranslate"><span class="pre">call</span></code> command.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Usage: koji block-group &lt;tag&gt; &lt;group&gt;
+(Specify the --help global option for a list of other help options)
+
+Options:
+  -h, --help  show this help message and exit
+</pre></div>
+</div>
+</div>
+<div class="section" id="exit-codes-for-some-commands">
+<h3>Exit codes for some commands<a class="headerlink" href="#exit-codes-for-some-commands" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/558">https://pagure.io/koji/pull-request/558</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/559">https://pagure.io/koji/pull-request/559</a></div>
+</div>
+<p>Several more commands will now return a non-zero exit code
+when an error occurs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the various image building commands</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">save-failed-tree</span></code> command (provided by a plugin)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="easier-for-scripts-to-use-activate-session">
+<h3>Easier for scripts to use activate_session<a class="headerlink" href="#easier-for-scripts-to-use-activate-session" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/493">https://pagure.io/koji/pull-request/493</a></div>
+</div>
+<p>In Koji 1.13.0, it became possible for scripts to <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">koji_cli.lib</span></code> and
+gain access to the <code class="docutils literal notranslate"><span class="pre">activate_session</span></code> function that the command line tool
+uses to authenticate.</p>
+<p>In this release, this function has been made easier for scripts to use:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the options argument can now be a dictionary</p></li>
+<li><p>less options need to be specified</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="builder-changes">
+<h2>Builder changes<a class="headerlink" href="#builder-changes" title="Permalink to this headline"></a></h2>
+<div class="section" id="normalize-paths-for-scms">
+<h3>Normalize paths for scms<a class="headerlink" href="#normalize-paths-for-scms" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/591">https://pagure.io/koji/pull-request/591</a></div>
+</div>
+<p>For many years, kojid has supported the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> option
+(see: <a class="reference internal" href="../server_howto.html#scm-config"><span class="std std-ref">Source Control Configuration</span></a>) for controlling which scms can be used for building.
+In 1.13.0, Koji added the ability to explicitly block a host:path pattern.</p>
+<p>Unfortunately, 1.13.0 did not normalize the path before checking the pattern,
+making it possible for users to use equivalent paths to route around the
+block patterns.</p>
+<p>Now, Koji will normalize these paths before the <code class="docutils literal notranslate"><span class="pre">allowed_scms</span></code> check.</p>
+</div>
+<div class="section" id="graceful-reload">
+<h3>Graceful reload<a class="headerlink" href="#graceful-reload" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/565">https://pagure.io/koji/pull-request/565</a></div>
+</div>
+<p>For a long time kojid has handled the USR1 signal by initiating a graceful restart.
+This change exposes that in the systemd service config (and the init script
+on older platforms).</p>
+<p>Now, <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">kojid</span> <span class="pre">reload</span></code> will trigger the same sort of restart that the
+<code class="docutils literal notranslate"><span class="pre">restart-hosts</span></code> command accomplishes, but only for the build host you run it
+on. When this happens, kojid will:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>stop taking new tasks</p></li>
+<li><p>wait for current tasks to finish</p></li>
+<li><p>restart itself once all its tasks are completed</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="friendlier-runroot-configuration">
+<h3>Friendlier runroot configuration<a class="headerlink" href="#friendlier-runroot-configuration" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/539">https://pagure.io/koji/pull-request/539</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/528">https://pagure.io/koji/pull-request/528</a></div>
+</div>
+<p>Two changes make it easier to write a configuration for the runroot plugin.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">path_subs</span></code> option is now more forgiving about whitespace:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>leading and trailing whitespace is ignored for each line</p></li>
+<li><p>blank lines are ignored</p></li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">[pathNN]</span></code> sections are no longer required to have sequential numbers.
+Previously, the plugin expected a sequence like <code class="docutils literal notranslate"><span class="pre">[path0]</span></code>, <code class="docutils literal notranslate"><span class="pre">[path1]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[path2]</span></code>, etc, and would stop looking for entries if the next number
+was missing. Now, any set of distinct numbers is valid and all <code class="docutils literal notranslate"><span class="pre">[pathNN]</span></code>
+sections will be processed.</p>
+</div>
+</div>
+<div class="section" id="system-changes">
+<h2>System changes<a class="headerlink" href="#system-changes" title="Permalink to this headline"></a></h2>
+<div class="section" id="deprecations">
+<h3>Deprecations<a class="headerlink" href="#deprecations" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/554">https://pagure.io/koji/pull-request/554</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/597">https://pagure.io/koji/pull-request/597</a></div>
+</div>
+<p>The following features are deprecated and will be removed in a future release:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">importBuildInPlace</span></code> rpc call</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">use_old_ssl</span></code> client configuration option (and the underlying
+<code class="docutils literal notranslate"><span class="pre">koji.compatrequests</span></code> library)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="removed-calls">
+<h3>Removed calls<a class="headerlink" href="#removed-calls" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/497">https://pagure.io/koji/pull-request/497</a></div>
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/507">https://pagure.io/koji/pull-request/507</a></div>
+</div>
+<p>The deprecated <code class="docutils literal notranslate"><span class="pre">buildFromCVS</span></code> hub call has been removed. It was replaced
+by the <code class="docutils literal notranslate"><span class="pre">buildSRPMFromCVS</span></code> call many years ago and has been deprecated since
+version 1.6.0.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">add_db_logger</span></code> function has been removed from the koji library, along
+with the <code class="docutils literal notranslate"><span class="pre">log_messages</span></code> table in the db. This extraneous call has never been
+used in Koji.</p>
+</div>
+<div class="section" id="dropped-mod-python-support">
+<h3>Dropped mod_python support<a class="headerlink" href="#dropped-mod-python-support" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/508">https://pagure.io/koji/pull-request/508</a></div>
+</div>
+<p>Koji no longer supports mod_python. This option has been deprecated since
+mod_wsgi support was added in version 1.7.0.</p>
+<p>See also: <a class="reference internal" href="../migrations/migrating_to_1.7.html"><span class="doc">Migrating to Koji 1.7</span></a></p>
+</div>
+<div class="section" id="large-integer-support">
+<h3>Large integer support<a class="headerlink" href="#large-integer-support" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/571">https://pagure.io/koji/pull-request/571</a></div>
+</div>
+<p>Koji uses xmlrpc for communications with the hub, and unfortunately the
+baseline xmlrpc standard only supports 32-bit signed integers. This
+results in errors when larger integers are encountered, typically
+when a file is larger than 2 GiB.</p>
+<p>Starting with version 1.14.0, Koji will emit <code class="docutils literal notranslate"><span class="pre">i8</span></code> tags when encoding
+large integers for xmlrpc. Integers below the limit are still encoded
+with the standard <code class="docutils literal notranslate"><span class="pre">int</span></code> tag. The only time this makes a difference
+is when Koji would previously have raised an <code class="docutils literal notranslate"><span class="pre">OverflowError</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">i8</span></code> tag comes from the
+<a class="reference external" href="https://ws.apache.org/xmlrpc/types.html">ws-xmlrpc</a>
+spec. Python’s xmlrpc decoder has
+for many years accepted and understood this tag, even though its encoder
+would not emit it.</p>
+<p>Previous versions of Koji worked around such size issues by converting
+large integers to strings in a few targeted places. Those targeted
+workarounds have been left in place on the hub for the sake of backward
+compatibility.</p>
+</div>
+<div class="section" id="test-mode-for-protonmsg-plugin">
+<h3>Test mode for protonmsg plugin<a class="headerlink" href="#test-mode-for-protonmsg-plugin" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/538">https://pagure.io/koji/pull-request/538</a></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">protonmsg</span></code> plugin now accepts a boolean <code class="docutils literal notranslate"><span class="pre">test_mode</span></code> configuration
+option. When this option is enabled, the plugin will not actually
+send messages, but will instead log them (at the DEBUG level).</p>
+<p>This option allows testing environments to run with the plugin enabled, but
+without requiring a message bus to be set up for that environment.</p>
+</div>
+<div class="section" id="handling-of-debugsource-rpms">
+<h3>Handling of debugsource rpms<a class="headerlink" href="#handling-of-debugsource-rpms" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/524">https://pagure.io/koji/pull-request/524</a></div>
+</div>
+<p>Koji will now treat rpms ending in <code class="docutils literal notranslate"><span class="pre">-debugsource</span></code> the same way that it does
+other debuginfo rpms. Such rpms are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>omitted from Koji’s normal yum repos</p></li>
+<li><p>listed separately when displaying builds</p></li>
+<li><p>not downloaded by default in the <code class="docutils literal notranslate"><span class="pre">download-build</span></code> command</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="added-kojifile-component-type-for-content-generators">
+<h3>Added kojifile component type for content generators<a class="headerlink" href="#added-kojifile-component-type-for-content-generators" title="Permalink to this headline"></a></h3>
+<div class="line-block">
+<div class="line">PR: <a class="reference external" href="https://pagure.io/koji/pull-request/506">https://pagure.io/koji/pull-request/506</a></div>
+</div>
+<p>Content generator imports now accept entries with type equal to <code class="docutils literal notranslate"><span class="pre">kojifile</span></code>
+in the component lists for buildroots and images/archives. This type provides
+a more reliable way to reference archive that come from Koji.</p>
+<p>See: <a class="reference internal" href="../../Developer%20Guide/content_generator_metadata.html#metadata-kojifile"><span class="std std-ref">Example metadata</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="release_notes_1.15.html" class="btn btn-neutral float-left" title="Koji 1.15 Release Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="release_notes_1.13.html" class="btn btn-neutral float-right" title="Koji 1.13 Release Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Mike McLean, Mike B, Dennis Gilmore, Mathieu Bridon, Ian McLeod, Ralph Bean, Adam Miller.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

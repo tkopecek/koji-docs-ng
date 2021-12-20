@@ -11,7 +11,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "source/"
-        build-command: "sphinx-build -b html . build"
+        build-command: "sphinx-build -b html"
     - name: copy to docs
       run: |
         rm -rf docs

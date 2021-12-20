@@ -16,7 +16,7 @@ jobs:
       run: |
         rm -rf docs
         mkdir docs
-        cp -r build/html docs
+        cp -r source/build/html docs
         touch docs/.nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"

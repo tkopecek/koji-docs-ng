@@ -17,7 +17,7 @@ jobs:
         git clone https://github.com/tkopecek/koji-docs-ng.git --branch gh-pages --single-branch gh-pages
         cd gh-pages
         rm -rf docs/*
-        cp -r ../source/build/ docs/
+        cp -r ../source/build/* docs/
         touch docs/.nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"

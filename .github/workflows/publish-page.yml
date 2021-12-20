@@ -15,6 +15,7 @@ jobs:
     - name: copy to docs
       run: |
         rm -rf docs
+        find
         mkdir docs
         cp -r source/build/html docs
         touch docs/.nojekyll

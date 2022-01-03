@@ -53,8 +53,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#the-web-interface">The web interface</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#installing-ssl-certificates-in-firefox">Installing SSL Certificates in Firefox</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#installing-ssl-certificates-in-chromium">Installing SSL Certificates in Chromium</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#notifications">Notifications</a></li>
 </ul>
 </li>
@@ -135,7 +133,7 @@ Kerberos. However SSL and username/password authentications are
 available. You will need to have a valid authentication token to use
 many features. However, many of the read-only commands will work without
 authentication.</p>
-<p>If you run into any problems with Fedora’s instance of koji, <a class="reference external" href="https://fedoraproject.org/wiki/Join_the_package_collection_maintainers#Install_the_developer_client_tools">here</a>
+<p>If you run into any problems with Fedora’s instance of koji, <a class="reference external" href="https://docs.fedoraproject.org/en-US/package-maintainers/Using_the_Koji_Build_System/">here</a>
 is actual documentation for installing and using developer client tools.</p>
 <p>Alternatively, koji CLI is now also available via:</p>
 <blockquote>
@@ -183,68 +181,10 @@ some additional actions. For example:</p>
 <li><p>Create/Edit/Delete a target</p></li>
 <li><p>Enable/Disable a build host</p></li>
 </ul>
-<p>The web site utilizes SSL authentication. In order to log in you will
-need a valid SSL certificate and your web browser will need to be
-configured to trust the SSL cert. Instructions on how to do this are
-printed when running <code class="docutils literal notranslate"><span class="pre">fedora-packager-setup</span> <span class="pre">--with-browser-cert</span></code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Using the certificate directly downloaded from the FAS web
-interface|If you have generated and downloaded the certificate
-<code class="docutils literal notranslate"><span class="pre">~/.fedora.cert</span></code> directly from FAS using the form referenced
-above, you need to convert it into a format that the browser can understand
-using the following command:
-<code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">pkcs12</span> <span class="pre">-export</span> <span class="pre">-in</span> <span class="pre">~/.fedora.cert</span> <span class="pre">-CAfile</span> <span class="pre">~/.fedora-upload-ca.cert</span> <span class="pre">-out</span> <span class="pre">~/fedora-browser-cert.p12</span></code>,
-where <code class="docutils literal notranslate"><span class="pre">.fedora-upload-ca.cert</span></code> can be downloaded from the URL
-referenced above.</p>
-</div>
-<div class="section" id="installing-ssl-certificates-in-firefox">
-<h3>Installing SSL Certificates in Firefox<a class="headerlink" href="#installing-ssl-certificates-in-firefox" title="Permalink to this headline">¶</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You only need to check these instructions if you are intending to
-authenticate with the web interface with Firefox.  Authenticating with the
-web interface is optional.</p>
-</div>
-<p>Once you have created your FAS account, generated your certificate in
-the form posted in the link above and ran
-<code class="docutils literal notranslate"><span class="pre">fedora-packager-setup</span> <span class="pre">--with-browser-cert</span></code>, you will need to import
-it into your web browser. You can do this in Firefox by doing the
-following:</p>
-<ol class="arabic simple">
-<li><p>Launch Firefox and click on the <strong>Edit</strong> menu from the toolbar</p></li>
-<li><p>Select <strong>Preferences</strong> in the sub-menu which appears.</p></li>
-</ol>
-<p>3. This should open the <strong>Preferences</strong> window where you can switch to
-the <strong>Advanced</strong> section</p>
-<ol class="arabic simple" start="4">
-<li><p>In the <strong>Advanced</strong> section switch to the <strong>Encryption</strong> tab</p></li>
-</ol>
-<p>5. Click on the <strong>View Certificates</strong> button and the Certificates window
-will appear</p>
-<p>6. Switch to the <strong>Your Certificates</strong> tab and click on the <strong>Import</strong>
-button</p>
-<p>7. Point to where your Fedora Certificate is located and click <strong>Open</strong>
-(fedora-packager-setup will have told you where it was saved and will
-have asked you to set a password for the cert)</p>
-<p>You should now be able to see your Fedora Certificate listed under
-<strong>Your Certificates</strong> and you should be able to authenticate with the
-koji web interface.</p>
-</div>
-<div class="section" id="installing-ssl-certificates-in-chromium">
-<h3>Installing SSL Certificates in Chromium<a class="headerlink" href="#installing-ssl-certificates-in-chromium" title="Permalink to this headline">¶</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You only need to check these instructions if you are intending to
-authenticate with the web interface with Chromium.  Authenticating with the
-web interface is optional.</p>
-</div>
-<p>Chromium uses the NSS Shared DB, you will need the nss-tools package
-installed.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pk12util -d sql:<span class="nv">$HOME</span>/.pki/nssdb -i fedora-browser-cert.p12
-</pre></div>
-</div>
-</div>
+<p>The web site utilizes same kerberos/gssapi authentication as koji’s CLI. In
+order to log in you will need to have correctly configured web browser
+(Firefox/Chromium). For Firefox it should work out of the box, for Chromium
+you’ll need to tweak some options, see Fedora’s <a class="reference external" href="https://fedoraproject.org/wiki/Infrastructure/Kerberos#Chromium.2FChrome">docs</a>.</p>
 <div class="section" id="notifications">
 <span id="notification-basics"></span><h3>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h3>
 <p>Koji supports a limited number of email notifications:</p>
@@ -643,10 +583,11 @@ been inherited from and who built them.</p>
 </div>
 <div class="section" id="koji-xmlrpc-api">
 <h1>Koji XMLRPC API<a class="headerlink" href="#koji-xmlrpc-api" title="Permalink to this headline">¶</a></h1>
-<p>All features supported by command-line client are also accessible by XMLRPC
-API. You can get listing of all available calls, arguments and basic help via
-calling <code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">list-api</span></code> command. This call will also provide you API
-extensions provided by plugins in that particular koji instance.</p>
+<p>All features supported by command-line client are also accessible by XMLRPC API.
+You can get listing of all available calls, arguments and basic help via calling
+<code class="docutils literal notranslate"><span class="pre">koji</span> <span class="pre">list-api</span></code> command or at <a class="reference external" href="https://koji.fedoraproject.org/koji/api">Fedora’s web page</a>. This call
+will also provide you API extensions provided by plugins in that particular koji
+instance.</p>
 <p>Because of the data Koji routinely deals with, we use the following extensions
 to the xmlrpc standard:</p>
 <blockquote>

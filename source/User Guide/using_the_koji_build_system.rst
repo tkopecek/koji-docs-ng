@@ -30,7 +30,7 @@ many features. However, many of the read-only commands will work without
 authentication.
 
 If you run into any problems with Fedora's instance of koji, `here
-<https://fedoraproject.org/wiki/Join_the_package_collection_maintainers#Install_the_developer_client_tools>`__
+<https://docs.fedoraproject.org/en-US/package-maintainers/Using_the_Koji_Build_System/>`__
 is actual documentation for installing and using developer client tools.
 
 Alternatively, koji CLI is now also available via:
@@ -77,75 +77,11 @@ Those with admin privileges will find additional actions, such as:
 -  Create/Edit/Delete a target
 -  Enable/Disable a build host
 
-The web site utilizes SSL authentication. In order to log in you will
-need a valid SSL certificate and your web browser will need to be
-configured to trust the SSL cert. Instructions on how to do this are
-printed when running ``fedora-packager-setup --with-browser-cert``.
-
-.. warning::
-
-   Using the certificate directly downloaded from the FAS web
-   interface|If you have generated and downloaded the certificate
-   ``~/.fedora.cert`` directly from FAS using the form referenced
-   above, you need to convert it into a format that the browser can understand
-   using the following command:
-   ``openssl pkcs12 -export -in ~/.fedora.cert -CAfile ~/.fedora-upload-ca.cert -out ~/fedora-browser-cert.p12``,
-   where ``.fedora-upload-ca.cert`` can be downloaded from the URL
-   referenced above.
-
-Installing SSL Certificates in Firefox
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note::
-
-   You only need to check these instructions if you are intending to
-   authenticate with the web interface with Firefox.  Authenticating with the
-   web interface is optional.
-
-Once you have created your FAS account, generated your certificate in
-the form posted in the link above and ran
-``fedora-packager-setup --with-browser-cert``, you will need to import
-it into your web browser. You can do this in Firefox by doing the
-following:
-
-1. Launch Firefox and click on the **Edit** menu from the toolbar
-
-2. Select **Preferences** in the sub-menu which appears.
-
-3. This should open the **Preferences** window where you can switch to
-the **Advanced** section
-
-4. In the **Advanced** section switch to the **Encryption** tab
-
-5. Click on the **View Certificates** button and the Certificates window
-will appear
-
-6. Switch to the **Your Certificates** tab and click on the **Import**
-button
-
-7. Point to where your Fedora Certificate is located and click **Open**
-(fedora-packager-setup will have told you where it was saved and will
-have asked you to set a password for the cert)
-
-You should now be able to see your Fedora Certificate listed under
-**Your Certificates** and you should be able to authenticate with the
-koji web interface.
-
-Installing SSL Certificates in Chromium
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note::
-
-   You only need to check these instructions if you are intending to
-   authenticate with the web interface with Chromium.  Authenticating with the
-   web interface is optional.
-
-Chromium uses the NSS Shared DB, you will need the nss-tools package
-installed.
-
-::
-
-    $ pk12util -d sql:$HOME/.pki/nssdb -i fedora-browser-cert.p12
+The web site utilizes same kerberos/gssapi authentication as koji's CLI. In
+order to log in you will need to have correctly configured web browser
+(Firefox/Chromium). For Firefox it should work out of the box, for Chromium
+you'll need to tweak some options, see Fedora's `docs
+<https://fedoraproject.org/wiki/Infrastructure/Kerberos#Chromium.2FChrome>`__.
 
 .. _notification-basics:
 
@@ -622,10 +558,12 @@ been inherited from and who built them.
 Koji XMLRPC API
 ===============
 
-All features supported by command-line client are also accessible by XMLRPC
-API. You can get listing of all available calls, arguments and basic help via
-calling ``koji list-api`` command. This call will also provide you API
-extensions provided by plugins in that particular koji instance.
+All features supported by command-line client are also accessible by XMLRPC API.
+You can get listing of all available calls, arguments and basic help via calling
+``koji list-api`` command or at `Fedora's web page
+<https://koji.fedoraproject.org/koji/api>`__. This call
+will also provide you API extensions provided by plugins in that particular koji
+instance.
 
 Because of the data Koji routinely deals with, we use the following extensions
 to the xmlrpc standard:
